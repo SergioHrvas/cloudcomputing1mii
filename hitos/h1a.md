@@ -3,7 +3,9 @@
 ## PREPARACIÓN DEL REPOSITORIO
 1. Compruebo que tengo instalado Git.
 
-        ```$ git -v```
+```
+$ git -v
+```
     
 ![Git instalado](/img/git.png)
 
@@ -16,17 +18,23 @@
 
 - Cambiamos username: 
         
-        ```$ git config --global user.name "Sergio Hervás Cobo```
+```
+$ git config --global user.name "Sergio Hervás Cobo
+```
 
 
 - Cambiamos correo:
        
-       ```$ git config --global user.email sergiohervas18@gmail.com```
+```
+$ git config --global user.email sergiohervas18@gmail.com
+```
 
 
 -Comprobamos los cambios:
 
-        ```$ git config --list```
+```
+$ git config --list
+```
 
 ![Configuramos los datos](/img/git_data.png)
 
@@ -40,26 +48,34 @@
 
 - Generamos la clave
 
-        ```$ ssh-keygen -t ed25519 -C "sergiohervas18@gmail.com"```
+```
+$ ssh-keygen -t ed25519 -C "sergiohervas18@gmail.com"
+```
         
 ![Obtenemos la clave](/img/git_token.png)
 
 
 - Buscamos la clave y la copiamos
 
-        ```cat ~/.ssh/id_ed25519.pub```     
+```
+$ cat ~/.ssh/id_ed25519.pub
+```     
 
 
 - Iniciamos el agente SSH en segundo plano
-        
-        ```eval "$(ssh-agent -s)"```
+
+```
+$ eval "$(ssh-agent -s)"
+```
 
 ![Iniciamos agente ssh](/img/eval.png)
 
 
 - Agregamos la clave privada al ssh-agent
 
-                ```ssh-add ~/.ssh/id_ed25519```
+```
+$ ssh-add ~/.ssh/id_ed25519
+```
 
 ![ssh-add](/img/ssh_add.png)
 
