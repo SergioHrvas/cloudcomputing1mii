@@ -1,6 +1,7 @@
 # HITO 1b - WILDHAVEN MANAGER
 
-![Logo WildHaven](/img/WildHaven.png){style="display: block; margin: 0 auto" }
+![Logo WildHaven](/img/WildHaven300x300.png)
+
 ## DESCRIPCIÓN DEL PROBLEMA
 A día de hoy en España existen alrededor de 1500 protectoras y más de 50 santuarios de animales. Dichas entidades ayudan día a día a los animales rescatados de abandonos, mataderos, granjas de explotación...  Sin embargo, muchas de estas organizaciones enfrentan serios desafíos en su gestión diaria. La falta de recursos, tiempo y personal adecuado puede dificultar el seguimiento de la salud y el bienestar de los animales rescatados. Además, la coordinación de voluntarios y la organización de eventos son tareas que a menudo consumen mucho tiempo y esfuerzo.
 
