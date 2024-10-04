@@ -1,4 +1,4 @@
-# HITO 1b - WILDHAVEN MANAGER
+# HITO 1b - WILDHAVEN MANAGER :pig: :dog: :bird:
 
 ![Logo WildHaven](/img/WildHaven300x300.png)
 
@@ -30,3 +30,37 @@ Opcionalmente podrán incluirse las siguientes funcionalidades:
 
 
 WildHaven está diseñada para ser una solución todo-en-uno que reduce la carga administrativa, mejora la eficiencia operativa y amplifica el impacto positivo de las protectoras y santuarios en el bienestar animal. Con esta herramienta, las organizaciones podrán enfocarse en lo que realmente importa: salvar y proteger la vida de los animales que más lo necesitan.
+
+## HISTORIAS DE USUARIO
+Para comprender mejor las funcionalidades que se desea que tenga la aplicación, se especifican las principales historias de usuario:
+
+*Nota 1*: Se pone de ejemplo un santuario de animales, pudiendo sustituirse por un refugio o protectora.
+
+*Nota 2*: A los animales se les llamará habitantes del santuario/protectora.
+
+- **HU1** Como administrador quiero añadir una zona del santuario. 
+- **HU2** Como administrador quiero modificar una zona del santuario.
+- **HU3** Como voluntario quiero ver la información de una zona del santuario.
+- **HU4** Como voluntario quiero ver una lista de todos los santurarios.
+- **HU5** Como voluntario quiero ver los habitantes de una zona del santuario.
+- **HU6** Como administrador quiero añadir un habitante al santurario. 
+- **HU7** Como voluntario quiero modificar la información de un habitante del santuario.
+- **HU8** Como voluntario quiero ver la información de un habitante del santuario.
+- **HU9** Como voluntario quiero ver una lista de todos los habitantes del santuario.
+- **HU10** Como administradodr quiero añadir una línea al inventario
+- **HU11** Como voluntario quiero modificar la información de una línea del inventario.
+- **HU12** Como voluntario quiero ver la información de una línea del inventario.
+- **HU13** Como voluntario quiero ver una lista de todas las líneas del inventario.
+- **HU14** Como voluntario quiero buscar y filtrar en la lista de todas las líneas del inventario.
+- **HU15** Como administrador quiero añadir un voluntario.
+- **HU16** Como administrador quiero modificar la información de un voluntario.
+- **HU17** Como administrador quiero ver la información de un voluntario.
+- **HU18** Como administrador quiero eliminar un voluntario.
+- **HU19** Como voluntario quiero crear una tarea.
+- **HU20** Como voluntario quiero modificar una tarea de mi lista.
+- **HU21** Como voluntario quiero ver una tarea de mi lista.
+- **HU22** Como voluntario quiero ver una lista de todas mis tareas una tarea.
+
+Historias de usuario no prioritarias:
+- **HU23** Como usuario quiero ver una lista de todos los habitantes disponibles para adopción
+- **HU24** Como usuario quiero iniciar un proceso de adopción de un habitante.
