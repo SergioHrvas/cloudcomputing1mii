@@ -17,7 +17,7 @@ var InhabitantsSchema = Schema({
         treatments: { type: String },  // Tratamientos aplicados o medicamentos recetados
         vetName: { type: String }  // Nombre del veterinario
       }],
-    alive: boolean,
+    alive: Boolean,
     specie: {type: Schema.Types.ObjectId, ref: 'Specie', required: true},
     zone: {type: Schema.Types.ObjectId, ref: 'Zone', required: true},
 });

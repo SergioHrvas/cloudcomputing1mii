@@ -10,7 +10,13 @@ var bodyParser = require('body-parser')
 var app = express();
 
 //Cargamos las rutas
-//var user_routes = require('./routes/user');
+var user_routes = require('./routes/user');
+var task_routes = require('./routes/task');
+var specie_routes = require('./routes/specie');
+var inhabitant_routes = require('./routes/inhabitant');
+var zone_routes = require('./routes/zone');
+var inventoryMovement_routes = require('./routes/inventoryMovement');
+var inventoryItem_routes = require('./routes/inventoryItem');
 
 //middlewares
 
@@ -31,7 +37,13 @@ app.use((req, res, next) => {
 
 //rutas
 ///El app.use nos permite que se ejecute el middleware antes de la acción del controlador
-//app.use('/api', user_routes);
+app.use('/api/user', user_routes);
+app.use('/api/task', task_routes);
+app.use('/api/specie', specie_routes);
+app.use('/api/inhabitant', inhabitant_routes);
+app.use('/api/zone', zone_routes);
+app.use('/api/inventoryItem', inventoryItem_routes);
+app.use('/api/inventoryMovement', inventoryMovement_routes);
 
 //exportar
 module.exports = app;
