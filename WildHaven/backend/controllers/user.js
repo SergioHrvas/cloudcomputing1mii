@@ -81,7 +81,52 @@ function saveUser(req, res){
     }
 }
 
+//Login de usuario
+function loginUser(req, res){
+    //Recogemos los parámetros del body
+    var params = req.body;
+
+    var email = params.email;
+    var password = params.password;
+
+    User.findOne({email: email}).exec().then( 
+        user => {
+            if(user){
+                bcrypt.compare(password, user.password, (err, check) => {
+                    if (check){
+                        //Devuelvo los datos del usuario
+                        if(params.gettoken){
+                            //devolver token
+                            return res.status(200).send({
+                                token: jwt.createToken(user)
+                            })
+                        }else{
+                            user.password = undefined;
+                            return res.status(200).send({user});
+                        }
+
+                    }   
+                    else{
+                        return res.status(404).send({message: "El usuario no se ha podido identificar."});
+                    }
+                })
+            }
+            else{
+                return res.status(404).send({message: "El usuario no se ha podido identificar."});
+            }
+        }
+
+    ).catch(
+        err => {
+            return res.status(500).send({message: "Error en la petición."});
+        } 
+    )
+}
+
+
+
 module.exports = {
     pruebas,
-    saveUser
+    saveUser,
+    loginUser
 }
