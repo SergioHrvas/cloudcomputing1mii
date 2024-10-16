@@ -13,5 +13,7 @@ var mdUpload = multipart({uploadDir: './uploads/users'})
 api.get('/pruebas',  UserController.pruebas);
 api.post('/register', UserController.saveUser);
 api.post('/login', UserController.loginUser);
+api.get('/:id', mdAuth.ensureAuth, UserController.getUser)
+api.get('/list/:page/:itemsPerPage', mdAuth.ensureAuth, UserController.getUsers)
 
 module.exports = api;

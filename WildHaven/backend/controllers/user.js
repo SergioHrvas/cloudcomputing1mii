@@ -124,9 +124,64 @@ function loginUser(req, res){
 }
 
 
+//Obtener datos de usuario
+function getUser(req, res){
+    var id = req.params.id;
+
+    var user_logged = req.user.sub;
+
+    User.findById(id).exec().then( user => {
+
+        if(!user) return res.status(404).send({message: "El usuario no existe"});
+
+        
+
+        return res.status(200).send({user});
+
+    }).catch(err => {
+        if(err) return res.status(500).send({message: "Error en la petición"});
+
+    });
+}
+
+//Obtener lista de usuarios paginados
+function getUsers(req, res){
+    //Recogemos el id del usuario logeado en este momento (por el middleware)
+    var identity_user_id = req.user.sub;
+
+    var page = 1;
+
+    if(req.params.page){
+        page = req.params.page;
+    }
+
+    var itemsPerPage = 5;
+    if(req.params.itemsPerPage){
+        itemsPerPage = req.params.itemsPerPage
+    }
+
+    User.find().select(['-password']).sort('_id').paginate(page, itemsPerPage).then((users) => {
+        if(!users) return res.status(404).send({message: "No hay usuarios disponibles"});
+
+        var total = users.length;
+
+        return res.status(200).send({
+            users,
+            total,
+            pages: Math.ceil(total/itemsPerPage),
+        })
+    }).catch(err => {
+        if(err) return res.status(500).send({message: "Error en la petición"});
+
+    })
+}
+
+
 
 module.exports = {
     pruebas,
     saveUser,
-    loginUser
+    loginUser,
+    getUsers,
+    getUser
 }
