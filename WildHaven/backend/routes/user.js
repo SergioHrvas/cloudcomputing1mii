@@ -11,5 +11,6 @@ var multipart = require('connect-multiparty');
 var mdUpload = multipart({uploadDir: './uploads/users'})
 
 api.get('/pruebas',  UserController.pruebas);
+api.post('/register', UserController.saveUser);
 
 module.exports = api;

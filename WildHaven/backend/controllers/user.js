@@ -22,10 +22,66 @@ const { escape } = require('querystring');
 
 function pruebas(req, res){
     res.status(200).send({
-        message:"Acción de   usuarios en el servidor de NodeJS"
+        message:"Acción de usuarios en el servidor de NodeJS"
     })
 };
 
+
+//Registro de usuario
+function saveUser(req, res){
+    //Recogemos los parámetros de la request
+    var params = req.body;
+
+    //Creamos una instancia/objeto de usuario (de su modelo)
+    var user = new User();
+
+    if(params.name && params.surname && params.password && params.email){
+        user.name = params.name;
+        user.surname = params.surname;
+        user.email = params.email;
+        user.role = "ROLE_USER";
+        user.image = null;
+        user.created_at = moment().unix();
+
+        User.find({email: user.email.toLowerCase()}).exec().then(users => {
+            if(users && users.length > 0){
+                return res.status(200).send({message: "Ya existe un usuario con ese correo electrónico"});
+            }
+            else{
+                        //Encriptamos la contraseña
+        bcrypt.hash(params.password, null, null, (err, hash) => {
+            user.password = hash;
+
+            //Guardamos el usuario
+            user.save().then(userStored => {
+                //Si se ha guardado, devuelvo el usuario
+                userStored.password = undefined;
+                if(userStored){
+                    res.status(200).send({user: userStored});
+                }else{
+                    res.status(404).send({message: "No se ha registrado el usuario"}); 
+                }
+            }).catch(err => {
+                if(err) return res.status(500).send({message: "Error al guardar el usuario."})
+            })
+
+        });
+            }
+
+
+        }).catch(err => {
+            if(err) return res.status(500).send({message: "Error en la petición de usuarios"});
+        })
+
+    }
+    else{
+        res.status(200).send({
+            message: "Envía todos los campos obligatorios."
+        })
+    }
+}
+
 module.exports = {
-    pruebas
+    pruebas,
+    saveUser
 }
