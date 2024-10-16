@@ -177,11 +177,62 @@ function getUsers(req, res){
 }
 
 
+//Editar datos de usuarios
+function updateUser(req, res){
+    var id = req.params.id;
+    var update = req.body;
+
+    //Eliminamos la propiedad contraseña por seguridad (se modificará en un método por separado)
+    delete update.password;
+
+    //Comprobamos si el id del usuario coincide con el que me llega en la request
+    if(id != req.user.sub){
+        return res.status(500).send({message: "No tienes permisos para actualizar los datos del usuario."})
+    }
+
+
+    User.find({email: update.email.toLowerCase()}).exec().then(users => {
+        var user_isset = false;
+        users.forEach(user => {
+            if(user && (user._id != id)){
+                user_isset = true;
+            }
+        });
+
+        if(user_isset){
+            return res.status(500).send({message: "Los datos ya están en uso"})
+        }
+
+            User.findByIdAndUpdate(id, update, {new: true}).exec().then(
+                userUpdated => {
+                    if(!userUpdated){
+                        return res.send(404).send({message: "No se ha podido actualizar el usuario"});
+                    }
+        
+                    return res.status(200).send({user: userUpdated});
+                }
+            ).catch(
+                err => {
+                    if(err) return res.status(500).send({message: "Error en la petición"});
+                }
+            )
+    }
+    ).catch(
+        err => {
+            if(err) return res.status(500).send({message: "Error en la petición"});
+        }
+    )
+    
+}
+
+
+
 
 module.exports = {
     pruebas,
     saveUser,
     loginUser,
     getUsers,
-    getUser
+    getUser,
+    updateUser
 }
