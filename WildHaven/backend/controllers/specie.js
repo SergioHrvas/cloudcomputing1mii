@@ -62,9 +62,50 @@ function getSpecies(req, res) {
     )
 }
 
+function createSpecie(req, res) {
+    var body = req.body;
+
+    var new_specie = new Specie();
+    new_specie.name = body.name;
+    new_specie.description = body.description;
+    new_specie.diet = body.diet;
+    new_specie.technical_name = body.technical_name;
+
+    Specie.find({ name: body.name }).exec()
+        .then(
+            species => {
+                if (species.length > 0) {
+                    res.status(200).send({ message: "Ya existe una especie con ese nombre" })
+                }
+                else if (!body.name) {
+                    res.status(200).send({ message: "El nombre es obligatorio" })
+                }
+                else {
+                    new_specie.save().then(
+                        specieStored => {
+                            if (specieStored) {
+                                res.status(200).send({ specie: specieStored });
+                            } else {
+                                res.status(404).send({ message: "No se ha guardado la especie" });
+                            }
+                        }
+                    ).catch
+                    err => {
+                        if (err) return res.status(500).send({ message: "Error al obtener las especies." + err });
+                    }
+                }
+            }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error al obtener las especies." + err })
+            }
+        )
+}
+
 
 module.exports = {
     pruebas,
     getSpecies,
     getSpecie,
+    createSpecie
 }

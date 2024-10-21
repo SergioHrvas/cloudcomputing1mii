@@ -59,8 +59,8 @@ function createZone(req, res) {
 
     Zone.find({ name: body.name }).exec()
         .then(
-            zone => {
-                if (zone.length > 0) {
+            zones => {
+                if (zones.length > 0) {
                     res.status(200).send({ message: "Ya existe una zona con ese nombre" })
                 }
                 else if (!body.name) {

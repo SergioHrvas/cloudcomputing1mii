@@ -6,8 +6,10 @@ var Schema = mongoose.Schema;
 
 //Definimos el esquema
 var Specie = Schema({
-    name: String,
+    name: {type: String, required: true},
+    technical_name: String,
     description: String,
+    diet: String,
     image: String,
 });
 
