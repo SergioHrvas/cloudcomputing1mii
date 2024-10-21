@@ -16,5 +16,6 @@ api.post('/login', UserController.loginUser);
 api.get('/:id', mdAuth.ensureAuth, UserController.getUser)
 api.get('/list/:page/:itemsPerPage', mdAuth.ensureAuth, UserController.getUsers)
 api.put('/update/:id', mdAuth.ensureAuth, UserController.updateUser)
+api.delete('/delete/:id', mdAuth.ensureAuth, UserController.deleteUser)
 
 module.exports = api;

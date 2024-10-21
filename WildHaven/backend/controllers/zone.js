@@ -1,18 +1,10 @@
 'use strict'
 
-//Incluimos modulo bcrypt para encriptar las contraseñas
-var bcrypt = require('bcrypt-nodejs');
-
 var Zone = require('../models/zone');
-
-//Importamos la libreria moment para generar fechas
-var moment = require("moment");
 
 //Importamos el servicio de jwt token
 var jwt = require('../services/jwt');
 
-//Importamos mongoose paginate
-var mongoosePaginate = require('mongoose-pagination');
 
 //Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
 var fs = require('fs');
@@ -25,7 +17,39 @@ function pruebas(req, res){
         message:"Acción de zonas en el servidor de NodeJS"
     })
 };
- 
+
+function getZone(req, res){
+    var id = req.params.id;
+
+    Zone.findById(id).exec().then(
+        zone => {
+            if (!zone) return res.status(404).send({ message: "La zona no existe" });
+
+            return res.status(200).send({ zone });
+        }
+    ).catch(
+        err =>{
+            if (err) return res.status(500).send({ message: "Error al obtener la zona." })
+        }
+    )
+}
+
+function getZones(req, res){
+    Zone.find().sort('name').exec().then(
+        zones => {
+            if (!zones) return res.status(404).send({ message: "No hay zonas disponibles" });
+
+            return res.status(200).send({ zones });
+        }
+    ).catch(
+        err =>{
+            if (err) return res.status(500).send({ message: "Error al obtener las zonas." })
+        }
+    )
+}
+
 module.exports = {
     pruebas,
+    getZones,
+    getZone
 }

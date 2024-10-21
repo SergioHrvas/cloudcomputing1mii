@@ -20,22 +20,22 @@ var path = require('path');
 const { escape } = require('querystring');
 
 
-function pruebas(req, res){
+function pruebas(req, res) {
     res.status(200).send({
-        message:"Acción de usuarios en el servidor de NodeJS"
+        message: "Acción de usuarios en el servidor de NodeJS"
     })
 };
 
 
 //Registro de usuario
-function saveUser(req, res){
+function saveUser(req, res) {
     //Recogemos los parámetros de la request
     var params = req.body;
 
     //Creamos una instancia/objeto de usuario (de su modelo)
     var user = new User();
 
-    if(params.name && params.surname && params.password && params.email){
+    if (params.name && params.surname && params.password && params.email) {
         user.name = params.name;
         user.surname = params.surname;
         user.email = params.email;
@@ -43,38 +43,38 @@ function saveUser(req, res){
         user.image = null;
         user.created_at = moment().unix();
 
-        User.find({email: user.email.toLowerCase()}).exec().then(users => {
-            if(users && users.length > 0){
-                return res.status(200).send({message: "Ya existe un usuario con ese correo electrónico"});
+        User.find({ email: user.email.toLowerCase() }).exec().then(users => {
+            if (users && users.length > 0) {
+                return res.status(200).send({ message: "Ya existe un usuario con ese correo electrónico" });
             }
-            else{
-                        //Encriptamos la contraseña
-        bcrypt.hash(params.password, null, null, (err, hash) => {
-            user.password = hash;
+            else {
+                //Encriptamos la contraseña
+                bcrypt.hash(params.password, null, null, (err, hash) => {
+                    user.password = hash;
 
-            //Guardamos el usuario
-            user.save().then(userStored => {
-                //Si se ha guardado, devuelvo el usuario
-                userStored.password = undefined;
-                if(userStored){
-                    res.status(200).send({user: userStored});
-                }else{
-                    res.status(404).send({message: "No se ha registrado el usuario"}); 
-                }
-            }).catch(err => {
-                if(err) return res.status(500).send({message: "Error al guardar el usuario."})
-            })
+                    //Guardamos el usuario
+                    user.save().then(userStored => {
+                        //Si se ha guardado, devuelvo el usuario
+                        userStored.password = undefined;
+                        if (userStored) {
+                            res.status(200).send({ user: userStored });
+                        } else {
+                            res.status(404).send({ message: "No se ha registrado el usuario" });
+                        }
+                    }).catch(err => {
+                        if (err) return res.status(500).send({ message: "Error al guardar el usuario." })
+                    })
 
-        });
+                });
             }
 
 
         }).catch(err => {
-            if(err) return res.status(500).send({message: "Error en la petición de usuarios"});
+            if (err) return res.status(500).send({ message: "Error en la petición de usuarios" });
         })
 
     }
-    else{
+    else {
         res.status(200).send({
             message: "Envía todos los campos obligatorios."
         })
@@ -82,103 +82,103 @@ function saveUser(req, res){
 }
 
 //Login de usuario
-function loginUser(req, res){
+function loginUser(req, res) {
     //Recogemos los parámetros del body
     var params = req.body;
 
     var email = params.email;
     var password = params.password;
 
-    User.findOne({email: email}).exec().then( 
+    User.findOne({ email: email }).exec().then(
         user => {
-            if(user){
+            if (user) {
                 bcrypt.compare(password, user.password, (err, check) => {
-                    if (check){
+                    if (check) {
                         //Devuelvo los datos del usuario
-                        if(params.gettoken){
+                        if (params.gettoken) {
                             //devolver token
                             return res.status(200).send({
                                 token: jwt.createToken(user)
                             })
-                        }else{
+                        } else {
                             user.password = undefined;
-                            return res.status(200).send({user});
+                            return res.status(200).send({ user });
                         }
 
-                    }   
-                    else{
-                        return res.status(404).send({message: "El usuario no se ha podido identificar."});
+                    }
+                    else {
+                        return res.status(404).send({ message: "El usuario no se ha podido identificar." });
                     }
                 })
             }
-            else{
-                return res.status(404).send({message: "El usuario no se ha podido identificar."});
+            else {
+                return res.status(404).send({ message: "El usuario no se ha podido identificar." });
             }
         }
 
     ).catch(
         err => {
-            return res.status(500).send({message: "Error en la petición."});
-        } 
+            return res.status(500).send({ message: "Error en la petición." });
+        }
     )
 }
 
 
 //Obtener datos de usuario
-function getUser(req, res){
+function getUser(req, res) {
     var id = req.params.id;
 
     var user_logged = req.user.sub;
 
-    User.findById(id).exec().then( user => {
+    User.findById(id).exec().then(user => {
 
-        if(!user) return res.status(404).send({message: "El usuario no existe"});
+        if (!user) return res.status(404).send({ message: "El usuario no existe" });
 
-        
 
-        return res.status(200).send({user});
+
+        return res.status(200).send({ user });
 
     }).catch(err => {
-        if(err) return res.status(500).send({message: "Error en la petición"});
+        if (err) return res.status(500).send({ message: "Error en la petición" });
 
     });
 }
 
 //Obtener lista de usuarios paginados
-function getUsers(req, res){
+function getUsers(req, res) {
     //Recogemos el id del usuario logeado en este momento (por el middleware)
     var identity_user_id = req.user.sub;
 
     var page = 1;
 
-    if(req.params.page){
+    if (req.params.page) {
         page = req.params.page;
     }
 
     var itemsPerPage = 5;
-    if(req.params.itemsPerPage){
+    if (req.params.itemsPerPage) {
         itemsPerPage = req.params.itemsPerPage
     }
 
     User.find().select(['-password']).sort('_id').paginate(page, itemsPerPage).then((users) => {
-        if(!users) return res.status(404).send({message: "No hay usuarios disponibles"});
+        if (!users) return res.status(404).send({ message: "No hay usuarios disponibles" });
 
         var total = users.length;
 
         return res.status(200).send({
             users,
             total,
-            pages: Math.ceil(total/itemsPerPage),
+            pages: Math.ceil(total / itemsPerPage),
         })
     }).catch(err => {
-        if(err) return res.status(500).send({message: "Error en la petición"});
+        if (err) return res.status(500).send({ message: "Error en la petición" });
 
     })
 }
 
 
 //Editar datos de usuarios
-function updateUser(req, res){
+function updateUser(req, res) {
     var id = req.params.id;
     var update = req.body;
 
@@ -186,46 +186,81 @@ function updateUser(req, res){
     delete update.password;
 
     //Comprobamos si el id del usuario coincide con el que me llega en la request
-    if(id != req.user.sub){
-        return res.status(500).send({message: "No tienes permisos para actualizar los datos del usuario."})
+    if (id != req.user.sub) {
+        return res.status(500).send({ message: "No tienes permisos para actualizar los datos del usuario." })
     }
 
 
-    User.find({email: update.email.toLowerCase()}).exec().then(users => {
+    User.find({ email: update.email.toLowerCase() }).exec().then(users => {
         var user_isset = false;
         users.forEach(user => {
-            if(user && (user._id != id)){
+            if (user && (user._id != id)) {
                 user_isset = true;
             }
         });
 
-        if(user_isset){
-            return res.status(500).send({message: "Los datos ya están en uso"})
+        if (user_isset) {
+            return res.status(500).send({ message: "Los datos ya están en uso" })
         }
 
-            User.findByIdAndUpdate(id, update, {new: true}).exec().then(
-                userUpdated => {
-                    if(!userUpdated){
-                        return res.send(404).send({message: "No se ha podido actualizar el usuario"});
-                    }
-        
-                    return res.status(200).send({user: userUpdated});
+        User.findByIdAndUpdate(id, update, { new: true }).exec().then(
+            userUpdated => {
+                if (!userUpdated) {
+
+                    return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
                 }
-            ).catch(
-                err => {
-                    if(err) return res.status(500).send({message: "Error en la petición"});
-                }
-            )
+
+                return res.status(200).send({ user: userUpdated });
+            }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error en la petición" });
+            }
+        )
     }
     ).catch(
         err => {
-            if(err) return res.status(500).send({message: "Error en la petición"});
+            if (err) return res.status(500).send({ message: "Error en la petición" });
         }
     )
-    
+
 }
 
+function deleteUser(req, res) {
+    var id = req.params.id;
+    //Comprobamos si el id del usuario coincide con el que me llega en la request
+    if ((id != req.user.sub) && (req.user.role != "ROLE_ADMIN")) {
+        return res.status(500).send({ message: "No tienes permisos para actualizar los datos del usuario." })
+    }
+    
+    User.findOne({_id: id}).exec().then(
+        user => {
 
+            if(user == null){
+                return res.status(404).send({ message: "No se ha podido encontrar el usuario" });
+            }
+
+            User.deleteOne({_id: user.id}).exec().then(
+                data => {
+                    if (data.deletedCount == 0) {
+                        return res.status(404).send({ message: "No se ha podido eliminar el usuario" });
+                    }
+        
+                    
+                    return res.status(200).send({ data });
+                }
+            ).catch(
+                err => {
+                    return res.status(500).send({ message: "Error en la petición." + err })
+                });
+        }
+    ).catch(
+        err => {
+            if (err) return res.status(500).send({ message: "Error en la petición." + err })
+        }
+    )
+
+}
 
 
 module.exports = {
@@ -234,5 +269,6 @@ module.exports = {
     loginUser,
     getUsers,
     getUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
