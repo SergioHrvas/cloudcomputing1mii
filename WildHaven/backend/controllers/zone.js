@@ -55,7 +55,7 @@ function createZone(req, res) {
     new_zone.name = body.name;
     new_zone.description = body.description;
 
-    
+
 
     Zone.find({ name: body.name }).exec()
         .then(
@@ -63,7 +63,7 @@ function createZone(req, res) {
                 if (zone.length > 0) {
                     res.status(200).send({ message: "Ya existe una zona con ese nombre" })
                 }
-                else if(!body.name){
+                else if (!body.name) {
                     res.status(200).send({ message: "El nombre es obligatorio" })
                 }
                 else {
@@ -76,23 +76,120 @@ function createZone(req, res) {
                             }
                         }
                     ).catch
-                err => {
-                    if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err });
+                    err => {
+                        if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err });
+                    }
                 }
             }
-        }
         ).catch(
             err => {
                 if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })
 
-            }  
+            }
         )
-
 }
+
+
+function updateZone(req, res) {
+    var id = req.params.id;
+    var body = req.body;
+
+
+    Zone.findById(id).exec()
+        .then(
+            zone => {
+                if (!body.name) {
+                    res.status(200).send({ message: "El nombre es obligatorio" })
+                }
+                else {
+                    Zone.find({ name: body.name }).exec()
+                        .then(zones => {
+                            var zone_isset = false;
+                            zones.forEach(zoneEach => {
+                                if (zoneEach && (zoneEach._id != id)) {
+                                    zone_isset = true;
+                                }
+                            });
+                    
+                            if (zone_isset) {
+                                return res.status(500).send({ message: "Los datos ya están en uso" })
+                            }
+                            else {
+                                if (body.name) {
+                                    zone.name = body.name;
+                                }
+                                if (body.description) {
+                                    zone.description = body.description;
+                                }
+                                zone.save().then(
+                                    zoneStored => {
+                                        if (zoneStored) {
+                                            res.status(200).send({ zone: zoneStored });
+                                        } else {
+                                            res.status(404).send({ message: "No se ha guardado la zona" });
+                                        }
+                                    }
+                                ).catch(err => {
+                                    if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err });
+                                })
+                            }
+                        }).catch(
+                            err => {
+                                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err });
+                            }
+                        )
+                }
+            }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })
+
+            }
+        )
+}
+
+
+function deleteZone(req, res) {
+    var id = req.params.id;
+
+    Zone.findById(id).exec()
+        .then(
+            zone => {
+                if(zone == null){
+                    return res.status(404).send({ message: "No se ha podido encontrar la zona" });
+                }
+
+                Zone.deleteOne({_id: id}).exec().then(
+                    data => {
+                        if (data.deletedCount == 0) {
+                            return res.status(404).send({ message: "No se ha podido eliminar la zona" });
+                        }
+            
+                        
+                        return res.status(200).send({ data });
+                    }
+                ).catch(
+                    err => {
+                        if(err){
+                            return res.status(500).send({ message: "Error al obtener las zonas." + err })
+                        }
+                    }
+                )
+            }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })
+
+            }
+        )
+}
+
 
 module.exports = {
     pruebas,
     getZones,
     getZone,
-    createZone
+    createZone,
+    updateZone,
+    deleteZone
 }
