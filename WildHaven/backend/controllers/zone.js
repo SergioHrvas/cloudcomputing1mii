@@ -94,14 +94,9 @@ function updateZone(req, res) {
     var id = req.params.id;
     var body = req.body;
 
-
     Zone.findById(id).exec()
         .then(
             zone => {
-                if (!body.name) {
-                    res.status(200).send({ message: "El nombre es obligatorio" })
-                }
-                else {
                     Zone.find({ name: body.name }).exec()
                         .then(zones => {
                             var zone_isset = false;
@@ -130,7 +125,7 @@ function updateZone(req, res) {
                                         }
                                     }
                                 ).catch(err => {
-                                    if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err });
+                                    if (err) return res.status(500).send({ message: "Error al guardar las zonas." + err });
                                 })
                             }
                         }).catch(
@@ -139,7 +134,6 @@ function updateZone(req, res) {
                             }
                         )
                 }
-            }
         ).catch(
             err => {
                 if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })

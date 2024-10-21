@@ -20,12 +20,12 @@ var path = require('path');
 const { escape } = require('querystring');
 
 
-function pruebas(req, res){
+function pruebas(req, res) {
     res.status(200).send({
-        message:"Acción de especies en el servidor de NodeJS"
+        message: "Acción de especies en el servidor de NodeJS"
     })
 };
- 
+
 module.exports = {
     pruebas,
 }
@@ -103,9 +103,68 @@ function createSpecie(req, res) {
 }
 
 
+function updateSpecie(req, res) {
+    var id = req.params.id;
+    var body = req.body;
+
+    Specie.findById(id).exec()
+        .then(
+            specie => {
+                Specie.find({ name: body.name }).exec()
+                    .then(species => {
+                        var specie_isset = false;
+                        species.forEach(specieEach => {
+                            if (specieEach && (specieEach._id != id)) {
+                                specie_isset = true;
+                            }
+                        });
+
+                        if (specie_isset) {
+                            return res.status(500).send({ message: "Los datos ya están en uso" })
+                        }
+                        else {
+                            if (body.name) {
+                                specie.name = body.name;
+                            }
+                            if (body.description) {
+                                specie.description = body.description;
+                            }
+                            if (body.diet) {
+                                specie.diet = body.diet;
+                            }
+                            if (body.technical_name) {
+                                specie.technical_name = body.technical_name;
+                            }
+                            specie.save().then(
+                                specieStored => {
+                                    if (specieStored) {
+                                        res.status(200).send({ specie: specieStored });
+                                    } else {
+                                        res.status(404).send({ message: "No se ha guardado la especie" });
+                                    }
+                                }
+                            ).catch(err => {
+                                if (err) return res.status(500).send({ message: "Error al guardar la especie." + err });
+                            })
+                        }
+                    }).catch(
+                        err => {
+                            if (err) return res.status(500).send({ message: "Error al obtener las especies." + err });
+                        }
+                    )
+            }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error al obtener las especies." + err })
+
+            }
+        )
+}
+
 module.exports = {
     pruebas,
     getSpecies,
     getSpecie,
-    createSpecie
+    createSpecie,
+    updateSpecie
 }

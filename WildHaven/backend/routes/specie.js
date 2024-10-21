@@ -13,6 +13,7 @@ api.get('/pruebas', SpecieController.pruebas);
 api.get('/list', SpecieController.getSpecies);
 api.get('/:id', SpecieController.getSpecie);
 api.post('/create', SpecieController.createSpecie);
+api.put('/update/:id', SpecieController.updateSpecie);
 
 
 module.exports = api;
