@@ -161,10 +161,51 @@ function updateSpecie(req, res) {
         )
 }
 
+
+
+
+function deleteSpecie(req, res) {
+    var id = req.params.id;
+
+    Specie.findById(id).exec()
+        .then(
+            specie => {
+                if(specie == null){
+                    return res.status(404).send({ message: "No se ha podido encontrar la especie" });
+                }
+
+                Specie.deleteOne({_id: id}).exec().then(
+                    data => {
+                        if (data.deletedCount == 0) {
+                            return res.status(404).send({ message: "No se ha podido eliminar la especie" });
+                        }
+            
+                        
+                        return res.status(200).send({ data });
+                    }
+                ).catch(
+                    err => {
+                        if(err){
+                            return res.status(500).send({ message: "Error al eliminar las especies." + err })
+                        }
+                    }
+                )
+            }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error al obtener las especies." + err })
+
+            }
+        )
+}
+
+
+
 module.exports = {
     pruebas,
     getSpecies,
     getSpecie,
     createSpecie,
-    updateSpecie
+    updateSpecie,
+    deleteSpecie
 }

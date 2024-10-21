@@ -14,5 +14,6 @@ api.get('/list', ZoneController.getZones);
 api.get('/:id', ZoneController.getZone);
 api.post('/create', ZoneController.createZone);
 api.put('/update/:id', ZoneController.updateZone);
-api.delete('/delete/:id', ZoneController.deleteZone)
+api.delete('/delete/:id', ZoneController.deleteZone);
+
 module.exports = api;
