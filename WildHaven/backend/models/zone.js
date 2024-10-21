@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 //Definimos el esquema
 var ZoneSchema = Schema({
-    name: String,
+    name: { type: String, required: true } ,
     description: String,
     image: String,
 });

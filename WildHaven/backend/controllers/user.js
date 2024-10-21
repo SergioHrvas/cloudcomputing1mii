@@ -255,7 +255,7 @@ function deleteUser(req, res) {
         }
     ).catch(
         err => {
-            return res.status(500).send({ message: "Error en la petición." + err })
+            if (err) return res.status(500).send({ message: "Error en la petición." + err })
         }
     )
 
