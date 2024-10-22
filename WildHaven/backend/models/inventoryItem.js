@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Definimos el esquema
-const inventoryItemSchema = new Schema({
+const inventoryItem = new Schema({
   name: { type: String, required: true },  // Nombre del artículo (ej: "Comida para cerdos", "Vacuna")
   category: { type: String, enum: ['Comida', 'Medicamentos', 'Suministros', 'Herramientas'], required: true },  // Categoría del artículo
   quantity: { type: Number, required: true },  // Cantidad disponible en stock
@@ -15,4 +15,4 @@ const inventoryItemSchema = new Schema({
 });
 
 //exportamos el esquema
-module.exports = mongoose.model('inventoryItemSchema', inventoryItemSchema);
+module.exports = mongoose.model('inventoryItem', inventoryItem);

@@ -5,11 +5,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Definimos el esquema
-var ZoneSchema = Schema({
+var Zone = Schema({
     name: { type: String, required: true } ,
     description: String,
     image: String,
 });
 
 //exportamos el esquema
-module.exports = mongoose.model('ZoneSchema', ZoneSchema);
+module.exports = mongoose.model('Zone', Zone);

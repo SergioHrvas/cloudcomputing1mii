@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Definimos el esquema
-var Tasks = Schema({
+var Task = Schema({
     description: String,
       assignedTo: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     status: { type: String, enum: ['Pendiente', 'En progreso', 'Completada'], default: 'Pendiente' },
@@ -14,4 +14,4 @@ var Tasks = Schema({
 });
 
 //exportamos el esquema
-module.exports = mongoose.model('Tasks', Tasks);
+module.exports = mongoose.model('Task', Task);

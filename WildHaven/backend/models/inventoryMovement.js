@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Definimos el esquema
-const inventoryMovementSchema = new Schema({
+const inventoryMovement = new Schema({
     item: { type: Schema.Types.ObjectId, ref: 'InventoryItem', required: true },  // Referencia al artículo del inventario
     type: { type: String, enum: ['entrada', 'salida'], required: true },  // Tipo de movimiento (entrada o salida)
     quantity: { type: Number, required: true },  // Cantidad añadida o retirada
@@ -15,4 +15,4 @@ const inventoryMovementSchema = new Schema({
   });
 
   //exportamos el esquema
-module.exports = mongoose.model('inventoryMovementSchema', inventoryMovementSchema);
+module.exports = mongoose.model('inventoryMovement', inventoryMovement);

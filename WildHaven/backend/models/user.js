@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Definimos el esquema
-var UserSchema = Schema({
+var User = Schema({
     name: String,
     surname: String,
     password: String,
@@ -16,4 +16,4 @@ var UserSchema = Schema({
 });
 
 //exportamos el esquema
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', User);

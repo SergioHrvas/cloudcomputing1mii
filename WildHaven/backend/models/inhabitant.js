@@ -5,9 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Definimos el esquema
-var InhabitantsSchema = Schema({
+var Inhabitant = Schema({
     name: String,
     description: String,
+    personality: String,
     image: String,
     birth: Date,
     healthStatus: String,
@@ -23,4 +24,4 @@ var InhabitantsSchema = Schema({
 });
 
 //exportamos el esquema
-module.exports = mongoose.model('InhabitantsSchema', InhabitantsSchema);
+module.exports = mongoose.model('Inhabitant', Inhabitant);

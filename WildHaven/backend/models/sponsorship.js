@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Definimos el esquema
-const SponsorshipSchema = new Schema({
+const Sponsorship = new Schema({
     sponsor: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // Padrino (Usuario)
     animal: { type: Schema.Types.ObjectId, ref: 'Inhabitant', required: true },  // Animal apadrinado
     startDate: { type: Date, default: Date.now },  // Fecha de inicio del apadrinamiento
@@ -14,4 +14,4 @@ const SponsorshipSchema = new Schema({
     status: { type: String, enum: ['active', 'inactive'], default: 'active' }  // Estado del apadrinamiento
   });
 
-export {'SponsorshipSchema', SponsorshipSchema}
+export {'Sponsorship', Sponsorship}

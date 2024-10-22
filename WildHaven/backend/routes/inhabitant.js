@@ -10,6 +10,9 @@ var multipart = require('connect-multiparty');
 var mdUpload = multipart({uploadDir: './uploads/inhabitants'})
 
 api.get('/pruebas', InhabitantController.pruebas);
+api.get('/list/:idSpecie?', InhabitantController.getInhabitants);
+api.get('/:id', InhabitantController.getInhabitant);
+
 
 
 module.exports = api;
