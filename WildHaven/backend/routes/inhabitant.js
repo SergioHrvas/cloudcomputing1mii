@@ -12,7 +12,7 @@ var mdUpload = multipart({uploadDir: './uploads/inhabitants'})
 api.get('/pruebas', InhabitantController.pruebas);
 api.get('/list/:idSpecie?', InhabitantController.getInhabitants);
 api.get('/:id', InhabitantController.getInhabitant);
-
+api.post('/create', InhabitantController.createInhabitant);
 
 
 module.exports = api;

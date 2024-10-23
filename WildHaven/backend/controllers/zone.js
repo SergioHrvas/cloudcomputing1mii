@@ -83,7 +83,7 @@ function createZone(req, res) {
             }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })
+                if (err) return res.status(500).send({ message: "Error al crear la zona." + err })
 
             }
         )

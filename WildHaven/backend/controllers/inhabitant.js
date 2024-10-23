@@ -60,10 +60,57 @@ function getInhabitants(req, res) {
 }
 
 
+function createInhabitant(req, res) {
+    var body = req.body;
+
+    var new_inhabitant = new Inhabitant();
+    new_inhabitant.name = body.name;
+    new_inhabitant.description = body.description;
+    new_inhabitant.personality = body.personality;
+    new_inhabitant.healthStatus = body.healthStatus;
+    new_inhabitant.alive = body.alive;
+    new_inhabitant.image = body.image;
+    new_inhabitant.birth = body.birth;
+    new_inhabitant.specie = body.specie
+    new_inhabitant.zone = body.zone
+
+
+    Inhabitant.find({ name: body.name, specie: body.specie }).exec()
+        .then(
+            inhabitants => {
+                if (inhabitants.length > 0) {
+                    res.status(200).send({ message: "Ya existe un habitante con ese nombre y de esa especie" })
+                }
+                else if (!body.name) {
+                    res.status(200).send({ message: "El nombre es obligatorio" })
+                }
+                else {
+                    new_inhabitant.save().then(
+                        inhabitantStored => {
+                            if (inhabitantStored) {
+                                res.status(200).send({ inhabitant: inhabitantStored });
+                            } else {
+                                res.status(404).send({ message: "No se ha guardado el habitante" });
+                            }
+                        }
+                    ).catch
+                    err => {
+                        if (err) return res.status(500).send({ message: "Error al crear el habitante." + err });
+                    }
+                }
+            }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error al obtener los habitantes." + err })
+
+            }
+        )
+}
+
  
 module.exports = {
     pruebas,
     getInhabitants,
     getInhabitant,
-
+    createInhabitant,
 }
