@@ -29,6 +29,10 @@ function pruebas(req, res){
 function getInhabitant(req, res) {
     var id = req.params.id;
     
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
 
     Inhabitant.findById(id).exec().then(
         inhabitant => {
@@ -107,10 +111,77 @@ function createInhabitant(req, res) {
         )
 }
 
+
+
+function updateInhabitant(req, res) {
+    var id = req.params.id;
+    var body = req.body;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    Inhabitant.findById(id).exec()
+        .then(
+            inhabitant => {
+                    if(inhabitant == null){
+                        return res.status(500).send({ message: "No existe el habitante" })     
+                    }
+                    Inhabitant.find({ name: body.name }).exec()
+                        .then(inhabitants => {
+                            var inhabitant_isset = false;
+                            inhabitants.forEach(inhabitantEach => {
+                                if (inhabitantEach && (inhabitantEach._id != id)) {
+                                    inhabitant_isset = true;
+                                }
+                            });
+                    
+                            if (inhabitant_isset) {
+                                return res.status(500).send({ message: "Los datos ya están en uso" })
+                            }
+                            else {
+                                inhabitant.name = body.name;
+                                inhabitant.description = body.description;
+                                inhabitant.personality = body.personality;
+                                inhabitant.healthStatus = body.healthStatus;
+                                inhabitant.alive = body.alive;
+                                inhabitant.image = body.image;
+                                inhabitant.birth = body.birth;
+                                inhabitant.specie = body.specie
+                                inhabitant.zone = body.zone
+                            
+                                inhabitant.save().then(
+                                    inhabitantStored => {
+                                        if (inhabitantStored) {
+                                            res.status(200).send({ inhabitant: inhabitantStored });
+                                        } else {
+                                            res.status(404).send({ message: "No se ha guardado el habitante" });
+                                        }
+                                    }
+                                ).catch(err => {
+                                    if (err) return res.status(500).send({ message: "Error al guardar los habitantes." + err });
+                                })
+                            }
+                        }).catch(
+                            err => {
+                                if (err) return res.status(500).send({ message: "Error al obtener los habitantes." + err });
+                            }
+                        )
+                }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })
+
+            }
+        )
+}
+
  
 module.exports = {
     pruebas,
     getInhabitants,
     getInhabitant,
     createInhabitant,
+    updateInhabitant,
+    deleteInhabitant
 }

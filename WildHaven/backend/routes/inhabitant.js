@@ -13,6 +13,7 @@ api.get('/pruebas', InhabitantController.pruebas);
 api.get('/list/:idSpecie?', InhabitantController.getInhabitants);
 api.get('/:id', InhabitantController.getInhabitant);
 api.post('/create', InhabitantController.createInhabitant);
+api.put('/update/:id', InhabitantController.updateInhabitant);
 
 
 module.exports = api;

@@ -21,6 +21,11 @@ function pruebas(req, res) {
 function getZone(req, res) {
     var id = req.params.id;
 
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+
     Zone.findById(id).exec().then(
         zone => {
             if (!zone) return res.status(404).send({ message: "La zona no existe" });
@@ -94,9 +99,17 @@ function updateZone(req, res) {
     var id = req.params.id;
     var body = req.body;
 
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+
     Zone.findById(id).exec()
         .then(
             zone => {
+                    if(!zone){
+                        return res.status(500).send({ message: "No existe la zona" })     
+                    }
                     Zone.find({ name: body.name }).exec()
                         .then(zones => {
                             var zone_isset = false;
@@ -146,6 +159,12 @@ function updateZone(req, res) {
 function deleteZone(req, res) {
     var id = req.params.id;
 
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    
     Zone.findById(id).exec()
         .then(
             zone => {

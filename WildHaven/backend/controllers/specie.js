@@ -35,6 +35,11 @@ module.exports = {
 function getSpecie(req, res) {
     var id = req.params.id;
 
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    
     Specie.findById(id).exec().then(
         specie => {
             if (!specie) return res.status(404).send({ message: "La especie no existe" });
@@ -107,9 +112,17 @@ function updateSpecie(req, res) {
     var id = req.params.id;
     var body = req.body;
 
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+
     Specie.findById(id).exec()
         .then(
             specie => {
+                if(!specie){
+                    return res.status(500).send({ message: "No existe la especie" })     
+                }
                 Specie.find({ name: body.name }).exec()
                     .then(species => {
                         var specie_isset = false;
@@ -166,6 +179,11 @@ function updateSpecie(req, res) {
 
 function deleteSpecie(req, res) {
     var id = req.params.id;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
 
     Specie.findById(id).exec()
         .then(

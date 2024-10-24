@@ -128,7 +128,9 @@ function loginUser(req, res) {
 function getUser(req, res) {
     var id = req.params.id;
 
-    var user_logged = req.user.sub;
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
 
     User.findById(id).exec().then(user => {
 
@@ -184,6 +186,9 @@ function updateUser(req, res) {
 
     //Eliminamos la propiedad contraseña por seguridad (se modificará en un método por separado)
     delete update.password;
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
 
     //Comprobamos si el id del usuario coincide con el que me llega en la request
     if (id != req.user.sub) {
@@ -192,6 +197,11 @@ function updateUser(req, res) {
 
 
     User.find({ email: update.email.toLowerCase() }).exec().then(users => {
+
+        if(users.length == 0){
+            return res.status(500).send({ message: "No existe el usuario" })     
+        }
+        
         var user_isset = false;
         users.forEach(user => {
             if (user && (user._id != id)) {
@@ -232,6 +242,10 @@ function deleteUser(req, res) {
         return res.status(500).send({ message: "No tienes permisos para actualizar los datos del usuario." })
     }
     
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
     User.findOne({_id: id}).exec().then(
         user => {
 
