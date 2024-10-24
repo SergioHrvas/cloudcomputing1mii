@@ -177,6 +177,47 @@ function updateInhabitant(req, res) {
 }
 
  
+function deleteInhabitant(req, res) {
+    var id = req.params.id;
+
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    
+    Inhabitant.findById(id).exec()
+        .then(
+            inhabitant => {
+                if(inhabitant == null){
+                    return res.status(404).send({ message: "No se ha podido encontrar la zona" });
+                }
+
+                Inhabitant.deleteOne({_id: id}).exec().then(
+                    data => {
+                        if (data.deletedCount == 0) {
+                            return res.status(404).send({ message: "No se ha podido eliminar el habitante" });
+                        }
+            
+                        
+                        return res.status(200).send({ data });
+                    }
+                ).catch(
+                    err => {
+                        if(err){
+                            return res.status(500).send({ message: "Error al eliminar el habitante." + err })
+                        }
+                    }
+                )
+            }
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error al obtener los habitantes." + err })
+
+            }
+        )
+}
+
 module.exports = {
     pruebas,
     getInhabitants,

@@ -14,6 +14,7 @@ api.get('/list/:idSpecie?', InhabitantController.getInhabitants);
 api.get('/:id', InhabitantController.getInhabitant);
 api.post('/create', InhabitantController.createInhabitant);
 api.put('/update/:id', InhabitantController.updateInhabitant);
+api.delete('/delete/:id', InhabitantController.deleteInhabitant)
 
 
 module.exports = api;

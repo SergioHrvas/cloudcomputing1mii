@@ -164,7 +164,7 @@ function deleteZone(req, res) {
         return res.status(500).send({ message: "El id es incorrecto" })     
     }
 
-    
+
     Zone.findById(id).exec()
         .then(
             zone => {
@@ -184,7 +184,7 @@ function deleteZone(req, res) {
                 ).catch(
                     err => {
                         if(err){
-                            return res.status(500).send({ message: "Error al eliminar las zonas." + err })
+                            return res.status(500).send({ message: "Error al eliminar la zona." + err })
                         }
                     }
                 )
