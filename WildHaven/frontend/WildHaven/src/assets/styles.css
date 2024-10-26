@@ -1,0 +1,70 @@
+/* You can add global styles to this file, and also import other style files */
+.logo-image{
+    width: 100px;
+    height: auto;
+}
+
+/*Generales*/
+.h1-strong{
+    font-size:35px;
+    font-weight:bold;
+    margin-left:13px;
+    border-bottom:1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom:20px;
+    margin-top: 0;
+}
+
+.active{
+    border-bottom: 3px solid yellow;
+    background-color: #72BF78; 
+}
+
+/*HEADER*/
+.navigation{
+    padding: 0px !important;
+    border-radius: 0px !important;
+}
+
+.navigation .navbar{
+    border-radius: 0px !important;
+    background: #A0D683 !important;
+    border: none;
+
+}
+
+.navigation .navbar *{
+    color: white !important;
+}
+
+.navigation .navbar .option-navbar:hover{
+    background-color: #D3EE98 !important; 
+}
+
+.navigation .dropdown-menu *{
+    color:black !important;
+}
+
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open{
+    background-color: #D3EE98 !important; 
+}
+
+.jumbotron{
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center !important;
+
+}
+
+.jumbotron .btn-lg{
+    margin-left: 5px !important;
+}
+
+.pointer{
+    cursor:pointer !important;
+}
+
+.navbar-brand{
+    font-weight: bold;
+}
