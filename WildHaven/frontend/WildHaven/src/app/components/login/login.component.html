@@ -1,0 +1,57 @@
+<div class="col-lg-5 mx-auto mt-4">
+    <h1 class="h1-strong mb-4">{{ title }}</h1>
+
+    <div *ngIf="status === 'success'" class="alert alert-success">
+        <i class="bi bi-check-circle-fill"></i> Te has identificado correctamente, ¡bienvenido!
+    </div>
+    
+    <div *ngIf="status === 'error'" class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill"></i> El login no se ha realizado. Inténtalo de nuevo.
+    </div>
+
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="needs-validation">
+        <!-- Email Field -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                #email="ngModel" 
+                [(ngModel)]="user.email" 
+                class="form-control" 
+                pattern="[^@\s]+@[^@\s]+\.[^@\s]+" 
+                required 
+                [class.is-invalid]="email.invalid && email.touched"
+                aria-describedby="emailFeedback"
+            />
+            <div *ngIf="email.invalid && email.touched" id="emailFeedback" class="invalid-feedback">
+                El email no es válido.
+            </div>
+        </div>
+        
+        <!-- Password Field -->
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                #password="ngModel" 
+                [(ngModel)]="user.password" 
+                class="form-control" 
+                required 
+                [class.is-invalid]="password.invalid && password.touched"
+                aria-describedby="passwordFeedback"
+            />
+            <div *ngIf="password.invalid && password.touched" id="passwordFeedback" class="invalid-feedback">
+                La contraseña es obligatoria.
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success w-100" [disabled]="!loginForm.form.valid">
+            {{ title }}
+        </button>
+    </form>
+</div>
