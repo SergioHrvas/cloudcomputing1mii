@@ -33,4 +33,12 @@ export class UserService{
         return this._http.post(this.url+"user/login", params, {headers: headers})   
     }
 
+    saveUser(user_to_register: User): Observable<any>{
+        //Convertimos el objeto usuario en JSON
+        let params = JSON.stringify(user_to_register);
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json')
+        return this._http.post(this.url+"user/register", params, {headers: headers})
+        
+    }
 }
