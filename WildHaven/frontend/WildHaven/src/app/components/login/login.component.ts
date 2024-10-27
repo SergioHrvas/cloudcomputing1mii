@@ -44,6 +44,9 @@ export class LoginComponent implements OnInit{
     }
     
     ngOnInit(){
+        if(this._userService.getIdentity != null){
+            this._userService.logout();
+        }
         console.log("Componente de login cargado");
     }
     

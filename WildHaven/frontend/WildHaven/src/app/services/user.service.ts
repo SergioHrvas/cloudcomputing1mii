@@ -41,4 +41,91 @@ export class UserService{
         return this._http.post(this.url+"user/register", params, {headers: headers})
         
     }
+
+
+
+    updateUser(user_to_edit: User): Observable<any>{
+        //Convertimos el objeto usuario en JSON
+        let params = JSON.stringify(user_to_edit);
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.getToken());
+
+        return this._http.put(this.url+"user/update/" + user_to_edit._id, params, {headers: headers})
+        
+    }
+
+
+    getIdentity(){
+        var item = null;
+        if (typeof localStorage !== 'undefined') {
+            item = localStorage.getItem('Identity');
+        } else if (typeof sessionStorage !== 'undefined') {
+            item = sessionStorage.getItem('Identity');
+          } else {
+            // If neither localStorage nor sessionStorage is supported
+            console.log('Web Storage is not supported in this environment.');
+          }
+        
+        var identity = item != null ? JSON.parse(item) : JSON.parse("null");
+
+        if(identity != "undefined"){
+            this.identity = identity;
+        }
+        else{
+            this.identity = null;
+        }
+        return this.identity;
+    }
+    
+
+    getToken(){
+        var item;
+        if (typeof localStorage !== 'undefined') {
+            item = localStorage.getItem('Token');
+        } else if (typeof sessionStorage !== 'undefined') {
+            item = sessionStorage.getItem('Token');
+          } else {
+            // If neither localStorage nor sessionStorage is supported
+            console.log('Web Storage is not supported in this environment.');
+          }
+        
+        var token = item != null ? JSON.parse(item) : JSON.parse("null");
+
+        if(token != "undefined"){
+            this.token = token;
+        }
+        else{
+            this.token = "";
+        }
+        return this.token;
+    }
+
+
+    // Método para comprobar si el usuario está autenticado
+    isAuthenticated(): boolean {
+        var item;
+        if (typeof localStorage !== 'undefined') {
+            return !!localStorage.getItem('Token');  
+        } else if (typeof sessionStorage !== 'undefined') {
+            return !!sessionStorage.getItem('Token');  
+        } else {
+            // If neither localStorage nor sessionStorage is supported
+            console.log('Web Storage is not supported in this environment.');
+            return false;
+          }
+    }
+
+    logout() {
+        if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('Token');
+            localStorage.removeItem('Identity')
+
+        } else if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.removeItem('Token');
+            sessionStorage.removeItem('Identity')
+        } else {
+            // If neither localStorage nor sessionStorage is supported
+            console.log('Web Storage is not supported in this environment.');
+          }
+    }
 }
