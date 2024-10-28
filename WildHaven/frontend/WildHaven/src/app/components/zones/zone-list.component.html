@@ -1,0 +1,29 @@
+<div class="col-lg-4 mx-auto mt-4">
+    <div class="jumbotron text-center p-4 bg-light rounded">
+        <h1 class="display-4">{{ title }}</h1>
+    </div>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="text-center">Imagen</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let zone of zones">
+                    <td class="text-center">
+                        <!-- Placeholder para la imagen, actualiza con la URL correcta si tienes imágenes -->
+                        <img 
+                        [src]="'http://localhost:3800/uploads/zones/' + zone.image" 
+                        alt="{{zone.name}}" 
+                        class="img-fluid" 
+                        style="max-width: 250px; height: auto;" />
+                        </td>
+                    <td class="text-center align-middle">{{ zone.name }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

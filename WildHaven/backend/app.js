@@ -9,6 +9,10 @@ var bodyParser = require('body-parser')
 //Creamos la aplicación express
 var app = express();
 
+
+const cors = require('cors');
+
+
 //Cargamos las rutas
 var user_routes = require('./routes/user');
 var task_routes = require('./routes/task');
@@ -24,16 +28,11 @@ var inventoryItem_routes = require('./routes/inventoryItem');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-// cors
-// configurar cabeceras http
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
- 
-    next();
-});
+// Servir archivos estáticos desde la carpeta 'uploads'
+app.use('/uploads', express.static(process.cwd() + '/uploads'))
+
+// Habilitar CORS para todas las rutas
+app.use(cors());
 
 //rutas
 ///El app.use nos permite que se ejecute el middleware antes de la acción del controlador
