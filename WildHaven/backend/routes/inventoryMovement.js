@@ -1,13 +1,13 @@
 'use strict'
 
-var express = require('express');
-var InventaryMovController = require('../controllers/inventoryMovement');
-var mdAuth = require('../middlewares/authenticated');
+import express from 'express';
+import InventaryMovController from '../controllers/inventoryMovement.js';
 
 var api = express.Router();
+import mdAuth from '../middlewares/authenticated.js';
 
 
 api.get('/pruebas', InventaryMovController.pruebas);
 
 
-module.exports = api;
+export default api;

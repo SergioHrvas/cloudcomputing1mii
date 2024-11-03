@@ -1,13 +1,12 @@
 'use strict'
 
-var express = require('express');
-var ZoneController = require('../controllers/zone');
-var mdAuth = require('../middlewares/authenticated');
+import express from 'express';
+import ZoneController from '../controllers/zone.js';
+import mdAuth from '../middlewares/authenticated.js';
 
 var api = express.Router();
-
-var multipart = require('connect-multiparty');
-var mdUpload = multipart({uploadDir: './uploads/zone'})
+import multipart from 'connect-multiparty';
+var mdUpload = multipart({uploadDir: './uploads/species'})
 
 api.get('/pruebas', ZoneController.pruebas);
 api.get('/list', ZoneController.getZones);
@@ -16,4 +15,4 @@ api.post('/create', ZoneController.createZone);
 api.put('/update/:id', ZoneController.updateZone);
 api.delete('/delete/:id', ZoneController.deleteZone);
 
-module.exports = api;
+export default api;

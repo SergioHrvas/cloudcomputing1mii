@@ -1,10 +1,10 @@
 'use strict'
 
 //Importamos Mongoose
-var mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 //Importamos el módulo app con toda la configuración express
-var app = require('./app');
+import app from './app.js';
 
 var port = 3800;
 

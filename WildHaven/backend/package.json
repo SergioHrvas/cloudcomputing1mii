@@ -4,9 +4,14 @@
   "description": "Backend de WildHaven - Aplicación para la gestión de santuarios y protectoras de animales. Practica de Cloud Computing en el MII UGR 24/25",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
+    "test:users": "mocha test/user.test.js",
+    "test:zones": "mocha test/zones.test.js",
+    "test:inhabitants": "mocha test/inhabitants.test.js",
+    "test:species": "mocha test/species.test.js",
     "start": "nodemon index.js"
   },
+  "type": "module",
   "keywords": [
     "wildhaven",
     "backend",
@@ -17,19 +22,24 @@
   "author": "Sergio Hervás Cobo",
   "license": "MIT",
   "dependencies": {
+    "@types/chai": "^5.0.1",
     "bcrypt": "^5.1.1",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.20.3",
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
     "connect-multiparty": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "helmet": "^8.0.0",
     "jwt-simple": "^0.5.6",
+    "mocha": "^10.8.2",
     "moment": "^2.30.1",
     "mongoose": "^8.7.1",
     "mongoose-pagination": "^1.0.0"
   },
   "devDependencies": {
+    "@types/chai-http": "^4.2.4",
     "nodemon": "^3.1.7"
   }
 }

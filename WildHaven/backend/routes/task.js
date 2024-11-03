@@ -1,13 +1,13 @@
 'use strict'
 
-var express = require('express');
-var TaskController = require('../controllers/task');
+import express from 'express';
+import TaskController from '../controllers/task.js';
 
 var api = express.Router();
-var mdAuth = require('../middlewares/authenticated');
+import mdAuth from '../middlewares/authenticated.js';
 
 
 api.get('/pruebas', TaskController.pruebas);
 
 
-module.exports = api;
+export default api;

@@ -1,15 +1,13 @@
 'use strict'
 
-var Zone = require('../models/zone');
+import Zone from '../models/zone.js';
 
-//Importamos el servicio de jwt token
-var jwt = require('../services/jwt');
-
-
-//Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
-var fs = require('fs');
-var path = require('path');
-const { escape } = require('querystring');
+// Importamos el servicio de jwt token
+import jwt from '../services/jwt.js';
+// Importamos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
+import fs from 'fs';
+import path from 'path';
+import { escape } from 'querystring';
 
 
 function pruebas(req, res) {
@@ -198,7 +196,7 @@ function deleteZone(req, res) {
 }
 
 
-module.exports = {
+export default {
     pruebas,
     getZones,
     getZone,

@@ -1,26 +1,26 @@
 'use strict'
 
 //Cargamos el módulo de express
-var express = require('express');
+import express from 'express';
 
 //Cargamos el módulo del body parser
-var bodyParser = require('body-parser')
+import bodyParser from 'body-parser';
 
 //Creamos la aplicación express
 var app = express();
 
 
-const cors = require('cors');
+import cors from 'cors';
 
 
 //Cargamos las rutas
-var user_routes = require('./routes/user');
-var task_routes = require('./routes/task');
-var specie_routes = require('./routes/specie');
-var inhabitant_routes = require('./routes/inhabitant');
-var zone_routes = require('./routes/zone');
-var inventoryMovement_routes = require('./routes/inventoryMovement');
-var inventoryItem_routes = require('./routes/inventoryItem');
+import user_routes from './routes/user.js';
+import task_routes from './routes/task.js';
+import specie_routes from './routes/specie.js';
+import inhabitant_routes from './routes/inhabitant.js';
+import zone_routes from './routes/zone.js';
+import inventoryMovement_routes from './routes/inventoryMovement.js';
+import inventoryItem_routes from './routes/inventoryItem.js';
 
 //middlewares
 
@@ -45,4 +45,4 @@ app.use('/api/inventoryItem', inventoryItem_routes);
 app.use('/api/inventoryMovement', inventoryMovement_routes);
 
 //exportar
-module.exports = app;
+export default app;

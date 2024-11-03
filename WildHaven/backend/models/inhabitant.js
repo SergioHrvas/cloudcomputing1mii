@@ -1,7 +1,7 @@
 'use strict'
 
 //Cargamos el módulo de mongoose
-var mongoose = require('mongoose');
+import mongoose from 'mongoose';
 var Schema = mongoose.Schema;
 
 //Definimos el esquema
@@ -24,4 +24,4 @@ var Inhabitant = Schema({
 });
 
 //exportamos el esquema
-module.exports = mongoose.model('Inhabitant', Inhabitant);
+export default mongoose.model('Inhabitant', Inhabitant);

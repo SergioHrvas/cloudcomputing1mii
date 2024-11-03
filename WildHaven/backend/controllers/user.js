@@ -1,24 +1,23 @@
 'use strict'
 
-//Incluimos modulo bcrypt para encriptar las contraseñas
-var bcrypt = require('bcrypt-nodejs');
+// Importamos módulo bcrypt para encriptar las contraseñas
+import bcrypt from 'bcrypt-nodejs';
 
-var User = require('../models/user');
+import User from '../models/user.js';
 
-//Importamos la libreria moment para generar fechas
-var moment = require("moment");
+// Importamos la librería moment para generar fechas
+import moment from 'moment';
 
-//Importamos el servicio de jwt token
-var jwt = require('../services/jwt');
+// Importamos el servicio de jwt token
+import jwt from '../services/jwt.js';
 
-//Importamos mongoose paginate
-var mongoosePaginate = require('mongoose-pagination');
+// Importamos mongoose paginate
+import mongoosePaginate from 'mongoose-pagination';
 
-//Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
-var fs = require('fs');
-var path = require('path');
-const { escape } = require('querystring');
-
+// Importamos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
+import fs from 'fs';
+import path from 'path';
+import { escape } from 'querystring';
 
 function pruebas(req, res) {
     res.status(200).send({
@@ -148,8 +147,6 @@ function getUser(req, res) {
 
 //Obtener lista de usuarios paginados
 function getUsers(req, res) {
-    //Recogemos el id del usuario logeado en este momento (por el middleware)
-    var identity_user_id = req.user.sub;
 
     var page = 1;
 
@@ -162,7 +159,7 @@ function getUsers(req, res) {
         itemsPerPage = req.params.itemsPerPage
     }
 
-    User.find().select(['-password']).sort('_id').paginate(page, itemsPerPage).then((users) => {
+      User.find().select(['-password']).sort('_id').paginate(page, itemsPerPage).then((users) => {
         if (!users) return res.status(404).send({ message: "No hay usuarios disponibles" });
 
         var total = users.length;
@@ -276,7 +273,7 @@ function deleteUser(req, res) {
 }
 
 
-module.exports = {
+export default {
     pruebas,
     saveUser,
     loginUser,

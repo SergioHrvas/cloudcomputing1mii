@@ -1,12 +1,12 @@
 'use strict'
 
-var express = require('express');
-var InhabitantController = require('../controllers/inhabitant');
-var mdAuth = require('../middlewares/authenticated');
+import express from 'express';
+import InhabitantController from '../controllers/inhabitant.js';
+import mdAuth from '../middlewares/authenticated.js';
 
 var api = express.Router();
 
-var multipart = require('connect-multiparty');
+import multipart from 'connect-multiparty';
 var mdUpload = multipart({uploadDir: './uploads/inhabitants'})
 
 api.get('/pruebas', InhabitantController.pruebas);
@@ -17,4 +17,4 @@ api.put('/update/:id', InhabitantController.updateInhabitant);
 api.delete('/delete/:id', InhabitantController.deleteInhabitant)
 
 
-module.exports = api;
+export default api;

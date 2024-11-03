@@ -1,12 +1,12 @@
 'use strict'
 
-var express = require('express');
-var SpecieController = require('../controllers/specie');
-var mdAuth = require('../middlewares/authenticated');
+import express from 'express';
+import SpecieController from '../controllers/specie.js';
+import mdAuth from '../middlewares/authenticated.js';
 
 var api = express.Router();
 
-var multipart = require('connect-multiparty');
+import multipart from 'connect-multiparty';
 var mdUpload = multipart({uploadDir: './uploads/species'})
 
 api.get('/pruebas', SpecieController.pruebas);
@@ -17,4 +17,4 @@ api.put('/update/:id', SpecieController.updateSpecie);
 api.delete('/delete/:id', SpecieController.deleteSpecie)
 
 
-module.exports = api;
+export default api;

@@ -1,23 +1,23 @@
 'use strict'
 
 //Incluimos modulo bcrypt para encriptar las contraseñas
-var bcrypt = require('bcrypt-nodejs');
+import bcrypt from 'bcrypt-nodejs';
 
-var Inhabitant = require('../models/inhabitant');
+import Inhabitant from '../models/inhabitant.js';
 
 //Importamos la libreria moment para generar fechas
-var moment = require("moment");
+import moment from "moment"
 
 //Importamos el servicio de jwt token
-var jwt = require('../services/jwt');
+import jwt from '../services/jwt.js';
 
 //Importamos mongoose paginate
-var mongoosePaginate = require('mongoose-pagination');
+import mongoosePaginate from 'mongoose-pagination';
 
 //Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
-var fs = require('fs');
-var path = require('path');
-const { escape } = require('querystring');
+import fs from 'fs';
+import path from 'path';
+import escape from 'querystring';
 
 
 function pruebas(req, res){
@@ -218,7 +218,7 @@ function deleteInhabitant(req, res) {
         )
 }
 
-module.exports = {
+export default {
     pruebas,
     getInhabitants,
     getInhabitant,

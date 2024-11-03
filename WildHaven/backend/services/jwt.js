@@ -1,15 +1,15 @@
 'use strict'
 
 //Importamos jwt
-var jwt = require("jwt-simple");
+import jwt from "jwt-simple";
 
 //Importamos la libreria moment para generar fechas
-var moment = require("moment");
+import moment from "moment";
 
 //Variable secret para tener un string secreto
 var secret = "clave_secreta_curso123";
 
-exports.createToken = function(user){
+var createToken = function(user){
 
     //Datos del usuario que quiero codificar en mi token
     var payload = {
@@ -26,3 +26,5 @@ exports.createToken = function(user){
     return jwt.encode(payload, secret);
 
 }
+
+export default createToken

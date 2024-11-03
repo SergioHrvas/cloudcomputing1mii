@@ -1,8 +1,9 @@
 'use strict'
 
 //Cargamos el módulo de mongoose
-var mongoose = require('mongoose');
+import mongoose from 'mongoose';
 var Schema = mongoose.Schema;
+
 
 //Definimos el esquema
 const inventoryItem = new Schema({
@@ -15,4 +16,4 @@ const inventoryItem = new Schema({
 });
 
 //exportamos el esquema
-module.exports = mongoose.model('inventoryItem', inventoryItem);
+export default mongoose.model('inventoryItem', inventoryItem);
