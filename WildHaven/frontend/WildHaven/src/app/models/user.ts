@@ -9,5 +9,4 @@ export class User{
         public image: String,
         public created_at: String,
     ){}
-
 }

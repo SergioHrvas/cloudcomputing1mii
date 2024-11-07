@@ -133,9 +133,9 @@ function getUser(req, res) {
     }
 
     User.findById(id).exec().then(user => {
-
-        if (!user) return res.status(404).send({ message: "El usuario no existe" });
-
+        if (!user) {
+            return res.status(404).send({ message: "El usuario no existe" });
+        }
 
 
         return res.status(200).send({ user });
@@ -148,9 +148,6 @@ function getUser(req, res) {
 
 //Obtener lista de usuarios paginados
 function getUsers(req, res) {
-    //Recogemos el id del usuario logeado en este momento (por el middleware)
-    var identity_user_id = req.user.sub;
-
     var page = 1;
 
     if (req.params.page) {
@@ -162,8 +159,11 @@ function getUsers(req, res) {
         itemsPerPage = req.params.itemsPerPage
     }
 
+
     User.find().select(['-password']).sort('_id').paginate(page, itemsPerPage).then((users) => {
-        if (!users) return res.status(404).send({ message: "No hay usuarios disponibles" });
+        if (!users ||users.length === 0){
+            return res.status(404).send({ message: "No hay usuarios disponibles" });
+        }
 
         var total = users.length;
 
@@ -173,8 +173,7 @@ function getUsers(req, res) {
             pages: Math.ceil(total / itemsPerPage),
         })
     }).catch(err => {
-        if (err) return res.status(500).send({ message: "Error en la petición" });
-
+        return res.status(500).send({ message: "Error en la petición" });
     })
 }
 

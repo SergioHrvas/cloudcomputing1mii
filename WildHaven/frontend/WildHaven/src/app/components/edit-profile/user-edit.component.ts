@@ -3,7 +3,6 @@ import {Router, ActivatedRoute, Params} from "@angular/router";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { FormsModule } from "@angular/forms";
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
  
 @Component({
