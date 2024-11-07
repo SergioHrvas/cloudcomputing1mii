@@ -45,7 +45,7 @@ function saveUser(req, res) {
 
         User.find({ email: user.email.toLowerCase() }).exec().then(users => {
             if (users && users.length > 0) {
-                return res.status(200).send({ message: "Ya existe un usuario con ese correo electrónico" });
+                return res.status(400).send({ message: "Ya existe un usuario con ese correo electrónico" });
             }
             else {
                 //Encriptamos la contraseña
@@ -70,12 +70,12 @@ function saveUser(req, res) {
 
 
         }).catch(err => {
-            if (err) return res.status(500).send({ message: "Error en la petición de usuarios" });
+            if (err) return res.status(500).send({ message: "Error en la petición de registro" });
         })
 
     }
     else {
-        res.status(200).send({
+        res.status(400).send({
             message: "Envía todos los campos obligatorios."
         })
     }

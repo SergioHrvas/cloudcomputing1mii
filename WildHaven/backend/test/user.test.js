@@ -101,8 +101,6 @@ describe("Usuarios", function () {
 
     });
 
-
-
     describe('Obtener lista de usuarios', function () {
         before(async () => {
             // Conéctate a la base de datos de prueba
@@ -258,5 +256,86 @@ describe("Usuarios", function () {
 
 
 
+    });
+
+    describe('Crear usuario', function () {
+        var body = {}
+
+        before(async () => {
+            // Conéctate a la base de datos de prueba
+            await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+
+            console.log("Conexión a la base de datos de prueba establecida");
+            await mongoose.model('User').deleteMany({});
+
+            body = {
+                name: "Usuario",
+                surname: "Creado",
+                email: "usuariocreado@gmail.com",
+                role: "ROLE_USER",
+                password: "password"
+            }
+        });
+
+        // Después de las pruebas, desconectarse de la base de datos
+        after(async () => {
+            await mongoose.disconnect();
+        });
+
+        it("Deberia devolver 200 si se ha registrado el usuario", async () => {
+
+
+            const res = await chai.request(app).post('/api/user/register').send(body)
+
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.have.property('user').that.is.an('object');
+            expect(res.body.user).to.have.property('email').that.equals('usuariocreado@gmail.com');    
+            expect(res.body.user).to.have.property('name').that.equals('Usuario');        
+            expect(res.body.user).to.have.property('surname').that.equals('Creado');
+            expect(res.body.user).to.have.property('role').that.equals('ROLE_USER');
+       
+        })
+
+        it("Debería devolver 400 si el correo está repetido", async () => {
+   
+            await mongoose.model('User').create(
+                {   
+                    name: "Usuario",
+                    surname: "Creado",
+                    email: "usuariocreado@gmail.com",
+                    role: "ROLE_USER",
+                    image: "image.png",
+                    password: "password"
+                }
+                
+            );
+
+            const res = await chai.request(app).post('/api/user/register').send(body)
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.have.property('message').that.equals("Ya existe un usuario con ese correo electrónico")
+        })
+
+        it("Debería devolver 500 si hay un error con la base de datos", async () => {
+            // Desconectamos la base de datos para simular un error de conexión
+            await mongoose.disconnect();
+            const res = await chai.request(app).post('/api/user/register').send(body)
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.have.property('message').that.equals("Error en la petición de registro")
+        })
+
+        
+        it("Debería devolver 400 si no se ha enviado algún dato obligatorio", async () => {
+   
+            body.email = undefined;
+
+
+            const res = await chai.request(app).post('/api/user/register').send(body)
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.have.property('message').that.equals("Envía todos los campos obligatorios.")
+        })
     });
 });
