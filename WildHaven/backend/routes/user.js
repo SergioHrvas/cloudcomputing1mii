@@ -13,8 +13,8 @@ var mdUpload = multipart({uploadDir: './uploads/users'})
 api.get('/pruebas',  UserController.pruebas);
 api.post('/register', UserController.saveUser);
 api.post('/login', UserController.loginUser);
-api.get('/user/:id', UserController.getUser)
-api.get('/list/:page?/:itemsPerPage?', UserController.getUsers)
+api.get('/user/:id', mdAuth.ensureAuth, UserController.getUser)
+api.get('/list/:page?/:itemsPerPage?', mdAuth.ensureAuth, UserController.getUsers)
 api.put('/update/:id',mdAuth.ensureAuth, UserController.updateUser)
 api.delete('/delete/:id',mdAuth.ensureAuth, UserController.deleteUser)
 

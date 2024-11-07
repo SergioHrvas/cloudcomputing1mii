@@ -191,27 +191,31 @@ function updateUser(req, res) {
 
     //Comprobamos si el id del usuario coincide con el que me llega en la request
     if (id != req.user.sub) {
-        return res.status(500).send({ message: "No tienes permisos para actualizar los datos del usuario." })
+        return res.status(403).send({ message: "No tienes permisos para actualizar los datos del usuario." })
     }
 
+    if(!update.email){
+        update.email = ""
+    }
 
     User.find({ email: update.email.toLowerCase() }).exec().then(users => {
-
-        if(users.length == 0){
-            return res.status(500).send({ message: "No existe el usuario" })     
+        if(update.email == ""){
+            update.email = undefined;
         }
         
-        var user_isset = false;
-        users.forEach(user => {
-            if (user && (user._id != id)) {
-                user_isset = true;
+        if(users.length > 0)
+        {
+            var user_isset = false;
+            users.forEach(user => {
+                if (user && (user._id != id)) {
+                    user_isset = true;
+                }
+            });
+
+            if (user_isset) {
+                return res.status(500).send({ message: "Los datos ya están en uso" })
             }
-        });
-
-        if (user_isset) {
-            return res.status(500).send({ message: "Los datos ya están en uso" })
         }
-
         User.findByIdAndUpdate(id, update, { new: true }).exec().then(
             userUpdated => {
                 if (!userUpdated) {

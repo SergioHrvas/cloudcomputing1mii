@@ -32,7 +32,6 @@ exports.ensureAuth = function(req, res, next){
 
     //Adjuntmaos el payload a la request para tener en los controladores el objeto del usuario logeado.
     req.user = payload;
-
     //fin del middleware
     next();
 }
