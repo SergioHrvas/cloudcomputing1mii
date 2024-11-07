@@ -29,7 +29,7 @@ describe("Usuarios", function () {
             name: "Sergio",
             surname: "Hervas",
             email: "sergiohcobo@correo.ugr.es",
-            role: "ROLE_USER",
+            role: "ROLE_ADMIN",
             image: null,
             password: pass
         });
@@ -240,6 +240,8 @@ describe("Usuarios", function () {
             const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade12d').set('Authorization', tokenupdate).send()
 
             expect(res).to.have.status(500);
+            expect(res.body).to.have.property('message').that.equals("El id es incorrecto")
+
         });
 
         it("Debería devolver 500 si hay un error con la base de datos", async () => {
@@ -336,6 +338,75 @@ describe("Usuarios", function () {
 
             expect(res).to.have.status(400);
             expect(res.body).to.have.property('message').that.equals("Envía todos los campos obligatorios.")
+        })
+    });
+
+
+    describe('Eliminar usuario', function () {
+        var body = {}
+
+        before(async () => {
+            // Conéctate a la base de datos de prueba
+            await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+
+            console.log("Conexión a la base de datos de prueba establecida");
+            await mongoose.model('User').deleteMany({});
+
+
+            for(var i = 1; i <= 5; i++){
+                body = {
+                    _id: "672d3811d845bd7eb841421" + i,
+                    name: "Usuario",
+                    surname: "Eliminar" + i,
+                    email: "usuarioeliminado" + i + "@gmail.com",
+                    role: "ROLE_USER",
+                    password: "password"
+                }
+
+                await mongoose.model('User').create(body);
+            }
+        });
+
+
+        // Después de las pruebas, desconectarse de la base de datos
+        after(async () => {
+            await mongoose.disconnect();
+        });
+
+        it("Deberia devolver 200 si se ha eliminado el usuario", async () => {
+            const res = await chai.request(app).delete('/api/user/delete/672d3811d845bd7eb8414211').set('Authorization', token).send()
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.have.property('data').that.is.an('object');
+            expect(res.body.data).to.have.property('deletedCount').that.is.an('number');
+            expect(res.body.data).to.have.property('deletedCount').that.equals(1);
+        })
+
+        it("Deberia devolver 404 si no se ha encontrado el usuario", async () => {
+            const res = await chai.request(app).delete('/api/user/delete/672d3811d845bd7eb8414220').set('Authorization', token).send()
+
+            expect(res).to.have.status(404);
+            expect(res.body).to.have.property('message').that.equals('No se ha podido encontrar el usuario');
+
+        })
+
+        it('Debería devolver 500 si el id no es válido', async () => {
+            const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade12dss').set('Authorization', token).send()
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.have.property('message').that.equals('El id es incorrecto');
+
+            
+        });
+
+        it("Deberia devolver 500 si hay un error con la base de datos", async () => {
+            await mongoose.disconnect()
+            
+            const res = await chai.request(app).delete('/api/user/delete/672d3811d845bd7eb8414220').set('Authorization', token).send()
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.have.property('message').that.includes('Error en la petición.');
+
         })
     });
 });

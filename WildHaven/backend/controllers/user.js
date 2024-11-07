@@ -251,8 +251,7 @@ function deleteUser(req, res) {
 
     User.findOne({_id: id}).exec().then(
         user => {
-
-            if(user == null){
+            if(!user){
                 return res.status(404).send({ message: "No se ha podido encontrar el usuario" });
             }
 
@@ -272,7 +271,7 @@ function deleteUser(req, res) {
         }
     ).catch(
         err => {
-            if (err) return res.status(500).send({ message: "Error en la petición." + err })
+            return res.status(500).send({ message: "Error en la petición." + err })
         }
     )
 
