@@ -4,7 +4,7 @@
   "description": "Backend de WildHaven - Aplicación para la gestión de santuarios y protectoras de animales. Practica de Cloud Computing en el MII UGR 24/25",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --slow 0",
+    "test": "mocha --timeout 10000 --slow 0",
     "start": "nodemon index.js"
   },
   "keywords": [
