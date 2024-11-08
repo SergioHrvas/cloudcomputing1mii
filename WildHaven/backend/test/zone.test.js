@@ -9,14 +9,13 @@ var bcrypt = require('bcrypt-nodejs');
 
 
 const expect = chai.expect;
-describe("Usuarios", function () {
+describe("Zonas", function () {
     var token = "";
     before(async () => {
         // Conéctate a la base de datos de prueba
         await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
         console.log("Conexión a la base de datos de prueba establecida");
-
         await mongoose.model('User').deleteMany({});
 
         var pass = await new Promise((resolve, reject) => {
@@ -51,40 +50,42 @@ describe("Usuarios", function () {
 
     // Después de las pruebas, desconectarse de la base de datos
     after(async () => {
+
         await mongoose.disconnect();
     });
 
 
-    describe('Obtener usuario', function () {
+    describe('Obtener zona', function () {
 
-        it('Debería devolver 404 si no se encuentra el usuario', async () => {
+        it('Debería devolver 404 si no se encuentra la zona', async () => {
 
-            const res = await chai.request(app).get('/api/user/user/670f930a96f295c8503ade12').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/zone/zone/670f930a96f295c8503ade34').set('Authorization', token).send()
 
             expect(res).to.have.status(404);
-            expect(res.body).to.have.property('message').that.equals('El usuario no existe');
+            expect(res.body).to.have.property('message').that.equals('La zona no existe');
         });
 
-        it("Deberia devolver 200 si encuentra el usuario", async () => {
-            await mongoose.model('User').create({
-                _id: "670f930a96f295c8503ade1e",
-                name: "Sergio",
-                surname: "Hervas",
-                email: "sergiohervas13@gmail.com",
-                role: "ROLE_USER",
-                image: null,
+        it("Deberia devolver 200 si encuentra la zona", async () => {
+            await mongoose.model('Zone').create({
+                _id: "670f930a96f295c8503ade44",
+                name: "zonaPrueba",
+                description: "descripcion de la zona",
+                image: "imagenZona.png",
             });
 
-            const res = await chai.request(app).get('/api/user/user/670f930a96f295c8503ade1e').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/zone/zone/670f930a96f295c8503ade44').set('Authorization', token).send()
 
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('user').that.is.an('object');
-            expect(res.body.user).to.have.property('name').that.equals('Sergio');
+            expect(res.body).to.have.property('zone').that.is.an('object');
+            expect(res.body.zone).to.have.property('name').that.equals('zonaPrueba');
+            expect(res.body.zone).to.have.property('description').that.equals('descripcion de la zona');
+            expect(res.body.zone).to.have.property('image').that.equals('imagenZona.png');
+
 
         })
 
         it('Debería devolver 500 si el id no es válido', async () => {
-            const res = await chai.request(app).get('/api/user/user/670f930a96f295c8503ade12d').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/zone/zone/670f930a96f295c8503ade12s').set('Authorization', token).send()
 
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.equals('El id es incorrecto');
@@ -92,22 +93,22 @@ describe("Usuarios", function () {
 
         it('Debería devolver 500 si hay un problema con la base de datos', async () => {
             mongoose.disconnect();
-            const res = await chai.request(app).get('/api/user/user/670f930a96f295c8503ade12').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/zone/zone/670f930a96f295c8503ade12').set('Authorization', token).send()
 
             expect(res).to.have.status(500);
-            expect(res.body).to.have.property('message').that.equals('Error en la petición');
+            expect(res.body).to.have.property('message').that.equals('Error en la petición.');
         });
 
 
 
     });
 
-    describe('Obtener lista de usuarios', function () {
+    describe('Obtener lista de zonas', function () {
         before(async () => {
             // Conéctate a la base de datos de prueba
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
-            await mongoose.model('User').deleteMany({});
+            await mongoose.model('Zone').deleteMany({});
         });
 
         // Después de las pruebas, desconectarse de la base de datos
@@ -116,78 +117,44 @@ describe("Usuarios", function () {
         });
 
         it("Deberia devolver 200 si hay usuarios", async () => {
-            await mongoose.model('User').create({ name: 'User 1' });
+            await mongoose.model('Zone').create({ name: 'Zone 1' });
+            await mongoose.model('Zone').create({ name: 'Zone 2' });
 
-            const res = await chai.request(app).get('/api/user/list').set('Authorization', token).send()
-
-            const body = res.body;
+            const res = await chai.request(app).get('/api/zone/list').set('Authorization', token).send()
 
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('users').that.is.an('array');
-            expect(res.body.users).to.have.lengthOf(1);  // Debería haber un usuario
-            expect(res.body).to.have.property('total').that.is.a('number');
-            expect(res.body.total).to.equal(1);  // Total de usuarios
-            expect(res.body).to.have.property('pages').that.is.a('number');
+            expect(res.body).to.have.property('zones').that.is.an('array');
+            expect(res.body.zones).to.have.lengthOf(2);  // Debería haber un usuario
+            expect(res.body.zones[0]).to.have.property('name').that.is.an('string')
+            expect(res.body.zones[0]).to.have.property('name').that.equals("Zone 1")
         })
 
         it("Debería devolver 404 si no hay usuarios", async () => {
-            await mongoose.model('User').deleteMany({});
+            await mongoose.model('Zone').deleteMany({});
 
-            const res = await chai.request(app).get('/api/user/list').set('Authorization', token).send()
-
-            const body = res.body;
-
+            const res = await chai.request(app).get('/api/zone/list').set('Authorization', token).send()
             expect(res).to.have.status(404);
-            expect(res.body).to.have.property('message').that.equals("No hay usuarios disponibles")
+            expect(res.body).to.have.property('message').that.equals("No hay zonas disponibles")
         })
 
         it("Debería devolver 500 si hay un error con la base de datos", async () => {
             // Desconectamos la base de datos para simular un error de conexión
             await mongoose.disconnect();
-            const res = await chai.request(app).get('/api/user/list').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/zone/list').set('Authorization', token).send()
 
             expect(res).to.have.status(500);
-            expect(res.body).to.have.property('message').that.equals("Error en la petición")
+            expect(res.body).to.have.property('message').that.equals("Error al obtener las zonas.")
         })
     });
 
-    describe('Modificar usuario', function () {
-        var tokenupdate = "";
-        var iduserupdated = "672d3811d845bd7eb8414810";
-
+    describe('Modificar zona', function () {
         before(async () => {
             // Conéctate a la base de datos de prueba
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
-            await mongoose.model('User').deleteMany({});
+            await mongoose.model('Zone').deleteMany({});
 
-            var pass = await new Promise((resolve, reject) => {
-                bcrypt.hash("update", null, null, function (err, hash) {
-                    if (err) reject(err)
-                    resolve(hash)
-                })
-            })
-
-            await mongoose.model('User').create({
-                _id: iduserupdated,
-                name: "Usuario",
-                surname: "Update",
-                email: "usuarioupdate@gmail.com",
-                role: "ROLE_USER",
-                image: null,
-                password: pass
-            });
-
-            var req = {}
-            req.body = {
-                email: "usuarioupdate@gmail.com",
-                password: "update",
-                gettoken: true
-            }
-
-            const res = await chai.request(app).post('/api/user/login').send(req.body)
-
-            tokenupdate = res.body.token;
+           
         });
 
 
@@ -197,46 +164,58 @@ describe("Usuarios", function () {
         });
 
         it("Deberia devolver 200 si se ha modificado", async () => {
+            await mongoose.model('Zone').create({
+                _id: "670f930a96f295c8503ade12",
+                name: "zonaPrueba",
+                description: "descripcion de la zona",
+                image: "imagenZona.png",
+            });
 
+            
             var body = {
-                email: "emailcambiado@gmail.com",
-                name: "nombrecambiado",
-                surname: "apellidocambiado"
+                name: "zonaPruebaModificada",
+                description: "descripcion modificada de la zona",
+                image: "otraImagen.png",
             }
 
-            const res = await chai.request(app).put('/api/user/update/' + iduserupdated).set('Authorization', tokenupdate).send(body)
-
+            const res = await chai.request(app).put('/api/zone/update/670f930a96f295c8503ade12').set('Authorization', token).send(body)
+            
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('user').that.is.an('object');
-            expect(res.body.user).to.have.property('email').that.equals('emailcambiado@gmail.com');
-            expect(res.body.user).to.have.property('name').that.equals('nombrecambiado');
-            expect(res.body.user).to.have.property('surname').that.equals('apellidocambiado');
+            expect(res.body).to.have.property('zone').that.is.an('object');
+            expect(res.body.zone).to.have.property('name').that.equals('zonaPruebaModificada');
+            expect(res.body.zone).to.have.property('description').that.equals('descripcion modificada de la zona');
+            expect(res.body.zone).to.have.property('image').that.equals('otraImagen.png');
         })
 
 
-        it("Deberia devolver 403 si no permite la edición del usuario", async () => {
+        it("Deberia devolver 500 si ya están los datos", async () => {
 
-            const res = await chai.request(app).put('/api/user/update/' + iduserupdated).set('Authorization', token).send()
+            await mongoose.model('Zone').create({
+                _id: "670f930a96f295c8503ade45",
+                name: "zona1",
+            });
 
-            expect(res).to.have.status(403);
-            expect(res.body).to.have.property('message').that.equals('No tienes permisos para actualizar los datos del usuario.');
+            
+            await mongoose.model('Zone').create({
+                name: "zona2",
+            });
+            
+            var body = {
+                name: "zona2",
+                description: "descripcion modificada de la zona",
+                image: "otraImagen.png",
+            }
+
+
+            const res = await chai.request(app).put('/api/zone/update/670f930a96f295c8503ade45').set('Authorization', token).send(body)
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.have.property('message').that.equals('Los datos ya están en uso');
         })
 
-        /* it("Debería devolver 404 si no se ha podido modificar el usuario", async () => {
-             var body = {
-                 email: "emailcambiado@gmail.com",
-                 name: "nombrecambiado",
-                 surname: "apellidocambiado"
-             }
- 
-             const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade10').set('Authorization', tokenupdate).send(body)
- 
-             expect(res).to.have.status(404);
-             expect(res.body).to.have.property('message').that.equals("No se ha podido actualizar el usuario")
-         })*/
 
         it('Debería devolver 500 si el id no es válido', async () => {
-            const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade12d').set('Authorization', tokenupdate).send()
+            const res = await chai.request(app).put('/api/zone/update/670f930a96f295c8503ade12d').set('Authorization', token).send()
 
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.equals("El id es incorrecto")
@@ -246,10 +225,10 @@ describe("Usuarios", function () {
         it("Debería devolver 500 si hay un error con la base de datos", async () => {
             // Desconectamos la base de datos para simular un error de conexión
             await mongoose.disconnect();
-            const res = await chai.request(app).put('/api/user/update/' + iduserupdated).set('Authorization', tokenupdate).send()
+            const res = await chai.request(app).put('/api/zone/update/670f930a96f295c8503ade12').set('Authorization', token).send()
 
             expect(res).to.have.status(500);
-            expect(res.body).to.have.property('message').that.equals("Error en la petición")
+            expect(res.body).to.have.property('message').that.includes("Error en la petición")
         })
 
 
@@ -259,13 +238,14 @@ describe("Usuarios", function () {
 
     });
 
-    describe('Crear usuario', function () {
+    /*describe('Crear usuario', function () {
         var body = {}
 
         before(async () => {
             // Conéctate a la base de datos de prueba
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
+            console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
 
             body = {
@@ -347,6 +327,7 @@ describe("Usuarios", function () {
             // Conéctate a la base de datos de prueba
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
+            console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
 
 
@@ -417,6 +398,7 @@ describe("Usuarios", function () {
             // Conéctate a la base de datos de prueba
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
+            console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
 
             var pass = await new Promise((resolve, reject) => {
@@ -501,5 +483,5 @@ describe("Usuarios", function () {
             expect(res.body).to.have.property('message').that.includes('Error en la petición.');
 
         })
-    });
+    });*/
 });

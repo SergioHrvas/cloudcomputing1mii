@@ -34,7 +34,7 @@ function getZone(req, res) {
         }
     ).catch(
         err => {
-            if (err) return res.status(500).send({ message: "Error al obtener la zona." })
+            if (err) return res.status(500).send({ message: "Error en la petición."})
         }
     )
 }
@@ -42,7 +42,7 @@ function getZone(req, res) {
 function getZones(req, res) {
     Zone.find().sort('name').exec().then(
         zones => {
-            if (!zones) return res.status(404).send({ message: "No hay zonas disponibles" });
+            if (!zones || zones.length == 0) return res.status(404).send({ message: "No hay zonas disponibles" });
 
             return res.status(200).send({ zones });
         }
@@ -112,6 +112,7 @@ function updateZone(req, res) {
                     }
                     Zone.find({ name: body.name }).exec()
                         .then(zones => {
+
                             var zone_isset = false;
                             zones.forEach(zoneEach => {
                                 if (zoneEach && (zoneEach._id != id)) {
@@ -128,6 +129,9 @@ function updateZone(req, res) {
                                 }
                                 if (body.description) {
                                     zone.description = body.description;
+                                }
+                                if (body.image) {
+                                    zone.image = body.image;
                                 }
                                 zone.save().then(
                                     zoneStored => {
@@ -149,7 +153,7 @@ function updateZone(req, res) {
                 }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })
+                if (err) return res.status(500).send({ message: "Error en la petición." + err })
 
             }
         )

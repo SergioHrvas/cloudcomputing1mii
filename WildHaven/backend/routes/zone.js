@@ -11,7 +11,7 @@ var mdUpload = multipart({uploadDir: './uploads/zone'})
 
 api.get('/pruebas', ZoneController.pruebas);
 api.get('/list', ZoneController.getZones);
-api.get('/:id', ZoneController.getZone);
+api.get('/zone/:id', ZoneController.getZone);
 api.post('/create', ZoneController.createZone);
 api.put('/update/:id', ZoneController.updateZone);
 api.delete('/delete/:id', ZoneController.deleteZone);

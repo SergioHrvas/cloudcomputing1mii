@@ -12,7 +12,6 @@ var app = express();
 
 const cors = require('cors');
 
-
 //Cargamos las rutas
 var user_routes = require('./routes/user');
 var task_routes = require('./routes/task');
