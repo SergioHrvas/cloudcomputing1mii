@@ -196,7 +196,7 @@ function deleteZone(req, res) {
             }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })
+                if (err) return res.status(500).send({ message: "Error en la petición." + err })
 
             }
         )

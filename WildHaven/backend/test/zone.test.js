@@ -111,7 +111,6 @@ describe("Zonas", function () {
 
 
             await mongoose.model('Zone').deleteMany({});
-            await mongoose.model('User').deleteMany({});
         });
 
         // Después de las pruebas, desconectarse de la base de datos
@@ -156,9 +155,7 @@ describe("Zonas", function () {
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             await mongoose.model('Zone').deleteMany({});
-            await mongoose.model('User').deleteMany({});
 
-           
         });
 
 
@@ -175,7 +172,7 @@ describe("Zonas", function () {
                 image: "imagenZona.png",
             });
 
-            
+
             var body = {
                 name: "zonaPruebaModificada",
                 description: "descripcion modificada de la zona",
@@ -183,7 +180,7 @@ describe("Zonas", function () {
             }
 
             const res = await chai.request(app).put('/api/zone/update/670f930a96f295c8503ade12').set('Authorization', token).send(body)
-            
+
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('zone').that.is.an('object');
             expect(res.body.zone).to.have.property('name').that.equals('zonaPruebaModificada');
@@ -199,11 +196,11 @@ describe("Zonas", function () {
                 name: "zona1",
             });
 
-            
+
             await mongoose.model('Zone').create({
                 name: "zona2",
             });
-            
+
             var body = {
                 name: "zona2",
                 description: "descripcion modificada de la zona",
@@ -250,7 +247,6 @@ describe("Zonas", function () {
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             console.log("Conexión a la base de datos de prueba establecida");
-            await mongoose.model('User').deleteMany({});
             await mongoose.model('Zone').deleteMany({});
 
             body = {
@@ -319,7 +315,7 @@ describe("Zonas", function () {
 
     });
 
-/*
+
     describe('Eliminar usuario', function () {
         var body = {}
 
@@ -328,20 +324,18 @@ describe("Zonas", function () {
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             console.log("Conexión a la base de datos de prueba establecida");
-            await mongoose.model('User').deleteMany({});
+            await mongoose.model('Zone').deleteMany({});
 
 
             for (var i = 1; i <= 5; i++) {
                 body = {
                     _id: "672d3811d845bd7eb841421" + i,
-                    name: "Usuario",
-                    surname: "Eliminar" + i,
-                    email: "usuarioeliminado" + i + "@gmail.com",
-                    role: "ROLE_USER",
-                    password: "password"
+                    name: "Zona " + i,
+                    description: "Zona para eliminar " + i,
+                    image: "image" + i + ".png"
                 }
 
-                await mongoose.model('User').create(body);
+                await mongoose.model('Zone').create(body);
             }
         });
 
@@ -351,8 +345,8 @@ describe("Zonas", function () {
             await mongoose.disconnect();
         });
 
-        it("Deberia devolver 200 si se ha eliminado el usuario", async () => {
-            const res = await chai.request(app).delete('/api/user/delete/672d3811d845bd7eb8414211').set('Authorization', token).send()
+        it("Deberia devolver 200 si se ha eliminado la zona", async () => {
+            const res = await chai.request(app).delete('/api/zone/delete/672d3811d845bd7eb8414211').set('Authorization', token).send()
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('data').that.is.an('object');
@@ -360,16 +354,16 @@ describe("Zonas", function () {
             expect(res.body.data).to.have.property('deletedCount').that.equals(1);
         })
 
-        it("Deberia devolver 404 si no se ha encontrado el usuario", async () => {
-            const res = await chai.request(app).delete('/api/user/delete/672d3811d845bd7eb8414220').set('Authorization', token).send()
+        it("Deberia devolver 404 si no se ha encontrado la zona", async () => {
+            const res = await chai.request(app).delete('/api/zone/delete/672d3811d845bd7eb8414220').set('Authorization', token).send()
 
             expect(res).to.have.status(404);
-            expect(res.body).to.have.property('message').that.equals('No se ha podido encontrar el usuario');
+            expect(res.body).to.have.property('message').that.equals('No se ha podido encontrar la zona');
 
         })
 
         it('Debería devolver 500 si el id no es válido', async () => {
-            const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade12dss').set('Authorization', token).send()
+            const res = await chai.request(app).put('/api/zone/update/670f930a96f295c8503ade12dss').set('Authorization', token).send()
 
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.equals('El id es incorrecto');
@@ -380,7 +374,7 @@ describe("Zonas", function () {
         it("Deberia devolver 500 si hay un error con la base de datos", async () => {
             await mongoose.disconnect()
 
-            const res = await chai.request(app).delete('/api/user/delete/672d3811d845bd7eb8414220').set('Authorization', token).send()
+            const res = await chai.request(app).delete('/api/zone/delete/672d3811d845bd7eb8414220').set('Authorization', token).send()
 
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.includes('Error en la petición.');
@@ -392,96 +386,4 @@ describe("Zonas", function () {
     });
 
 
-    describe('Login de usuario', function () {
-        var body = {}
-        before(async () => {
-            // Conéctate a la base de datos de prueba
-            await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
-
-            console.log("Conexión a la base de datos de prueba establecida");
-            await mongoose.model('User').deleteMany({});
-
-            var pass = await new Promise((resolve, reject) => {
-                bcrypt.hash("password", null, null, function (err, hash) {
-                    if (err) reject(err)
-                    resolve(hash)
-                })
-            })
-
-            body = {
-                name: "Usuario",
-                surname: "Login",
-                email: "usuariologin@gmail.com",
-                role: "ROLE_USER",
-                password: pass
-            }
-
-            await mongoose.model('User').create(body);
-            
-        });
-
-
-        // Después de las pruebas, desconectarse de la base de datos
-        after(async () => {
-            await mongoose.disconnect();
-        });
-
-        it("Deberia devolver 200 si se ha logueado el usuario", async () => {
-
-            body = { 
-                email: "usuariologin@gmail.com",
-                password: "password"
-            }
-
-
-            const res = await chai.request(app).post('/api/user/login/').send(body)
-
-            expect(res).to.have.status(200);
-            expect(res.body).to.have.property('user').that.is.an('object');
-            expect(res.body.user).to.have.property('name').that.equals('Usuario');
-            expect(res.body.user).to.have.property('surname').that.equals('Login');
-            expect(res.body.user).to.have.property('email').that.equals('usuariologin@gmail.com');
-            expect(res.body.user).to.have.property('role').that.equals('ROLE_USER');
-
-        })
-
-        it("Deberia devolver 404 si no se ha encontrado el usuario", async () => {
-            body = { 
-                email: "usuariologin2@gmail.com",
-                password: "passwords"
-            }
-
-            const res = await chai.request(app).post('/api/user/login/').send(body)
-
-
-            
-            expect(res).to.have.status(404);
-            expect(res.body).to.have.property('message').that.equals('No se ha podido encontrar el usuario.');
-
-        })
-
-        it('Debería devolver 404 si la contraseña no es válida', async () => {
-            body = { 
-                email: "usuariologin@gmail.com",
-                password: "passwords"
-            }
-
-            const res = await chai.request(app).post('/api/user/login/').send(body)
-
-            expect(res).to.have.status(404);
-            expect(res.body).to.have.property('message').that.equals('El usuario no se ha podido identificar.');
-
-
-        });
-
-        it("Deberia devolver 500 si hay un error con la base de datos", async () => {
-            await mongoose.disconnect()
-
-            const res = await chai.request(app).post('/api/user/login/').send(body)
-
-            expect(res).to.have.status(500);
-            expect(res.body).to.have.property('message').that.includes('Error en la petición.');
-
-        })
-    });*/
 });
