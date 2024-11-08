@@ -1,0 +1,38 @@
+name: Node.js CI
+
+# Ejecutar el flujo de trabajo en eventos push o pull request
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Clonar el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Configurar la versión de Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Puedes ajustar la versión de Node.js según lo que uses
+
+      # Instalar dependencias
+      - name: Install dependencies
+        run: npm install
+
+      # Ejecutar pruebas
+      - name: Run tests
+        run: npm test
+
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."

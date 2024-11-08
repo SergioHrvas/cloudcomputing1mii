@@ -209,8 +209,8 @@ describe("Usuarios", function () {
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('user').that.is.an('object');
-            expect(res.body.user).to.have.property('email').that.equals('emailcambiado@gmail.com');    
-            expect(res.body.user).to.have.property('name').that.equals('nombrecambiado');        
+            expect(res.body.user).to.have.property('email').that.equals('emailcambiado@gmail.com');
+            expect(res.body.user).to.have.property('name').that.equals('nombrecambiado');
             expect(res.body.user).to.have.property('surname').that.equals('apellidocambiado');
         })
 
@@ -223,18 +223,18 @@ describe("Usuarios", function () {
             expect(res.body).to.have.property('message').that.equals('No tienes permisos para actualizar los datos del usuario.');
         })
 
-       /* it("Debería devolver 404 si no se ha podido modificar el usuario", async () => {
-            var body = {
-                email: "emailcambiado@gmail.com",
-                name: "nombrecambiado",
-                surname: "apellidocambiado"
-            }
-
-            const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade10').set('Authorization', tokenupdate).send(body)
-
-            expect(res).to.have.status(404);
-            expect(res.body).to.have.property('message').that.equals("No se ha podido actualizar el usuario")
-        })*/
+        /* it("Debería devolver 404 si no se ha podido modificar el usuario", async () => {
+             var body = {
+                 email: "emailcambiado@gmail.com",
+                 name: "nombrecambiado",
+                 surname: "apellidocambiado"
+             }
+ 
+             const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade10').set('Authorization', tokenupdate).send(body)
+ 
+             expect(res).to.have.status(404);
+             expect(res.body).to.have.property('message').that.equals("No se ha podido actualizar el usuario")
+         })*/
 
         it('Debería devolver 500 si el id no es válido', async () => {
             const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade12d').set('Authorization', tokenupdate).send()
@@ -253,7 +253,7 @@ describe("Usuarios", function () {
             expect(res.body).to.have.property('message').that.equals("Error en la petición")
         })
 
-        
+
 
 
 
@@ -292,17 +292,17 @@ describe("Usuarios", function () {
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('user').that.is.an('object');
-            expect(res.body.user).to.have.property('email').that.equals('usuariocreado@gmail.com');    
-            expect(res.body.user).to.have.property('name').that.equals('Usuario');        
+            expect(res.body.user).to.have.property('email').that.equals('usuariocreado@gmail.com');
+            expect(res.body.user).to.have.property('name').that.equals('Usuario');
             expect(res.body.user).to.have.property('surname').that.equals('Creado');
             expect(res.body.user).to.have.property('role').that.equals('ROLE_USER');
-       
+
         })
 
         it("Debería devolver 400 si el correo está repetido", async () => {
-   
+
             await mongoose.model('User').create(
-                {   
+                {
                     name: "Usuario",
                     surname: "Creado",
                     email: "usuariocreado@gmail.com",
@@ -310,7 +310,7 @@ describe("Usuarios", function () {
                     image: "image.png",
                     password: "password"
                 }
-                
+
             );
 
             const res = await chai.request(app).post('/api/user/register').send(body)
@@ -328,9 +328,9 @@ describe("Usuarios", function () {
             expect(res.body).to.have.property('message').that.equals("Error en la petición de registro")
         })
 
-        
+
         it("Debería devolver 400 si no se ha enviado algún dato obligatorio", async () => {
-   
+
             body.email = undefined;
 
 
@@ -353,7 +353,7 @@ describe("Usuarios", function () {
             await mongoose.model('User').deleteMany({});
 
 
-            for(var i = 1; i <= 5; i++){
+            for (var i = 1; i <= 5; i++) {
                 body = {
                     _id: "672d3811d845bd7eb841421" + i,
                     name: "Usuario",
@@ -396,13 +396,110 @@ describe("Usuarios", function () {
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.equals('El id es incorrecto');
 
-            
+
         });
 
         it("Deberia devolver 500 si hay un error con la base de datos", async () => {
             await mongoose.disconnect()
-            
+
             const res = await chai.request(app).delete('/api/user/delete/672d3811d845bd7eb8414220').set('Authorization', token).send()
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.have.property('message').that.includes('Error en la petición.');
+
+        })
+
+
+
+    });
+
+
+    describe('Login de usuario', function () {
+        var body = {}
+        before(async () => {
+            // Conéctate a la base de datos de prueba
+            await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+
+            console.log("Conexión a la base de datos de prueba establecida");
+            await mongoose.model('User').deleteMany({});
+
+            var pass = await new Promise((resolve, reject) => {
+                bcrypt.hash("password", null, null, function (err, hash) {
+                    if (err) reject(err)
+                    resolve(hash)
+                })
+            })
+
+            body = {
+                name: "Usuario",
+                surname: "Login",
+                email: "usuariologin@gmail.com",
+                role: "ROLE_USER",
+                password: pass
+            }
+
+            await mongoose.model('User').create(body);
+            
+        });
+
+
+        // Después de las pruebas, desconectarse de la base de datos
+        after(async () => {
+            await mongoose.disconnect();
+        });
+
+        it("Deberia devolver 200 si se ha logueado el usuario", async () => {
+
+            body = { 
+                email: "usuariologin@gmail.com",
+                password: "password"
+            }
+
+
+            const res = await chai.request(app).post('/api/user/login/').send(body)
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.have.property('user').that.is.an('object');
+            expect(res.body.user).to.have.property('name').that.equals('Usuario');
+            expect(res.body.user).to.have.property('surname').that.equals('Login');
+            expect(res.body.user).to.have.property('email').that.equals('usuariologin@gmail.com');
+            expect(res.body.user).to.have.property('role').that.equals('ROLE_USER');
+
+        })
+
+        it("Deberia devolver 404 si no se ha encontrado el usuario", async () => {
+            body = { 
+                email: "usuariologin2@gmail.com",
+                password: "passwords"
+            }
+
+            const res = await chai.request(app).post('/api/user/login/').send(body)
+
+
+            
+            expect(res).to.have.status(404);
+            expect(res.body).to.have.property('message').that.equals('No se ha podido encontrar el usuario.');
+
+        })
+
+        it('Debería devolver 404 si la contraseña no es válida', async () => {
+            body = { 
+                email: "usuariologin@gmail.com",
+                password: "passwords"
+            }
+
+            const res = await chai.request(app).post('/api/user/login/').send(body)
+
+            expect(res).to.have.status(404);
+            expect(res.body).to.have.property('message').that.equals('El usuario no se ha podido identificar.');
+
+
+        });
+
+        it("Deberia devolver 500 si hay un error con la base de datos", async () => {
+            await mongoose.disconnect()
+
+            const res = await chai.request(app).post('/api/user/login/').send(body)
 
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.includes('Error en la petición.');
