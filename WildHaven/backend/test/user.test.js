@@ -13,7 +13,7 @@ describe("Usuarios", function () {
     var token = "";
     before(async () => {
         // Conéctate a la base de datos de prueba
-        await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+        await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
         console.log("Conexión a la base de datos de prueba establecida");
         await mongoose.model('User').deleteMany({});
@@ -104,7 +104,7 @@ describe("Usuarios", function () {
     describe('Obtener lista de usuarios', function () {
         before(async () => {
             // Conéctate a la base de datos de prueba
-            await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+            await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
@@ -157,7 +157,7 @@ describe("Usuarios", function () {
 
         before(async () => {
             // Conéctate a la base de datos de prueba
-            await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+            await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
@@ -265,7 +265,7 @@ describe("Usuarios", function () {
 
         before(async () => {
             // Conéctate a la base de datos de prueba
-            await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+            await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
@@ -347,7 +347,7 @@ describe("Usuarios", function () {
 
         before(async () => {
             // Conéctate a la base de datos de prueba
-            await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+            await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
@@ -418,7 +418,7 @@ describe("Usuarios", function () {
         var body = {}
         before(async () => {
             // Conéctate a la base de datos de prueba
-            await mongoose.connect('mongodb://localhost:27017/wildhaven-test');
+            await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
