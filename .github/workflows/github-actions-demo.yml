@@ -16,11 +16,11 @@ jobs:
     steps:
       # Clonar el repositorio
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Configurar la versión de Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20' # Puedes ajustar la versión de Node.js según lo que uses
 
