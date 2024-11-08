@@ -16,8 +16,9 @@ describe("Zonas", function () {
         await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
         console.log("Conexión a la base de datos de prueba establecida");
-        await mongoose.model('User').deleteMany({});
 
+        await mongoose.model('Zone').deleteMany({});
+        await mongoose.model('User').deleteMany({});
         var pass = await new Promise((resolve, reject) => {
             bcrypt.hash("admin", null, null, function (err, hash) {
                 if (err) reject(err)
@@ -108,7 +109,9 @@ describe("Zonas", function () {
             // Conéctate a la base de datos de prueba
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
+
             await mongoose.model('Zone').deleteMany({});
+            await mongoose.model('User').deleteMany({});
         });
 
         // Después de las pruebas, desconectarse de la base de datos
@@ -153,6 +156,7 @@ describe("Zonas", function () {
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
             await mongoose.model('Zone').deleteMany({});
+            await mongoose.model('User').deleteMany({});
 
            
         });
@@ -238,7 +242,7 @@ describe("Zonas", function () {
 
     });
 
-    /*describe('Crear usuario', function () {
+    describe('Crear zona', function () {
         var body = {}
 
         before(async () => {
@@ -247,13 +251,12 @@ describe("Zonas", function () {
 
             console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('User').deleteMany({});
+            await mongoose.model('Zone').deleteMany({});
 
             body = {
-                name: "Usuario",
-                surname: "Creado",
-                email: "usuariocreado@gmail.com",
-                role: "ROLE_USER",
-                password: "password"
+                name: "Zona creada",
+                description: "Descripción de la zona creada",
+                image: 'zonaimage.png'
             }
         });
 
@@ -262,64 +265,61 @@ describe("Zonas", function () {
             await mongoose.disconnect();
         });
 
-        it("Deberia devolver 200 si se ha registrado el usuario", async () => {
+        it("Deberia devolver 200 si se ha creado la zona", async () => {
 
 
-            const res = await chai.request(app).post('/api/user/register').send(body)
-
+            const res = await chai.request(app).post('/api/zone/create').set('Authorization', token).send(body)
 
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('user').that.is.an('object');
-            expect(res.body.user).to.have.property('email').that.equals('usuariocreado@gmail.com');
-            expect(res.body.user).to.have.property('name').that.equals('Usuario');
-            expect(res.body.user).to.have.property('surname').that.equals('Creado');
-            expect(res.body.user).to.have.property('role').that.equals('ROLE_USER');
+            expect(res.body).to.have.property('zone').that.is.an('object');
+            expect(res.body.zone).to.have.property('name').that.equals('Zona creada');
+            expect(res.body.zone).to.have.property('description').that.equals('Descripción de la zona creada');
+            expect(res.body.zone).to.have.property('image').that.equals('zonaimage.png');
 
         })
 
-        it("Debería devolver 400 si el correo está repetido", async () => {
+        it("Debería devolver 400 si el nombre de la zona está repetido", async () => {
 
             await mongoose.model('User').create(
                 {
-                    name: "Usuario",
-                    surname: "Creado",
-                    email: "usuariocreado@gmail.com",
-                    role: "ROLE_USER",
-                    image: "image.png",
-                    password: "password"
+                    name: "Zona creada",
+                    description: "Descripción de otra zona creada",
+                    image: 'foto.png'
                 }
 
             );
 
-            const res = await chai.request(app).post('/api/user/register').send(body)
+            const res = await chai.request(app).post('/api/zone/create').set('Authorization', token).send(body)
 
             expect(res).to.have.status(400);
-            expect(res.body).to.have.property('message').that.equals("Ya existe un usuario con ese correo electrónico")
+            expect(res.body).to.have.property('message').that.equals("Ya existe una zona con ese nombre")
+        })
+
+        it("Debería devolver 400 si no se ha enviado algún dato obligatorio", async () => {
+
+            body.name = undefined;
+
+
+            const res = await chai.request(app).post('/api/zone/create').set('Authorization', token).send(body)
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.have.property('message').that.equals("El nombre es obligatorio")
         })
 
         it("Debería devolver 500 si hay un error con la base de datos", async () => {
             // Desconectamos la base de datos para simular un error de conexión
             await mongoose.disconnect();
-            const res = await chai.request(app).post('/api/user/register').send(body)
+            const res = await chai.request(app).post('/api/zone/create').set('Authorization', token).send(body)
 
             expect(res).to.have.status(500);
-            expect(res.body).to.have.property('message').that.equals("Error en la petición de registro")
+            expect(res.body).to.have.property('message').that.includes("Error al crear la zona")
         })
 
 
-        it("Debería devolver 400 si no se ha enviado algún dato obligatorio", async () => {
 
-            body.email = undefined;
-
-
-            const res = await chai.request(app).post('/api/user/register').send(body)
-
-            expect(res).to.have.status(400);
-            expect(res.body).to.have.property('message').that.equals("Envía todos los campos obligatorios.")
-        })
     });
 
-
+/*
     describe('Eliminar usuario', function () {
         var body = {}
 

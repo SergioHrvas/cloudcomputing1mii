@@ -317,6 +317,18 @@ describe("Usuarios", function () {
             expect(res.body).to.have.property('message').that.equals("Ya existe un usuario con ese correo electrónico")
         })
 
+        it("Debería devolver 400 si no se ha enviado algún dato obligatorio", async () => {
+
+            var nuevobody = {...body}
+            nuevobody.email = undefined;
+
+
+            const res = await chai.request(app).post('/api/user/register').send(nuevobody)
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.have.property('message').that.equals("Envía todos los campos obligatorios.")
+        })
+        
         it("Debería devolver 500 si hay un error con la base de datos", async () => {
             // Desconectamos la base de datos para simular un error de conexión
             await mongoose.disconnect();
@@ -327,16 +339,6 @@ describe("Usuarios", function () {
         })
 
 
-        it("Debería devolver 400 si no se ha enviado algún dato obligatorio", async () => {
-
-            body.email = undefined;
-
-
-            const res = await chai.request(app).post('/api/user/register').send(body)
-
-            expect(res).to.have.status(400);
-            expect(res.body).to.have.property('message').that.equals("Envía todos los campos obligatorios.")
-        })
     });
 
 

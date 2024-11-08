@@ -59,6 +59,7 @@ function createZone(req, res) {
     var new_zone = new Zone();
     new_zone.name = body.name;
     new_zone.description = body.description;
+    new_zone.image = body.image;
 
 
 
@@ -66,10 +67,10 @@ function createZone(req, res) {
         .then(
             zones => {
                 if (zones.length > 0) {
-                    res.status(200).send({ message: "Ya existe una zona con ese nombre" })
+                    res.status(400).send({ message: "Ya existe una zona con ese nombre" })
                 }
                 else if (!body.name) {
-                    res.status(200).send({ message: "El nombre es obligatorio" })
+                    res.status(400).send({ message: "El nombre es obligatorio" })
                 }
                 else {
                     new_zone.save().then(
