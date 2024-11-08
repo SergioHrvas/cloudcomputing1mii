@@ -27,12 +27,16 @@ jobs:
       # Instalar dependencias
       - name: Install dependencies
         run: npm install
+        working-directory: './WildHaven/backend'
 
       # Ejecutar pruebas
       - name: Run tests
         run: npm test
+        working-directory: './WildHaven/backend'
+
 
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+
       - run: echo "🍏 This job's status is ${{ job.status }}."
