@@ -19,6 +19,9 @@ describe("Habitantes", function () {
 
         await mongoose.model('Inhabitant').deleteMany({});
         await mongoose.model('User').deleteMany({});
+        await mongoose.model('Zone').deleteMany({});
+        await mongoose.model('Specie').deleteMany({});
+
         var pass = await new Promise((resolve, reject) => {
             bcrypt.hash("admin", null, null, function (err, hash) {
                 if (err) reject(err)
@@ -48,7 +51,7 @@ describe("Habitantes", function () {
         token = res.body.token;
 
         await mongoose.model('Zone').create({
-            _id: "670f930a96f295c8503ade32",
+            _id: "670f930a96f295c8503ade42",
             name:"Zona cerdos vietnamitas"
         })
 
@@ -61,7 +64,12 @@ describe("Habitantes", function () {
 
     // Después de las pruebas, desconectarse de la base de datos
     after(async () => {
+        await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
 
+        await mongoose.model('Inhabitant').deleteMany({});
+        await mongoose.model('User').deleteMany({});
+        await mongoose.model('Zone').deleteMany({});
+        await mongoose.model('Specie').deleteMany({});
         await mongoose.disconnect();
     });
 
@@ -125,11 +133,7 @@ describe("Habitantes", function () {
             expect(res.body).to.have.property('message').that.includes('Error al obtener el habitante.');
         });
 
-
-
     });
-
-
     
     describe('Obtener lista de habitantes', function () {
         before(async () => {

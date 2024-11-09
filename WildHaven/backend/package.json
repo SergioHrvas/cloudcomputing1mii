@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 30000 --slow 0",
+    "test-users": "mocha .\\test\\user.test.js",
+    "test-zones": "mocha .\\test\\zone.test.js",
+    "test-species": "mocha .\\test\\specie.test.js",
+    "test-inhabitants": "mocha .\\test\\inhabitant.test.js",
     "start": "nodemon index.js"
   },
   "keywords": [

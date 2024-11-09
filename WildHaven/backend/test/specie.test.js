@@ -353,6 +353,12 @@ describe("Especies", function () {
 
         // Después de las pruebas, desconectarse de la base de datos
         after(async () => {
+            await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
+
+            await mongoose.model('Inhabitant').deleteMany({});
+            await mongoose.model('User').deleteMany({});
+            await mongoose.model('Zone').deleteMany({});
+            await mongoose.model('Specie').deleteMany({});
             await mongoose.disconnect();
         });
 
