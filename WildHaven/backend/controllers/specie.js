@@ -39,7 +39,6 @@ function getSpecie(req, res) {
         return res.status(500).send({ message: "El id es incorrecto" })     
     }
 
-    
     Specie.findById(id).exec().then(
         specie => {
             if (!specie) return res.status(404).send({ message: "La especie no existe" });
@@ -56,7 +55,7 @@ function getSpecie(req, res) {
 function getSpecies(req, res) {
     Specie.find().sort('name').exec().then(
         species => {
-            if (!species) return res.status(404).send({ message: "No hay especies disponibles" });
+            if (!species || (species.length == 0)) return res.status(404).send({ message: "No hay especies disponibles" });
 
             return res.status(200).send({ species });
         }
@@ -75,15 +74,16 @@ function createSpecie(req, res) {
     new_specie.description = body.description;
     new_specie.diet = body.diet;
     new_specie.technical_name = body.technical_name;
+    new_specie.image = body.image;
 
     Specie.find({ name: body.name }).exec()
         .then(
             species => {
                 if (species.length > 0) {
-                    res.status(200).send({ message: "Ya existe una especie con ese nombre" })
+                    res.status(400).send({ message: "Ya existe una especie con ese nombre" })
                 }
                 else if (!body.name) {
-                    res.status(200).send({ message: "El nombre es obligatorio" })
+                    res.status(400).send({ message: "El nombre es obligatorio" })
                 }
                 else {
                     new_specie.save().then(
@@ -96,13 +96,13 @@ function createSpecie(req, res) {
                         }
                     ).catch
                     err => {
-                        if (err) return res.status(500).send({ message: "Error al obtener las especies." + err });
+                        if (err) return res.status(500).send({ message: "Error en la petición." + err });
                     }
                 }
             }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener las especies." + err })
+                if (err) return res.status(500).send({ message: "Error en la petición." + err })
             }
         )
 }
@@ -148,6 +148,10 @@ function updateSpecie(req, res) {
                             if (body.technical_name) {
                                 specie.technical_name = body.technical_name;
                             }
+                            if (body.image){
+                                specie.image = body.image;
+
+                            }
                             specie.save().then(
                                 specieStored => {
                                     if (specieStored) {
@@ -162,13 +166,13 @@ function updateSpecie(req, res) {
                         }
                     }).catch(
                         err => {
-                            if (err) return res.status(500).send({ message: "Error al obtener las especies." + err });
+                            if (err) return res.status(500).send({ message: "Error en la petición." + err });
                         }
                     )
             }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener las especies." + err })
+                if (err) return res.status(500).send({ message: "Error en la petición." + err })
 
             }
         )
@@ -211,7 +215,7 @@ function deleteSpecie(req, res) {
             }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener las especies." + err })
+                if (err) return res.status(500).send({ message: "Error en la petición." + err })
 
             }
         )

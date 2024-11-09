@@ -118,7 +118,7 @@ describe("Zonas", function () {
             await mongoose.disconnect();
         });
 
-        it("Deberia devolver 200 si hay usuarios", async () => {
+        it("Deberia devolver 200 si hay zonas", async () => {
             await mongoose.model('Zone').create({ name: 'Zone 1' });
             await mongoose.model('Zone').create({ name: 'Zone 2' });
 
@@ -126,12 +126,12 @@ describe("Zonas", function () {
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('zones').that.is.an('array');
-            expect(res.body.zones).to.have.lengthOf(2);  // Debería haber un usuario
+            expect(res.body.zones).to.have.lengthOf(2);  // Debería haber dos zonas
             expect(res.body.zones[0]).to.have.property('name').that.is.an('string')
             expect(res.body.zones[0]).to.have.property('name').that.equals("Zone 1")
         })
 
-        it("Debería devolver 404 si no hay usuarios", async () => {
+        it("Debería devolver 404 si no hay zonas", async () => {
             await mongoose.model('Zone').deleteMany({});
 
             const res = await chai.request(app).get('/api/zone/list').set('Authorization', token).send()
@@ -276,13 +276,12 @@ describe("Zonas", function () {
 
         it("Debería devolver 400 si el nombre de la zona está repetido", async () => {
 
-            await mongoose.model('User').create(
+            await mongoose.model('Zone').create(
                 {
                     name: "Zona creada",
                     description: "Descripción de otra zona creada",
                     image: 'foto.png'
                 }
-
             );
 
             const res = await chai.request(app).post('/api/zone/create').set('Authorization', token).send(body)
@@ -316,7 +315,7 @@ describe("Zonas", function () {
     });
 
 
-    describe('Eliminar usuario', function () {
+    describe('Eliminar zona', function () {
         var body = {}
 
         before(async () => {
