@@ -341,8 +341,8 @@ describe("Especies", function () {
             for (var i = 1; i <= 5; i++) {
                 body = {
                     _id: "672d3811d845bd7eb841421" + i,
-                    name: "Zona " + i,
-                    description: "Zona para eliminar " + i,
+                    name: "Especie " + i,
+                    description: "Especie para eliminar " + i,
                     image: "image" + i + ".png"
                 }
 

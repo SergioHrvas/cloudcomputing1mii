@@ -48,12 +48,12 @@ describe("Habitantes", function () {
         token = res.body.token;
 
         await mongoose.model('Zone').create({
-            _id: "670f930a96f295c8503ade42",
+            _id: "670f930a96f295c8503ade32",
             name:"Zona cerdos vietnamitas"
         })
 
         await mongoose.model('Specie').create({
-            _id: "670f930a96f295c8503ade41",
+            _id: "670f930a96f295c8503ade31",
             name: "Cerdo vietnamita"
         })
 
@@ -262,10 +262,6 @@ describe("Habitantes", function () {
 
             const res = await chai.request(app).put('/api/inhabitant/update/670f930a96f295c8503ade12').set('Authorization', token).send(body)
 
-            console.log("==========")
-            console.log(res.body)
-            console.log("==========")
-
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('inhabitant').that.is.an('object');
             expect(res.body.inhabitant).to.have.property('name').that.equals('habitantePruebaModificada');
@@ -326,7 +322,8 @@ describe("Habitantes", function () {
 
 
     });
-        /*
+
+
     describe('Crear habitante', function () {
         var body = {}
 
@@ -338,16 +335,17 @@ describe("Habitantes", function () {
             await mongoose.model('Inhabitant').deleteMany({});
 
             body = {
-                name: "Habitante creada",
-                technical_name: "Nombre técnico",
-                description: "Descripcion de la nueva habitante",
-                diet: "Semillas",
+                name: "Nuevo habitante",
+                description: "Descripcion del nuevo habitante",
                 image: "imagenhabitante.png",
+                specie: "670f930a96f295c8503ade41",
+                zone: "670f930a96f295c8503ade42"
             }
         });
 
         // Después de las pruebas, desconectarse de la base de datos
         after(async () => {
+
             await mongoose.disconnect();
         });
 
@@ -358,37 +356,13 @@ describe("Habitantes", function () {
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('inhabitant').that.is.an('object');
-            expect(res.body.inhabitant).to.have.property('name').that.equals('Habitante creada');
-            expect(res.body.inhabitant).to.have.property('technical_name').that.equals('Nombre técnico');
-            expect(res.body.inhabitant).to.have.property('description').that.equals('Descripcion de la nueva habitante');
-            expect(res.body.inhabitant).to.have.property('diet').that.equals('Semillas');
+            expect(res.body.inhabitant).to.have.property('name').that.equals('Nuevo habitante');
+            expect(res.body.inhabitant).to.have.property('description').that.equals('Descripcion del nuevo habitante');
             expect(res.body.inhabitant).to.have.property('image').that.equals('imagenhabitante.png');
 
         })
 
-        it("Debería devolver 400 si el nombre de el habitante está repetido", async () => {
 
-            await mongoose.model('Inhabitant').create(
-                {
-                    name: "Habitante2",
-                    technical_name: "Nombre técnico",
-                }
-
-            );
-
-            body = {
-                name: "Habitante2",
-                technical_name: "Nombre técnico",
-                description: "Descripcion de la nueva habitante",
-                diet: "Semillas",
-                image: "imagenhabitante.png",
-            }
-
-            const res = await chai.request(app).post('/api/inhabitant/create').set('Authorization', token).send(body)
-
-            expect(res).to.have.status(400);
-            expect(res.body).to.have.property('message').that.equals("Ya existe una habitante con ese nombre")
-        })
 
         it("Debería devolver 400 si no se ha enviado algún dato obligatorio", async () => {
 
@@ -429,9 +403,11 @@ describe("Habitantes", function () {
             for (var i = 1; i <= 5; i++) {
                 body = {
                     _id: "672d3811d845bd7eb841421" + i,
-                    name: "Zona " + i,
-                    description: "Zona para eliminar " + i,
-                    image: "image" + i + ".png"
+                    name: "Habitante " + i,
+                    description: "Habitante para eliminar " + i,
+                    image: "image" + i + ".png",
+                    specie: "670f930a96f295c8503ade41",
+                    zone: "670f930a96f295c8503ade42"
                 }
 
                 await mongoose.model('Inhabitant').create(body);
@@ -485,6 +461,5 @@ describe("Habitantes", function () {
     });
 
 
-    */
 
 });

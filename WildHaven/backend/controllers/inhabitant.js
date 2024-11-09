@@ -120,7 +120,7 @@ function createInhabitant(req, res) {
             }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener los habitantes." + err })
+                if (err) return res.status(500).send({ message: "Error en la petición" + err })
 
             }
         )
@@ -215,7 +215,7 @@ function deleteInhabitant(req, res) {
         .then(
             inhabitant => {
                 if(inhabitant == null){
-                    return res.status(404).send({ message: "No se ha podido encontrar la zona" });
+                    return res.status(404).send({ message: "No se ha podido encontrar el habitante" });
                 }
 
                 Inhabitant.deleteOne({_id: id}).exec().then(
@@ -237,7 +237,7 @@ function deleteInhabitant(req, res) {
             }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener los habitantes." + err })
+                if (err) return res.status(500).send({ message: "Error en la petición." + err })
 
             }
         )
