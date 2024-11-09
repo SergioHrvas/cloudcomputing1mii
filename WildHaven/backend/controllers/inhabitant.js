@@ -47,12 +47,12 @@ function getInhabitant(req, res) {
     )
 }
 
-function getInhabitants(req, res) {
+function getInhabitantsBySpecie(req, res) {
     var specie = req.params.idSpecie;
 
     Inhabitant.find(specie != null ? {specie: specie} : {}).sort('name').exec().then(
         inhabitants => {
-            if (!inhabitants) return res.status(404).send({ message: "No hay habitantes disponibles" });
+            if (!inhabitants || (inhabitants.length == 0 )) return res.status(404).send({ message: "No hay habitantes disponibles" });
 
             return res.status(200).send({ inhabitants });
         }
@@ -63,6 +63,21 @@ function getInhabitants(req, res) {
     )
 }
 
+
+function getInhabitants(req, res) {
+
+    Inhabitant.find().sort('name').exec().then(
+        inhabitants => {
+            if (!inhabitants || (inhabitants.length == 0 )) return res.status(404).send({ message: "No hay habitantes disponibles" });
+
+            return res.status(200).send({ inhabitants });
+        }
+    ).catch(
+        err => {
+            if (err) return res.status(500).send({ message: "Error al obtener los habitantes." })
+        }
+    )
+}
 
 function createInhabitant(req, res) {
     var body = req.body;
@@ -83,10 +98,10 @@ function createInhabitant(req, res) {
         .then(
             inhabitants => {
                 if (inhabitants.length > 0) {
-                    res.status(200).send({ message: "Ya existe un habitante con ese nombre y de esa especie" })
+                    res.status(400).send({ message: "Ya existe un habitante con ese nombre y de esa especie" })
                 }
                 else if (!body.name) {
-                    res.status(200).send({ message: "El nombre es obligatorio" })
+                    res.status(400).send({ message: "El nombre es obligatorio" })
                 }
                 else {
                     new_inhabitant.save().then(
@@ -140,16 +155,26 @@ function updateInhabitant(req, res) {
                                 return res.status(500).send({ message: "Los datos ya están en uso" })
                             }
                             else {
-                                inhabitant.name = body.name;
-                                inhabitant.description = body.description;
-                                inhabitant.personality = body.personality;
-                                inhabitant.healthStatus = body.healthStatus;
-                                inhabitant.alive = body.alive;
-                                inhabitant.image = body.image;
-                                inhabitant.birth = body.birth;
-                                inhabitant.specie = body.specie
-                                inhabitant.zone = body.zone
-                            
+                                if(body.name)
+                                    inhabitant.name = body.name;
+                                if(inhabitant.description)
+                                    inhabitant.description = body.description;
+                                if(body.personality)
+                                    inhabitant.personality = body.personality;
+                                if(body.healthStatus)
+                                    inhabitant.healthStatus = body.healthStatus;
+                                if(body.alive)
+                                    inhabitant.alive = body.alive;
+                                if(body.image)
+                                    inhabitant.image = body.image;
+                                if(body.birth)
+                                    inhabitant.birth = body.birth;
+                                if(body.specie)
+                                    inhabitant.specie = body.specie
+                                if(body.zone)
+                                    inhabitant.zone = body.zone
+
+
                                 inhabitant.save().then(
                                     inhabitantStored => {
                                         if (inhabitantStored) {
@@ -170,7 +195,7 @@ function updateInhabitant(req, res) {
                 }
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err })
+                if (err) return res.status(500).send({ message: "Error en la petición." + err })
 
             }
         )
@@ -221,6 +246,7 @@ function deleteInhabitant(req, res) {
 module.exports = {
     pruebas,
     getInhabitants,
+    getInhabitantsBySpecie,
     getInhabitant,
     createInhabitant,
     updateInhabitant,
