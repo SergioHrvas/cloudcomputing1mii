@@ -13,3 +13,6 @@ WildHaven es una aplicación que simplifica la gestión integral de protectoras 
 
 ### Integración continua
 [El segundo hito](https://github.com/SergioHrvas/CloudComputing1MII/blob/main/hitos/h2.md) implementará un sistema de integración continua (CI), aspecto fundamental en el desarrollo de WildHaven. Este proceso asegura que cada modificación en el código sea automáticamente compilada, probada y revisada, lo que facilita la detección temprana de errores y mantiene la calidad del código.
+
+### Diseño de microservicios
+[El hito 3](https://github.com/SergioHrvas/CloudComputing1MII/blob/main/hitos/h3.md) se centra en el desarrollo de un microservicio, donde se implementa una API diseñada con un enfoque por capas que separa la lógica de negocio. Incluye la elección y justificación del framework utilizado, la integración de un sistema de logs para registrar la actividad de la API, y la creación de pruebas automatizadas para asegurar su correcto funcionamiento. Además, se busca una documentación adecuada que respalde el diseño y las decisiones tomadas a lo largo del proceso, garantizando un sistema escalable, mantenible y bien gestionado.
