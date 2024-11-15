@@ -3,12 +3,10 @@
 var express = require('express');
 var UserController = require('../controllers/user');
 const requestLogger = require('../middlewares/logging');
+var mdAuth = require('../middlewares/authenticated');
+var multipart = require('connect-multiparty');
 
 var api = express.Router();
-
-var mdAuth = require('../middlewares/authenticated');
-
-var multipart = require('connect-multiparty');
 var mdUpload = multipart({uploadDir: './uploads/users'})
 
 api.get('/pruebas', requestLogger, UserController.pruebas);
@@ -20,3 +18,5 @@ api.put('/update/:id',[mdAuth.ensureAuth,requestLogger], UserController.updateUs
 api.delete('/delete/:id',[mdAuth.ensureAuth,requestLogger], UserController.deleteUser)
 
 module.exports = api;
+
+

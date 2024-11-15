@@ -3,11 +3,10 @@
 var express = require('express');
 var SpecieController = require('../controllers/specie');
 var mdAuth = require('../middlewares/authenticated');
-
-var api = express.Router();
-
 var multipart = require('connect-multiparty');
 const requestLogger = require('../middlewares/logging');
+
+var api = express.Router();
 var mdUpload = multipart({uploadDir: './uploads/species'})
 
 api.get('/pruebas', requestLogger, SpecieController.pruebas);
@@ -17,5 +16,5 @@ api.post('/create', [mdAuth.ensureAuth,requestLogger], SpecieController.createSp
 api.put('/update/:id', [mdAuth.ensureAuth,requestLogger], SpecieController.updateSpecie);
 api.delete('/delete/:id', [mdAuth.ensureAuth,requestLogger], SpecieController.deleteSpecie)
 
-
 module.exports = api;
+
