@@ -9,7 +9,9 @@ const requestLogger = require('../middlewares/logging');
 
 
 api.get('/pruebas', requestLogger, TaskController.pruebas);
-api.post('/create', mdAuth.ensureAuth, TaskController.createTask);
+api.post('/create', [mdAuth.ensureAuth,requestLogger], TaskController.createTask);
+api.get('/task/:id', [mdAuth.ensureAuth,requestLogger], TaskController.getTask);
+api.get('/list/:page?/:itemsPerPage?', [mdAuth.ensureAuth,requestLogger], TaskController.getTasks)
 
 
 module.exports = api;

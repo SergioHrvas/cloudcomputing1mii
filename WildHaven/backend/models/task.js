@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 
 //Definimos el esquema
 var Task = Schema({
+    name: String,
     description: String,
     assignedTo: { type: Schema.Types.ObjectId, ref: 'User'},
     description: String,

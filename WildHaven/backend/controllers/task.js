@@ -25,6 +25,40 @@ function pruebas(req, res){
     })
 };
  
+function getTask(req, res){
+    var id = req.params.id;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    Task.findById(id).then(task => {
+        if(!task){
+            res.status(400).send({message: "No se ha podido encontrar la tarea"})
+        }
+
+        res.status(200).send({task})
+    }
+    ).catch(err => {
+        res.status(500).send({message:"Error en la petición"})
+    })
+
+};
+
+function getTasks(req, res){
+    Task.find().sort('name').exec().then(
+        tareas => {
+            if (!tareas || tareas.length == 0) return res.status(404).send({ message: "No hay tareas disponibles" });
+
+            return res.status(200).send({ tareas });
+        }
+    ).catch(
+        err => {
+            if (err) return res.status(500).send({ message: "Error al obtener las tareas." })
+        }
+    )
+};
+
 
 function createTask(req, res){
     var body = req.body;
@@ -44,12 +78,12 @@ function createTask(req, res){
         res.status(500).send({message:"Error en la petición"})
     })
 
-
-
 };
 
 
 module.exports = {
     pruebas,
-    createTask
+    createTask,
+    getTask,
+    getTasks
 }
