@@ -1,1 +1,3 @@
 2024-11-17 10:00:12 [info]: GET /api/task/pruebas 200 - 1ms (::1)
+2024-11-17 22:29:05 [info]: POST /api/user/login 200 - 79ms (::1)
+2024-11-17 22:29:10 [info]: POST /api/user/login 200 - 329ms (::1)

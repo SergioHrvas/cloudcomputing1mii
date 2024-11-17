@@ -17,8 +17,6 @@ var mongoosePaginate = require('mongoose-pagination');
 //Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
 var fs = require('fs');
 var path = require('path');
-const { escape } = require('querystring');
-const { create } = require('domain');
 
 
 function pruebas(req, res){
@@ -30,13 +28,12 @@ function pruebas(req, res){
 
 function createTask(req, res){
     var body = req.body;
-    var assignedBy = req.user.sub;
-    
-    if(body.assignedTo){
-        body.assignedBy = assignedBy;
-    }
+    var createdBy = req.user.sub;
 
-    Task.save(body).then(taskSaved => {
+    body.createdBy = createdBy;
+    var task = new Task(body);
+
+    task.save().then(taskSaved => {
         if(!taskSaved){
             res.status(400).send({message: "No se ha podido guardar la tarea"})
         }
