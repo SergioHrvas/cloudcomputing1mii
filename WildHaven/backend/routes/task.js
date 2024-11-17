@@ -9,6 +9,7 @@ const requestLogger = require('../middlewares/logging');
 
 
 api.get('/pruebas', requestLogger, TaskController.pruebas);
+api.post('/create', mdAuth.ensureAuth, TaskController.createTask);
 
 
 module.exports = api;
