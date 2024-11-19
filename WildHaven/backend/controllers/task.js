@@ -97,11 +97,99 @@ function deleteTask(req, res){
 
 };
 
+function updateTask(req, res){
+    var id = req.params.id;
+    
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    var body = req.body;
+
+    Task.findByIdAndUpdate(id, body, {new: true}).then(updatedTask => {
+        if(!updatedTask){
+            return res.status(400).send({message: "No se ha podido actualizar la tarea"})
+        }
+
+        return res.status(200).send({updatedTask})
+    }
+    ).catch(err => {
+        return res.status(500).send({message:"Error en la petición"})
+    })
+
+};
+
+function changeStatus(req, res){
+    var id = req.params.id;
+    
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    var status = req.body.status;
+
+    Task.findByIdAndUpdate(id, {"status": status}, {new: true}).then(updatedTask => {
+        if(!updatedTask){
+            return res.status(400).send({message: "No se ha podido actualizar el estado de la tarea"})
+        }
+
+        return res.status(200).send({updatedTask})
+    }
+    ).catch(err => {
+        return res.status(500).send({message:"Error en la petición"})
+    })
+
+};
+
+function getUserTasks(req, res){
+    var id = req.params.id;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    Task.find({"assignedTo": id}).then(
+        tasks => {
+            if(tasks.length == 0){
+                return res.status(400).send({message: "No se han encontrado tareas"})
+            }
+            
+            return res.status(200).send({tasks})
+        }
+    ).catch(err => {
+        return res.status(500).send({message:"Error en la petición"})
+    })
+}
+
+function getUserOwnedTasks(req, res){
+    var id = req.params.id;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    Task.find({"createdBy": id}).then(
+        tasks => {
+            if(tasks.length == 0){
+                return res.status(400).send({message: "No se han encontrado tareas"})
+            }
+            
+            return res.status(200).send({tasks})
+        }
+    ).catch(err => {
+        return res.status(500).send({message:"Error en la petición"})
+    })
+}
+
 
 module.exports = {
     pruebas,
     createTask,
     getTask,
     getTasks,
-    deleteTask
+    deleteTask,
+    updateTask,
+    getUserTasks,
+    getUserOwnedTasks,
+    changeStatus
 }
