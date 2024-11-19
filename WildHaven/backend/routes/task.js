@@ -18,5 +18,6 @@ api.put('/task/:id', [mdAuth.ensureAuth,requestLogger], TaskController.updateTas
 api.get('/tasksToUser/:id', [mdAuth.ensureAuth,requestLogger], TaskController.getUserTasks)
 api.get('/tasksByUser/:id', [mdAuth.ensureAuth,requestLogger], TaskController.getUserOwnedTasks)
 api.put('/changeStatus/:id', [mdAuth.ensureAuth,requestLogger], TaskController.changeStatus);
+api.put('/assignTask/:id', [mdAuth.ensureAuth,requestLogger], TaskController.assignTask);
 
 module.exports = api;

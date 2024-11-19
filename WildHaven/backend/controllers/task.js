@@ -141,6 +141,32 @@ function changeStatus(req, res){
 
 };
 
+function assignTask(req, res){
+    var id = req.params.id;
+    
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id de la tarea es incorrecto" })     
+    }
+
+    var idUser = req.body.user;
+
+    if (!idUser.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id del usuario es incorrecto" })     
+    }
+
+    Task.findByIdAndUpdate(id, {"assignedTo": idUser}, {new: true}).then(updatedTask => {
+        if(!updatedTask){
+            return res.status(400).send({message: "No se ha podido asignar la tarea"})
+        }
+
+        return res.status(200).send({updatedTask})
+    }
+    ).catch(err => {
+        return res.status(500).send({message:"Error en la petición"})
+    })
+
+}
+
 function getUserTasks(req, res){
     var id = req.params.id;
 
@@ -182,6 +208,7 @@ function getUserOwnedTasks(req, res){
 }
 
 
+
 module.exports = {
     pruebas,
     createTask,
@@ -191,5 +218,6 @@ module.exports = {
     updateTask,
     getUserTasks,
     getUserOwnedTasks,
-    changeStatus
+    changeStatus,
+    assignTask
 }
