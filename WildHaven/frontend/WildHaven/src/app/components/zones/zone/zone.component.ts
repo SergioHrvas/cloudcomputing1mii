@@ -2,41 +2,45 @@ import { Component, OnInit } from "@angular/core"
 import {Router, ActivatedRoute, Params } from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ZoneService } from "../../services/zone.service";
-import { Zone } from "../../models/zone";
-import { GLOBAL } from "../../services/global";
+import { ZoneService } from "../../../services/zone.service";
+import { Zone } from "../../../models/zone";
+import { GLOBAL } from "../../../services/global";
 
 @Component({
     selector: 'zone',
-    templateUrl: './zone-list.component.html',
+    templateUrl: './zone.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],
     providers: [ZoneService]
 
 })
 
-export class ZonesComponent implements OnInit{
+export class ZoneComponent implements OnInit{
 
     public url: String;
-    public zones: Zone[];
+    public zone: Zone;
     private status: String;
     public title: String;
 
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _userService: ZoneService
+        private _zoneService: ZoneService
     ){
-        this.zones = [];
+        this.zone = new Zone(
+            "", "", "", ""
+        );
         this.status = ""
-        this.title = "Lista de zonas"
+        this.title = "Zona"
         this.url = GLOBAL.url;
     }
 
     ngOnInit() {
-        this._userService.getZones().subscribe(
+        const id = this._route.snapshot.paramMap.get('id');
+        this._zoneService.getZone(id).subscribe(
             response => {
-                this.zones = response.zones;
+                console.log(response);
+                this.zone = response.zone;
             },
             error => {
                 console.log(<any>error);

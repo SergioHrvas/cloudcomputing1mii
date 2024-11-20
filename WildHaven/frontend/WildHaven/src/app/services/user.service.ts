@@ -79,7 +79,7 @@ export class UserService{
     }
     
 
-    getToken(){
+    public getToken(){
         var item;
         if (typeof localStorage !== 'undefined') {
             item = localStorage.getItem('Token');
@@ -129,4 +129,6 @@ export class UserService{
             console.log('Web Storage is not supported in this environment.');
           }
     }
+
+    
 }
