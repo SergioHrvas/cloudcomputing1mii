@@ -47,5 +47,20 @@ export class ZonesComponent implements OnInit{
         );
     }
 
+    removeZone(id: String) {
+        this._zoneService.removeZone(id).subscribe(
+            response => {
+                console.log(response.data);
+                window.location.reload()
+            },
+            error => {
+                console.log(<any>error);
+                if(<any>error != null){
+                    this.status = 'error';
+                }
+            }
+        );
+    }
+
 
 }

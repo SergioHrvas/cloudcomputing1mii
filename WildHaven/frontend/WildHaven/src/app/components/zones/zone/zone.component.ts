@@ -39,7 +39,6 @@ export class ZoneComponent implements OnInit{
         const id = this._route.snapshot.paramMap.get('id');
         this._zoneService.getZone(id).subscribe(
             response => {
-                console.log(response);
                 this.zone = response.zone;
             },
             error => {

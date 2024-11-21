@@ -2,35 +2,35 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <div class="navbar-header">
-        <img src="WildHaven.png" alt="Logo" class="img-fluid logo-image me-2" />
-        <a href="#" class="navbar-brand">
+        <a href="/"><img src="WildHaven.png" alt="Logo" class="img-fluid logo-image me-2" /></a>
+        <a href="/" class="navbar-brand">
           {{title}}
         </a>
       </div>
       <ul class="nav navbar-nav me-auto mb-2 mb-lg-0 d-flex flex-row">
         <li class="nav-item mx-3">
-          <a href="#" class="nav-link active">
-            Zonas
+          <a href="zones" class="nav-link active">
+            <i class="bi bi-geo-alt me-1"></i> Zonas
           </a>
         </li>
         <li class="nav-item mx-3">
           <a href="#" class="nav-link active">
-            Especies
+            <i class="bi bi-feather me-1"></i> Especies
           </a>
         </li>
         <li class="nav-item mx-3">
           <a href="#" class="nav-link active">
-            Habitantes
+            <i class="bi bi-heart me-1"></i> Habitantes
           </a>
         </li>
         <li class="nav-item mx-3">
           <a href="#" class="nav-link active">
-            Usuarios
+            <i class="bi bi-person me-1"></i> Usuarios
           </a>
         </li>
         <li class="nav-item mx-3">
           <a href="#" *ngIf="isAuthenticated()" (click)="onLogout()" class="nav-link active">
-            Cerrar sesión
+            <i class="bi bi-box-arrow-left"></i> Cerrar sesión
           </a>
         </li>
       </ul>

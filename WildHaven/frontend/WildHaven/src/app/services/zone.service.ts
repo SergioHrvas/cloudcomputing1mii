@@ -34,4 +34,22 @@ export class ZoneService{
 
         return this._http.get(this.url+"zone/zone/" + id, {headers: headers})   
     }
+
+    createZone(zone: Zone): Observable<any>{
+        this.token = this.userService.getToken();
+        let params = JSON.stringify(zone);
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+
+        return this._http.post(this.url+"zone/create/",params, {headers: headers})   
+    }
+
+    removeZone(id: String | null): Observable<any>{
+        this.token = this.userService.getToken();
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+
+        return this._http.delete(this.url+"zone/delete/" + id, {headers: headers})   
+    }
+
 }
