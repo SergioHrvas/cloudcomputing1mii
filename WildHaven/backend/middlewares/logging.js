@@ -17,7 +17,6 @@ const requestLogger = (req, res, next) => {
   res.on('finish', () => {
     const duration = Date.now() - start;
 
-    // Puedes almacenar más información aquí dependiendo de lo que necesites
     logger.info({
       message: `${method} ${originalUrl} ${statusCode} - ${duration}ms (${ip})`,
       method,
@@ -27,7 +26,7 @@ const requestLogger = (req, res, next) => {
       ip,
       userAgent,
       user,
-      body: method === 'POST' || method === 'PUT' ? JSON.stringify(body) : undefined, // Solo guarda el cuerpo para POST/PUT
+      body: (method === 'POST' || method === 'PUT') ? JSON.stringify(body) : undefined, // Solo guarda el cuerpo para POST/PUT
       timestamp: new Date().toISOString()
     });
   });
