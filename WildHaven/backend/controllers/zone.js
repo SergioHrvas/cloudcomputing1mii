@@ -1,7 +1,7 @@
 'use strict'
 
 var Zone = require('../models/zone');
-
+var Inhabitant = require('../models/inhabitant')
 //Importamos el servicio de jwt token
 var jwt = require('../services/jwt');
 
@@ -30,7 +30,14 @@ function getZone(req, res) {
         zone => {
             if (!zone) return res.status(404).send({ message: "La zona no existe" });
 
-            return res.status(200).send({ zone });
+            Inhabitant.find({zone: id}).then(
+                inhabitants => {
+                    return res.status(200).send({zone, inhabitants});
+                }
+            ).catch(err => {
+                return res.status(500).send({ message: "Error en la peticións"})
+            })
+
         }
     ).catch(
         err => {

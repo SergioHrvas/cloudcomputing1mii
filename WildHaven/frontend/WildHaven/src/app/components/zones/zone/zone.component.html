@@ -19,11 +19,21 @@
       <div class="card-body">
         <h2 class="card-title">Habitantes</h2>
         <ul class="list-group list-group-flush">
-          <!--<li 
-            class="list-group-item" 
-            *ngFor="let inhabitant of zone.inhabitants">
-            "{{ inhabitant }}"
-          </li>-->
+          <li 
+          class="list-group-item d-flex align-items-center"
+          *ngFor="let inhabitant of inhabitants">
+          <!-- Imagen del habitante -->
+          <img 
+          [src]="inhabitant.image ? inhabitant.image : '/default-avatar.png'" 
+          alt="{{ inhabitant.name }}" 
+          class="rounded-circle me-3" 
+          width="100" 
+          height="100">
+        
+        
+          <!-- Nombre del habitante -->
+          <span class="fw-bold h3">{{ inhabitant.name }}</span>
+        </li>
         </ul>
       </div>
     </div>
