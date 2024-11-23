@@ -10,7 +10,9 @@ var api = express.Router();
 var mdUpload = multipart({uploadDir: './uploads/inhabitants'})
 
 api.get('/pruebas', requestLogger, InhabitantController.pruebas);
-api.get('/list/specie/:idSpecie',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitantsBySpecie);
+api.get('/listBySpecie/:idSpecie',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitantsBySpecie);
+api.get('/listByZone/:idZone',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitantsByZone);
+
 api.get('/list',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitants);
 api.get('/inhabitant/:id',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitant);
 api.post('/create', [mdAuth.ensureAuth,requestLogger],InhabitantController.createInhabitant);

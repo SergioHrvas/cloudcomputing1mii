@@ -50,6 +50,10 @@ function getInhabitant(req, res) {
 function getInhabitantsBySpecie(req, res) {
     var specie = req.params.idSpecie;
 
+    if (!specie.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
     Inhabitant.find(specie != null ? {specie: specie} : {}).sort('name').exec().then(
         inhabitants => {
             if (!inhabitants || (inhabitants.length == 0 )) return res.status(404).send({ message: "No hay habitantes disponibles" });
@@ -67,6 +71,26 @@ function getInhabitantsBySpecie(req, res) {
 function getInhabitants(req, res) {
 
     Inhabitant.find().sort('name').exec().then(
+        inhabitants => {
+            if (!inhabitants || (inhabitants.length == 0 )) return res.status(404).send({ message: "No hay habitantes disponibles" });
+
+            return res.status(200).send({ inhabitants });
+        }
+    ).catch(
+        err => {
+            if (err) return res.status(500).send({ message: "Error al obtener los habitantes." })
+        }
+    )
+}
+
+function getInhabitantsByZone(req, res) {
+    var zone = req.params.idZone;
+
+    if (!zone.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+    Inhabitant.find(zone != null ? {zone: zone} : {}).sort('name').exec().then(
         inhabitants => {
             if (!inhabitants || (inhabitants.length == 0 )) return res.status(404).send({ message: "No hay habitantes disponibles" });
 
@@ -250,5 +274,6 @@ module.exports = {
     getInhabitant,
     createInhabitant,
     updateInhabitant,
-    deleteInhabitant
+    deleteInhabitant,
+    getInhabitantsByZone
 }
