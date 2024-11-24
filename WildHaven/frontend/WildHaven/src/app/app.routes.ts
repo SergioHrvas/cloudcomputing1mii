@@ -7,6 +7,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { ZonesComponent } from './components/zones/list/zone-list.component';
 import { ZoneComponent } from './components/zones/zone/zone.component';
 import { NewZoneComponent } from './components/zones/new-zone/new-zone.component';
+import { EditZoneComponent } from './components/zones/edit-zone/edit-zone.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -15,6 +16,7 @@ export const routes: Routes = [
     { path: 'edit-profile', component: UserEditComponent, canActivate: [AuthGuard]},
     { path: 'zones', component: ZonesComponent, canActivate: [AuthGuard]},
     { path: 'zone/:id', component: ZoneComponent, canActivate: [AuthGuard]},
-    { path: 'create-zone', component: NewZoneComponent, canActivate: [AuthGuard]}
+    { path: 'create-zone', component: NewZoneComponent, canActivate: [AuthGuard]},
+    { path: 'edit-zone/:id', component: EditZoneComponent, canActivate: [AuthGuard]}
 
 ];

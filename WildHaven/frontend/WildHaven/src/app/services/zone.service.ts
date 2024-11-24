@@ -52,4 +52,13 @@ export class ZoneService{
         return this._http.delete(this.url+"zone/delete/" + id, {headers: headers})   
     }
 
+    updateZone(id: String | null, zone: Zone): Observable<any>{
+        this.token = this.userService.getToken();
+        let params = JSON.stringify(zone);
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+
+        return this._http.put(this.url+"zone/update/" + id, params, {headers: headers})   
+    }
+
 }

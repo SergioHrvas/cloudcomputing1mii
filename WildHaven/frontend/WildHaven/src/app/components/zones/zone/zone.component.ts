@@ -45,7 +45,6 @@ export class ZoneComponent implements OnInit{
             response => {
                 this.zone = response.zone;
                 this.inhabitants = response.inhabitants;
-                console.log(this.inhabitants)
             },
             error => {
                 console.log(<any>error);

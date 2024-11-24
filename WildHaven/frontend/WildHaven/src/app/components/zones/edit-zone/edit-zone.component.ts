@@ -9,14 +9,14 @@ import { routes } from "../../../app.routes";
 
 @Component({
     selector: 'zone',
-    templateUrl: './new-zone.component.html',
+    templateUrl: './edit-zone.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],
     providers: [ZoneService]
 
 })
 
-export class NewZoneComponent implements OnInit{
+export class EditZoneComponent implements OnInit{
 
     public url: String;
     public zone: Zone;
@@ -30,13 +30,26 @@ export class NewZoneComponent implements OnInit{
     ){
         this.zone = new Zone("","","","");
         this.status = ""
-        this.title = "Crear zona"
+        this.title = "Modificar zona"
         this.url = GLOBAL.url;
     }
 
 
     ngOnInit(): void {
-        console.log("Componente user-edit cargado")    
+        const id = this._route.snapshot.paramMap.get('id');
+
+        this._zoneService.getZone(id).subscribe(
+            response => {
+                this.zone = response.zone;
+            },
+            error => {
+                console.log(<any>error);
+                if(<any>error != null){
+                    this.status = 'error';
+                }
+            }
+        );
+        console.log("Componente zone-edit cargado")    
     }
 
     onImageSelected(event: any) {
@@ -46,7 +59,9 @@ export class NewZoneComponent implements OnInit{
     }
 
     onSubmit(form: any){
-        this._zoneService.createZone(this.zone).subscribe(
+        const id = this._route.snapshot.paramMap.get('id');
+
+        this._zoneService.updateZone(id, this.zone).subscribe(
             response => {
                 if(!response.zone){
                     this.status = "error"
