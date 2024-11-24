@@ -123,7 +123,7 @@ describe("Especies", function () {
             await mongoose.model('Specie').create({ name: 'Specie 2' });
             await mongoose.model('Specie').create({ name: 'Specie 3' });
 
-            const res = await chai.request(app).get('/api/listBySpecie').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/specie/list').set('Authorization', token).send()
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('species').that.is.an('array');

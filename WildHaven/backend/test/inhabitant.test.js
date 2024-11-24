@@ -205,7 +205,7 @@ describe("Habitantes", function () {
             await mongoose.model('Inhabitant').create({ name: 'Inhabitant 2',                 specie: "670f930a96f295c8503ade41",
                 zone: "670f930a96f295c8503ade42" });
 
-            const res = await chai.request(app).get('/api/inhabitant/list/specie/670f930a96f295c8503ade41').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/inhabitant/listBySpecie/670f930a96f295c8503ade41').set('Authorization', token).send()
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('inhabitants').that.is.an('array');
@@ -217,7 +217,7 @@ describe("Habitantes", function () {
         it("Debería devolver 404 si no hay habitantes", async () => {
             await mongoose.model('Inhabitant').deleteMany({});
 
-            const res = await chai.request(app).get('/api/inhabitant/list/specie/670f930a96f295c8503ade41').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/inhabitant/listBySpecie/670f930a96f295c8503ade41').set('Authorization', token).send()
             expect(res).to.have.status(404);
             expect(res.body).to.have.property('message').that.equals("No hay habitantes disponibles")
         })
@@ -225,7 +225,7 @@ describe("Habitantes", function () {
         it("Debería devolver 500 si hay un error con la base de datos", async () => {
             // Desconectamos la base de datos para simular un error de conexión
             await mongoose.disconnect();
-            const res = await chai.request(app).get('/api/inhabitant/list/specie/670f930a96f295c8503ade41').set('Authorization', token).send()
+            const res = await chai.request(app).get('/api/inhabitant/listBySpecie/670f930a96f295c8503ade41').set('Authorization', token).send()
 
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.equals("Error al obtener los habitantes.")
