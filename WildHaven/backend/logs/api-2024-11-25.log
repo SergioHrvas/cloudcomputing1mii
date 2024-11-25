@@ -1,0 +1,2 @@
+2024-11-25 10:09:15 [info]: GET /api/specie/list 200 - 38ms (::ffff:127.0.0.1)
+2024-11-25 10:09:29 [info]: GET /api/specie/list 200 - 5ms (::ffff:127.0.0.1)

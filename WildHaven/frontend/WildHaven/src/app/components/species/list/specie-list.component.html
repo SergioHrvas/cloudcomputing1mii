@@ -1,0 +1,37 @@
+<div class="col-lg-4 mx-auto mt-4">
+    <div class="jumbotron text-center p-4 bg-light rounded">
+        <h1 class="display-4">{{ title }}</h1>
+    </div>
+    <div class="text-center">
+        <a href="/create-specie"><button class="btn-dark btn mt-2"><i class="bi bi-plus-circle me-2"></i>Crear especie</button></a>
+    </div>
+
+    <div class="table-responsive mt-2">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="text-center">Imagen</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let specie of species">
+                    <td class="text-center">
+                        <!-- Placeholder para la imagen, actualiza con la URL correcta si tienes imágenes -->
+                        <a href="/specie/{{specie._id}}"><img 
+                        [src]="'http://localhost:3800/uploads/species/' + specie.image" 
+                        alt="{{specie.name}}" 
+                        class="img-fluid" 
+                        href=""
+                        style="max-width: 250px; height: auto;" /></a>
+                        </td>
+                    <td class="text-center align-middle">{{ specie.name }}
+                        <div><i class="bi bi-trash me-2 fs-4 text-danger" style="cursor: pointer;" (click)="removeSpecie(specie._id)"></i>
+                        <a href="/edit-specie/{{specie._id}}"><i class="bi bi-pencil me-2 fs-4 text-danger" style="cursor: pointer;"></i></a></div>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
