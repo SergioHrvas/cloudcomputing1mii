@@ -11,6 +11,7 @@ import { NewZoneComponent } from './components/zones/new-zone/new-zone.component
 import { EditZoneComponent } from './components/zones/edit-zone/edit-zone.component';
 
 import { SpeciesComponent } from './components/species/list/specie-list.component';
+import { SpecieComponent } from './components/species/specie/specie.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -23,6 +24,7 @@ export const routes: Routes = [
     { path: 'create-zone', component: NewZoneComponent, canActivate: [AuthGuard]},
     { path: 'edit-zone/:id', component: EditZoneComponent, canActivate: [AuthGuard]},
 
-    { path: 'species', component: SpeciesComponent, canActivate: [AuthGuard]}
+    { path: 'species', component: SpeciesComponent, canActivate: [AuthGuard]},
+    { path: 'specie/:id', component: SpecieComponent, canActivate: [AuthGuard]}
 
 ];

@@ -2,25 +2,25 @@ import { Component, OnInit } from "@angular/core"
 import {Router, ActivatedRoute, Params } from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ZoneService } from "../../../services/zone.service";
-import { Zone } from "../../../models/zone";
+import { SpecieService } from "../../../services/specie.service";
+import { Specie } from "../../../models/specie";
 import { Inhabitant } from "../../../models/inhabitant";
 
 import { GLOBAL } from "../../../services/global";
 
 @Component({
-    selector: 'zone',
-    templateUrl: './zone.component.html',
+    selector: 'specie',
+    templateUrl: './specie.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],
-    providers: [ZoneService]
+    providers: [SpecieService]
 
 })
 
-export class ZoneComponent implements OnInit{
+export class SpecieComponent implements OnInit{
 
     public url: String;
-    public zone: Zone;
+    public specie: Specie;
     public inhabitants: Inhabitant[]
     private status: String;
     public title: String;
@@ -28,10 +28,10 @@ export class ZoneComponent implements OnInit{
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _zoneService: ZoneService
+        private _specieService: SpecieService
     ){
-        this.zone = new Zone(
-            "", "", "", ""
+        this.specie = new Specie(
+            "", "", "", "", "", ""
         );
         this.inhabitants = [];
         this.status = ""
@@ -41,9 +41,10 @@ export class ZoneComponent implements OnInit{
 
     ngOnInit() {
         const id = this._route.snapshot.paramMap.get('id');
-        this._zoneService.getZone(id).subscribe(
+        this._specieService.getSpecie(id).subscribe(
             response => {
-                this.zone = response.zone;
+                console.log(response)
+                this.specie = response.specie;
                 this.inhabitants = response.inhabitants;
             },
             error => {
