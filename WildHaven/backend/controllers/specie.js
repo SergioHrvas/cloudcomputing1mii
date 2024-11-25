@@ -4,6 +4,7 @@
 var bcrypt = require('bcrypt-nodejs');
 
 var Specie = require('../models/specie');
+var Inhabitant = require('../models/inhabitant')
 
 //Importamos la libreria moment para generar fechas
 var moment = require("moment");
@@ -35,6 +36,7 @@ module.exports = {
 function getSpecie(req, res) {
     var id = req.params.id;
 
+    
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
         return res.status(500).send({ message: "El id es incorrecto" })     
     }
@@ -43,7 +45,14 @@ function getSpecie(req, res) {
         specie => {
             if (!specie) return res.status(404).send({ message: "La especie no existe" });
 
-            return res.status(200).send({ specie });
+
+            Inhabitant.find({specie: id}).then(
+                inhabitants => {
+                    return res.status(200).send({specie, inhabitants});
+                }
+            ).catch(err => {
+                return res.status(500).send({ message: "Error en la petición"})
+            })
         }
     ).catch(
         err => {

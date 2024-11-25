@@ -35,7 +35,7 @@ function getZone(req, res) {
                     return res.status(200).send({zone, inhabitants});
                 }
             ).catch(err => {
-                return res.status(500).send({ message: "Error en la peticións"})
+                return res.status(500).send({ message: "Error en la petición"})
             })
 
         }
