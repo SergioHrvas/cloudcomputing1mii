@@ -2,60 +2,60 @@ import { Component, OnInit } from "@angular/core"
 import {Router, ActivatedRoute, Params } from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ZoneService } from "../../../services/zone.service";
-import { Zone } from "../../../models/zone";
+import { SpecieService } from "../../../services/specie.service";
+import { Specie } from "../../../models/specie";
 import { GLOBAL } from "../../../services/global";
 import { routes } from "../../../app.routes";
 
 @Component({
-    selector: 'zone',
-    templateUrl: './new-zone.component.html',
+    selector: 'specie',
+    templateUrl: './new-specie.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],
-    providers: [ZoneService]
+    providers: [SpecieService]
 
 })
 
-export class NewZoneComponent implements OnInit{
+export class NewSpecieComponent implements OnInit{
 
     public url: String;
-    public zone: Zone;
+    public specie: Specie;
     private status: String;
     public title: String;
 
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _zoneService: ZoneService
+        private _specieService: SpecieService
     ){
-        this.zone = new Zone("","","","");
+        this.specie = new Specie("","","","", "", "");
         this.status = ""
-        this.title = "Crear zona"
+        this.title = "Crear Especie"
         this.url = GLOBAL.url;
     }
 
 
     ngOnInit(): void {
-        console.log("Componente user-edit cargado")    
+        console.log("Componente new-specie cargado")    
     }
 
     onImageSelected(event: any) {
         if (event.target.files && event.target.files[0]) {
-            this.zone.image = event.target.files[0];
+            this.specie.image = event.target.files[0];
         }
     }
 
     onSubmit(form: any){
-        this._zoneService.createZone(this.zone).subscribe(
+        this._specieService.createSpecie(this.specie).subscribe(
             response => {
-                if(!response.zone){
+                if(!response.specie){
                     this.status = "error"
                 }
                 else{
                     this.status = "success"
-                    this.zone = response.zone;
+                    this.specie = response.specie;
                 }
-                this._router.navigate(['/zones']); // Redirige a la lista de zonas
+                this._router.navigate(['/species']); // Redirige a la lista de zonas
             },
             error => {
                 var errorMessage = <any>error;

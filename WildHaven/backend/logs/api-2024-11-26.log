@@ -1,0 +1,4 @@
+2024-11-26 12:24:22 [info]: GET /api/specie/list 200 - 79ms (::ffff:127.0.0.1)
+2024-11-26 12:24:33 [info]: POST /api/specie/create/ 200 - 73ms (::ffff:127.0.0.1)
+2024-11-26 12:24:33 [info]: GET /api/specie/list 200 - 5ms (::ffff:127.0.0.1)
+2024-11-26 12:24:34 [info]: GET /api/specie/specie/6745aff09627f1bbc64f1c08 200 - 12ms (::ffff:127.0.0.1)
