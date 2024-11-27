@@ -2,35 +2,35 @@ import { Component, OnInit } from "@angular/core"
 import {Router, ActivatedRoute, Params } from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ZoneService } from "../../../services/zone.service";
-import { Zone } from "../../../models/zone";
+import { SpecieService } from "../../../services/specie.service";
+import { Specie } from "../../../models/specie";
 import { GLOBAL } from "../../../services/global";
 import { routes } from "../../../app.routes";
 
 @Component({
-    selector: 'zone',
-    templateUrl: './edit-zone.component.html',
+    selector: 'specie',
+    templateUrl: './edit-specie.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],
-    providers: [ZoneService]
+    providers: [SpecieService]
 
 })
 
-export class EditZoneComponent implements OnInit{
+export class EditSpecieComponent implements OnInit{
 
     public url: String;
-    public zone: Zone;
+    public specie: Specie;
     private status: String;
     public title: String;
 
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _zoneService: ZoneService
+        private _specieService: SpecieService
     ){
-        this.zone = new Zone("","","","");
+        this.specie = new Specie("","","","", "", "");
         this.status = ""
-        this.title = "Modificar zona"
+        this.title = "Modificar especie"
         this.url = GLOBAL.url;
     }
 
@@ -38,9 +38,9 @@ export class EditZoneComponent implements OnInit{
     ngOnInit(): void {
         const id = this._route.snapshot.paramMap.get('id');
 
-        this._zoneService.getZone(id).subscribe(
+        this._specieService.getSpecie(id).subscribe(
             response => {
-                this.zone = response.zone;
+                this.specie = response.specie;
             },
             error => {
                 console.log(<any>error);
@@ -49,28 +49,28 @@ export class EditZoneComponent implements OnInit{
                 }
             }
         );
-        console.log("Componente zone-edit cargado")    
+        console.log("Componente specie-edit cargado")    
     }
 
     onImageSelected(event: any) {
         if (event.target.files && event.target.files[0]) {
-            this.zone.image = event.target.files[0];
+            this.specie.image = event.target.files[0];
         }
     }
 
     onSubmit(form: any){
         const id = this._route.snapshot.paramMap.get('id');
 
-        this._zoneService.updateZone(id, this.zone).subscribe(
+        this._specieService.updateSpecie(id, this.specie).subscribe(
             response => {
-                if(!response.zone){
+                if(!response.specie){
                     this.status = "error"
                 }
                 else{
                     this.status = "success"
-                    this.zone = response.zone;
+                    this.specie = response.specie;
                 }
-                this._router.navigate(['/zones']); // Redirige a la lista de zonas
+                this._router.navigate(['/species']); // Redirige a la lista de especies
             },
             error => {
                 var errorMessage = <any>error;

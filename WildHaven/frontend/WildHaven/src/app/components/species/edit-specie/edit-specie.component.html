@@ -1,6 +1,6 @@
 <div class="col-lg-6 mx-auto mt-4">
     <div class="jumbotron text-center p-4 bg-light rounded">
-        <h1 class="display-4">Crear Especie</h1>
+        <h1 class="display-4">Modificar Especie</h1>
     </div>
     <form #createSpecieForm="ngForm" (submit)="onSubmit(createSpecieForm)">
         <div class="form-group">
@@ -15,7 +15,7 @@
                 required
             />
         </div>
-
+        
         <div class="form-group">
             <label for="specieTechName">Nombre técnico de la especie:</label>
             <input
@@ -29,9 +29,8 @@
             />
         </div>
 
-
         <div class="form-group mt-3">
-            <label for="specieDescription">Descripción de la especie:</label>
+            <label for="specieDescription">Descripción:</label>
             <textarea
                 id="specieDescription"
                 class="form-control"
@@ -44,7 +43,6 @@
         </div>
 
         
-
         <div class="form-group mt-3">
             <label for="specieDiet">Dieta:</label>
             <textarea
@@ -58,7 +56,7 @@
         </div>
 
         <div class="form-group mt-3">
-            <label for="specieImage">Imagen de la Especie:</label>
+            <label for="specieImage">Imagen:</label>
             <input
                 type="file"
                 id="specieImage"
@@ -67,6 +65,6 @@
             />
         </div>
 
-        <button type="submit" class="btn btn-primary mt-4">Crear Especie</button>
+        <button type="submit" class="btn btn-primary mt-4">Modificar Especie</button>
     </form>
 </div>
