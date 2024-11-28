@@ -1,6 +1,0 @@
-2024-11-14 11:53:35 [info]: GET /api/user/pruebas 200 - 3ms
-2024-11-14 11:54:01 [info]: POST /api/user/register 200 - 265ms
-2024-11-14 11:54:12 [info]: GET /api/user/user/670f92be74667e2b3769670f 404 - 6ms
-2024-11-14 11:54:18 [info]: GET /api/user/list 200 - 9ms
-2024-11-14 12:10:39 [info]: GET /api/user/list 200 - 32ms
-2024-11-14 12:11:36 [info]: GET /api/zone/pruebas 200 - 3ms

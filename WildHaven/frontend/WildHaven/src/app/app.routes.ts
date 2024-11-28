@@ -15,6 +15,11 @@ import { SpecieComponent } from './components/species/specie/specie.component';
 import { NewSpecieComponent } from './components/species/new-specie/new-specie.component';
 import { EditSpecieComponent } from './components/species/edit-specie/edit-specie.component';
 
+import { InhabitantsComponent } from './components/inhabitants/list/inhabitant-list.component';
+// import { SpecieComponent } from './components/species/specie/specie.component';
+// import { NewSpecieComponent } from './components/species/new-specie/new-specie.component';
+// import { EditSpecieComponent } from './components/species/edit-specie/edit-specie.component';
+
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
@@ -29,5 +34,10 @@ export const routes: Routes = [
     { path: 'species', component: SpeciesComponent, canActivate: [AuthGuard]},
     { path: 'specie/:id', component: SpecieComponent, canActivate: [AuthGuard]},
     { path: 'create-specie', component: NewSpecieComponent, canActivate: [AuthGuard]},
-    { path: 'edit-specie/:id', component: EditSpecieComponent, canActivate: [AuthGuard]}
+    { path: 'edit-specie/:id', component: EditSpecieComponent, canActivate: [AuthGuard]},
+    
+    { path: 'inhabitants', component: InhabitantsComponent, canActivate: [AuthGuard]},
+    // { path: 'specie/:id', component: SpecieComponent, canActivate: [AuthGuard]},
+    // { path: 'create-specie', component: NewSpecieComponent, canActivate: [AuthGuard]},
+    // { path: 'edit-specie/:id', component: EditSpecieComponent, canActivate: [AuthGuard]}
 ];
