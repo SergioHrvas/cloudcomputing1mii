@@ -20,6 +20,8 @@ export class UserEditComponent implements OnInit{
     public token: string;
     public status: string;
 
+    profileImage: File | null = null;
+
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
@@ -43,21 +45,31 @@ export class UserEditComponent implements OnInit{
      this.status=""
     }
 
+    public serverUrl: string = 'http://localhost:3800/uploads/users';  // URL base para la carpeta donde se almacenan las imágenes
+
     ngOnInit(): void {
         this.user = this._userService.getIdentity();
-
-        console.log("Componente user-edit cargado")    
     }
+
+    onFileChange(event: any): void {
+        const file = event.target.files[0];
+        if (file) {
+          this.profileImage = file;
+        }
+      }
+    
 
     onSubmit(form: any){
 
-        this._userService.updateUser(this.user).subscribe(
+        this._userService.updateUser(this.user, this.profileImage).subscribe(
             response => {
                 if(!response.user){
                     this.status = "error"
                 }
                 else{
                     this.status = "success"
+                    this.user.image = response.user.image
+
                     this.identity = this.user;
                     //PERSISTIR DATOS DEL USUARIO
                     if (typeof localStorage !== 'undefined') {

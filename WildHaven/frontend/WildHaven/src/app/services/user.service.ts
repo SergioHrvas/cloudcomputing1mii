@@ -45,13 +45,22 @@ export class UserService{
 
 
 
-    updateUser(user_to_edit: User): Observable<any>{
-        //Convertimos el objeto usuario en JSON
-        let params = JSON.stringify(user_to_edit);
+    updateUser(user_to_edit: User, profileImage: File | null): Observable<any>{
+        
+        const formData = new FormData();
+        formData.append('name', user_to_edit.name.toString());
+        formData.append('surname', user_to_edit.surname.toString());
+        formData.append('email', user_to_edit.email.toString());
+        // Solo añadir la imagen si está seleccionada
+        if (profileImage) {
+            formData.append('image', profileImage, profileImage.name);
+        }
+        
+            
+        let headers = new HttpHeaders().set("Authorization", this.getToken());
 
-        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.getToken());
-
-        return this._http.put(this.url+"user/update/" + user_to_edit._id, params, {headers: headers})
+        console.log(formData)
+        return this._http.put(this.url+"user/update/" + user_to_edit._id, formData, {headers: headers})
         
     }
 

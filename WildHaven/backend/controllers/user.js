@@ -18,6 +18,7 @@ var mongoosePaginate = require('mongoose-pagination');
 var fs = require('fs');
 var path = require('path');
 const { escape } = require('querystring');
+const user = require('../models/user');
 
 
 function pruebas(req, res) {
@@ -178,10 +179,24 @@ function getUsers(req, res) {
 }
 
 
+//Le pasamos la respuesta para poder devolverla
+function removeFilesOfUploads(res, file_path, message){
+    fs.unlink(file_path, (err) => {
+           return res.status(200).send({message});
+   });
+}
+
 //Editar datos de usuarios
 function updateUser(req, res) {
     var id = req.params.id;
     var update = req.body;
+
+    if(req.file){
+        var file_path = req.file.destination;
+        var file_name = req.file.filename;
+    }
+
+    update.image = file_name
 
     //Eliminamos la propiedad contraseña por seguridad (se modificará en un método por separado)
     delete update.password;
@@ -216,23 +231,66 @@ function updateUser(req, res) {
                 return res.status(500).send({ message: "Los datos ya están en uso" })
             }
         }
-        User.findByIdAndUpdate(id, update, { new: true }).exec().then(
-            userUpdated => {
-                if (!userUpdated) {
-                    return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
-                }
 
-                return res.status(200).send({ user: userUpdated });
+        User.findById(id).exec().then(
+            old_user => {
+            
+                var old_path = old_user.image;
+
+                User.findByIdAndUpdate(id, update, { new: true }).exec().then(
+                    userUpdated => {
+                        if (!userUpdated) {
+                            return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
+                        }
+
+                        console.log(old_path.length)
+        
+                        
+
+                        // Si tenía ya una imagen, la borramos
+                        if (old_path.length > 0) {
+
+                            const filePath = file_path + "\\" + old_path;
+                            
+                            // Verificamos si el archivo existe
+                            fs.access(filePath, fs.constants.F_OK, (err) => {
+                                if (!err) {
+                                    // Si el archivo existe, lo eliminamos
+                                    fs.unlink(filePath, (err) => {
+                                        if (err) {
+                                            console.error("Error al eliminar el archivo:", err);
+                                        } else {
+                                            console.log("Archivo eliminado con éxito.");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+        
+                        return res.status(200).send({ user: userUpdated });
+                    }
+                ).catch(
+                    err => {
+                        if (err) return res.status(500).send({ message: "Error en la petición1" });
+                    }
+                )
             }
+
+
+
+
+
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error en la petición" });
+                if (err) return res.status(500).send({ message: "Error en la petición2" });
             }
         )
+
+ 
     }
     ).catch(
         err => {
-            if (err) return res.status(500).send({ message: "Error en la petición" });
+            if (err) return res.status(500).send({ message: "Error en la petición3" });
         }
     )
 
