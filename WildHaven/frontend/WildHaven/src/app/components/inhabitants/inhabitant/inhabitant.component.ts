@@ -2,25 +2,26 @@ import { Component, OnInit } from "@angular/core"
 import {Router, ActivatedRoute, Params } from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SpecieService } from "../../../services/specie.service";
-import { Specie } from "../../../models/specie";
+import { InhabitantService } from "../../../services/inhabitant.service";
 import { Inhabitant } from "../../../models/inhabitant";
 
 import { GLOBAL } from "../../../services/global";
+import { Zone } from "../../../models/zone";
+import { Specie } from "../../../models/specie";
 
 @Component({
-    selector: 'specie',
-    templateUrl: './specie.component.html',
+    selector: 'inhabitant',
+    templateUrl: './inhabitant.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],
-    providers: [SpecieService]
+    providers: [InhabitantService]
 
 })
 
-export class SpecieComponent implements OnInit{
+export class InhabitantComponent implements OnInit{
 
     public url: String;
-    public specie: Specie;
+    public inhabitant: Inhabitant;
     public inhabitants: Inhabitant[]
     private status: String;
     public title: String;
@@ -28,10 +29,15 @@ export class SpecieComponent implements OnInit{
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _specieService: SpecieService
+        private _inhabitantService: InhabitantService
     ){
-        this.specie = new Specie(
-            "", "", "", "", "", ""
+        this.inhabitant = new Inhabitant(
+            "", "", "", "", "", "", new Date(), [{
+                date: new Date(),
+                reason: "",
+                treatments: "",
+                vetName: "",
+            }], true,new Specie("", "", "", "", "", ""), new Zone("", "", "", "")
         );
         this.inhabitants = [];
         this.status = ""
@@ -41,10 +47,9 @@ export class SpecieComponent implements OnInit{
 
     ngOnInit() {
         const id = this._route.snapshot.paramMap.get('id');
-        this._specieService.getSpecie(id).subscribe(
+        this._inhabitantService.getInhabitant(id).subscribe(
             response => {
-                console.log(response)
-                this.specie = response.specie;
+                this.inhabitant = response.inhabitant;
                 this.inhabitants = response.inhabitants;
             },
             error => {

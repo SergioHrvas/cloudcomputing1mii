@@ -1,3 +1,4 @@
+import { Specie } from "./specie"
 import { Zone } from "./zone"
 
 export class Inhabitant{
@@ -16,7 +17,7 @@ export class Inhabitant{
             vetName: String
         }],
         public alive: boolean,
-        //public specie: Specie,
+        public specie: Specie,
         public zone: Zone
     ){}
 }

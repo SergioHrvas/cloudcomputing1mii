@@ -1,0 +1,58 @@
+<div class="container mt-5">
+
+  <div class="container my-4">
+    <div class="row align-items-center">
+      <!-- Imagen de la habitante -->
+      <div class="col-md-6 text-center">
+        <img [src]="'http://localhost:3800/uploads/inhabitants/' + inhabitant.image" alt="{{ inhabitant.name }}"
+          class="img-fluid rounded" style="max-width: 100%; height: auto; box-shadow: 0px 4px 8px rgba(0,0,0,0.2);" />
+
+      </div>
+
+      <!-- Encabezado y detalles -->
+      <div class="col-md-6">
+        <div class="p-4 bg-light rounded">
+          <h1 class="display-4 d-inline-block">
+            {{ inhabitant.name }}
+          </h1>
+          <div class="d-inline-block ms-2">
+            <i *ngIf="inhabitant.alive" class="bi bi-emoji-smile-fill text-success"></i>
+            <i *ngIf="!inhabitant.alive" class="bi bi-emoji-dizzy text-danger"></i>
+          </div>
+          <p class="lead"><strong>Especie:</strong> {{ inhabitant.specie.name }}</p>
+          <p class="lead"><strong>Descripción:</strong> {{ inhabitant.description }}</p>
+          <p class="lead"><strong>Personalidad:</strong> {{ inhabitant.personality }}</p>
+          <p class="lead"><strong>Estado de salud:</strong> {{ inhabitant.healthStatus }}</p>
+          <p class="lead"><strong>Nacimiento:</strong> {{ inhabitant.birth }}</p>
+          <p class="lead"><strong>Zona:</strong> {{ inhabitant.zone.name }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Visitas médicas-->
+  <div class="card mt-4 shadow-sm">
+    <div class="card-body">
+      <div><h2 class="card-title"><i class="bi bi-bandaid"></i> Visitas médicas</h2></div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex align-items-center" *ngFor="let visit of inhabitant.vetVisits">
+          <div class="row w-100">
+            <div class="col-3">
+              <strong>Fecha:</strong> {{ visit.date }}
+            </div>
+            <div class="col-3">
+              <strong>Razón:</strong> {{ visit.reason }}
+            </div>
+            <div class="col-3">
+              <strong>Tratamientos:</strong> {{ visit.treatments }}
+            </div>
+            <div class="col-3">
+              <strong>Veterinario:</strong> {{ visit.vetName }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+

@@ -69,6 +69,11 @@
             "date": 1732833930519,
             "name": "logs\\api-2024-11-28.log",
             "hash": "5908f5aa8284150fec4fee989200a353c15f19c276cfd0b2d31a5f31e6e8a6b2"
+        },
+        {
+            "date": 1732890468899,
+            "name": "logs\\api-2024-11-29.log",
+            "hash": "92874e6704476ea8594b74d0cedeb0b6a2311aa63db1e531f337da4513d6b578"
         }
     ],
     "hashType": "sha256"
