@@ -241,10 +241,7 @@ function updateUser(req, res) {
                     userUpdated => {
                         if (!userUpdated) {
                             return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
-                        }
-
-                        console.log(old_path.length)
-        
+                        }       
                         
 
                         // Si tenía ya una imagen, la borramos

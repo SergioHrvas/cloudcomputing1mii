@@ -13,6 +13,8 @@ const storage = multer.diskStorage({
             uploadDir = path.join('./uploads', 'users');  // Para imágenes de usuario
         } else if (req.baseUrl.includes('/species')) {
             uploadDir = path.join('./uploads', 'species');  // Para imágenes de especie
+        } else if (req.baseUrl.includes('/zone')) {
+            uploadDir = path.join('./uploads', 'zones');  // Para imágenes de especie
         } else {
             uploadDir = path.join('./uploads', 'others');  // Carpeta por defecto
         }

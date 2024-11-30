@@ -63,10 +63,15 @@ function getZones(req, res) {
 function createZone(req, res) {
     var body = req.body;
 
+    if(req.file){
+        var file_path = req.file.destination;
+        var file_name = req.file.filename;
+    }
+
     var new_zone = new Zone();
     new_zone.name = body.name;
     new_zone.description = body.description;
-    new_zone.image = body.image;
+    new_zone.image = file_name;
 
 
 
@@ -80,9 +85,11 @@ function createZone(req, res) {
                     res.status(400).send({ message: "El nombre es obligatorio" })
                 }
                 else {
+
                     new_zone.save().then(
                         zoneStored => {
                             if (zoneStored) {
+
                                 res.status(200).send({ zone: zoneStored });
                             } else {
                                 res.status(404).send({ message: "No se ha guardado la zona" });

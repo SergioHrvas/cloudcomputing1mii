@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core"
 import {Router, ActivatedRoute, Params } from '@angular/router'
-import { User } from "../../models/user";
+import { User } from "../../../models/user";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserService } from "../../services/user.service";
+import { UserService } from "../../../services/user.service";
 import { get } from "http";
 
 @Component({

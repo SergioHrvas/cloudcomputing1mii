@@ -23,6 +23,8 @@ export class NewZoneComponent implements OnInit{
     private status: String;
     public title: String;
 
+    imageZone: File | null = null;
+
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
@@ -40,13 +42,22 @@ export class NewZoneComponent implements OnInit{
     }
 
     onImageSelected(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            this.zone.image = event.target.files[0];
+        const file = event.target.files[0];
+        if (file) {
+          this.imageZone = file;
         }
     }
 
     onSubmit(form: any){
-        this._zoneService.createZone(this.zone).subscribe(
+        const formData = new FormData();
+        formData.append('name', this.zone.name.toString());
+        formData.append('description', this.zone.description.toString());
+        // Solo añadir la imagen si está seleccionada
+        if (this.imageZone) {
+            formData.append('image', this.imageZone, this.imageZone.name);
+        }
+
+        this._zoneService.createZone(formData).subscribe(
             response => {
                 if(!response.zone){
                     this.status = "error"
