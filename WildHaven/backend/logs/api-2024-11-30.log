@@ -88,3 +88,6 @@
 2024-11-30 17:20:05 [info]: GET /api/zone/zone/674ae70875ed39dd6b8a4ecc 200 - 12ms (::ffff:127.0.0.1)
 2024-11-30 17:20:11 [info]: PUT /api/zone/update/674ae70875ed39dd6b8a4ecc 200 - 46ms (::ffff:127.0.0.1)
 2024-11-30 17:20:11 [info]: GET /api/zone/list 200 - 7ms (::ffff:127.0.0.1)
+2024-11-30 17:34:17 [info]: GET /api/specie/list 200 - 5ms (::ffff:127.0.0.1)
+2024-11-30 17:34:19 [info]: GET /api/inhabitant/list 200 - 5ms (::ffff:127.0.0.1)
+2024-11-30 17:34:21 [info]: GET /api/zone/list 200 - 5ms (::ffff:127.0.0.1)

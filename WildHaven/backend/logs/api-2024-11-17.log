@@ -1,6 +1,0 @@
-2024-11-17 10:00:12 [info]: GET /api/task/pruebas 200 - 1ms (::1)
-2024-11-17 22:29:05 [info]: POST /api/user/login 200 - 79ms (::1)
-2024-11-17 22:29:10 [info]: POST /api/user/login 200 - 329ms (::1)
-2024-11-17 23:45:59 [info]: POST /api/task/create 200 - 22ms (::1)
-2024-11-17 23:46:05 [info]: GET /api/task/task/673a722700eb7da21c357501 200 - 14ms (::1)
-2024-11-17 23:46:30 [info]: GET /api/task/list 200 - 31ms (::1)

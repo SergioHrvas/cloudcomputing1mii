@@ -21,11 +21,11 @@
   "author": "Sergio Hervás Cobo",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^5.1.1",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.20.3",
     "connect-multiparty": "^2.2.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "helmet": "^8.0.0",
     "jwt-simple": "^0.5.6",

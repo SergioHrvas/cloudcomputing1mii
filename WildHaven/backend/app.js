@@ -11,6 +11,16 @@ var app = express();
 
 
 const cors = require('cors');
+// Configurar CORS para aceptar solicitudes desde tu frontend Angular
+app.use(cors()); 
+app.options('*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.sendStatus(200);  // Responde con un 200 OK para las solicitudes OPTIONS
+  });
+app.use(express.json());  // Para analizar el cuerpo de la solicitud en formato JSON
+app.use(express.urlencoded({ extended: true }));  // Para formularios codificados en URL
 
 //Cargamos las rutas
 var user_routes = require('./routes/user');
@@ -30,8 +40,6 @@ app.use(bodyParser.json());
 // Servir archivos estáticos desde la carpeta 'uploads'
 app.use('/uploads', express.static(process.cwd() + '/uploads'))
 
-// Habilitar CORS para todas las rutas
-app.use(cors());
 
 //rutas
 ///El app.use nos permite que se ejecute el middleware antes de la acción del controlador
