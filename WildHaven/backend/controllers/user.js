@@ -71,7 +71,7 @@ function saveUser(req, res) {
 
 
         }).catch(err => {
-            if (err) return res.status(500).send({ message: "Error en la petición de registro" });
+            if (err) return res.status(500).send({ message: "Error en la petición de registro: " + err});
         })
 
     }

@@ -9,7 +9,7 @@ const upload = require('../middlewares/confmulter');  // Importar el middleware
 var api = express.Router();
 
 api.get('/pruebas', requestLogger, UserController.pruebas);
-api.post('/register',requestLogger, UserController.saveUser);
+api.post('/register', requestLogger, UserController.saveUser);
 api.post('/login',requestLogger, UserController.loginUser);
 api.get('/user/:id', [mdAuth.ensureAuth,requestLogger], UserController.getUser)
 api.get('/list/:page?/:itemsPerPage?', [mdAuth.ensureAuth,requestLogger], UserController.getUsers)

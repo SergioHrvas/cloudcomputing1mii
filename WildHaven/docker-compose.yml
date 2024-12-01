@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    volumes:
+      - mongodb_data:/data/db
+
+  node-app:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile  # Asegúrate de que tu Dockerfile esté en el mismo directorio
+    container_name: node-app
+    environment:
+      MONGO_URL: mongodb://admin:secret@mongodb:27017/wildhaven-db?authSource=admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  angular-app:
+    build:
+      context: ./frontend/WildHaven/
+      dockerfile: Dockerfile  # Asegúrate de que tu Dockerfile esté en el mismo directorio
+    container_name: angular-app
+    ports:
+      - "4200:4200"  # Exponer el puerto 80 (donde Nginx sirve la app de Angular) al puerto 420
+    networks:
+      - app-network
+      
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local

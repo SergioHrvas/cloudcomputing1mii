@@ -4,6 +4,7 @@ import { User } from "../../../models/user";
 import { UserService } from "../../../services/user.service";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
+import { GLOBAL } from "../../../services/global";
  
 @Component({
     selector: "user-edit",
@@ -45,7 +46,7 @@ export class UserEditComponent implements OnInit{
      this.status=""
     }
 
-    public serverUrl: string = 'http://localhost:3800/uploads/users';  // URL base para la carpeta donde se almacenan las imágenes
+    public serverUrl: string = GLOBAL.url;  // URL base para la carpeta donde se almacenan las imágenes
 
     ngOnInit(): void {
         this.user = this._userService.getIdentity();
