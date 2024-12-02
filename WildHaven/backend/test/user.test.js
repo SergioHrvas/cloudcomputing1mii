@@ -3,6 +3,8 @@ const chai = require('chai');
 const app = require('../app'); // Ruta a tu archivo de aplicación Express
 const chai_http = require('chai-http')
 chai.use(chai_http);
+const fs = require('fs');
+
 
 //Incluimos modulo bcrypt para encriptar las contraseñas
 var bcrypt = require('bcrypt-nodejs');
@@ -11,6 +13,9 @@ var bcrypt = require('bcrypt-nodejs');
 const expect = chai.expect;
 describe("Usuarios", function () {
     var token = "";
+    var imagenes = []; 
+
+
     before(async () => {
         // Conéctate a la base de datos de prueba
         await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
@@ -57,6 +62,12 @@ describe("Usuarios", function () {
         await mongoose.model('User').deleteMany({});
         await mongoose.model('Zone').deleteMany({});
         await mongoose.model('Specie').deleteMany({});
+        
+        for(var i = 0; i < imagenes.length; i++){
+            var imagePath = 'uploads/users/' + imagenes[i]
+            fs.unlinkSync(imagePath)
+        }
+        
         await mongoose.disconnect();
     });
 
@@ -180,7 +191,6 @@ describe("Usuarios", function () {
                 surname: "Update",
                 email: "usuarioupdate@gmail.com",
                 role: "ROLE_USER",
-                image: null,
                 password: pass
             });
 
@@ -210,7 +220,10 @@ describe("Usuarios", function () {
                 surname: "apellidocambiado"
             }
 
-            const res = await chai.request(app).put('/api/user/update/' + iduserupdated).set('Authorization', tokenupdate).send(body)
+            const res = await chai.request(app).put('/api/user/update/' + iduserupdated).set('Authorization', tokenupdate).field('email', body.email).field('surname', body.surname).field('name', body.name).attach('image', 
+                fs.readFileSync('test/test.png'), 'test.png');
+            
+            imagenes.push(res.body.user.image)
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('user').that.is.an('object');
@@ -341,7 +354,7 @@ describe("Usuarios", function () {
             const res = await chai.request(app).post('/api/user/register').send(body)
 
             expect(res).to.have.status(500);
-            expect(res.body).to.have.property('message').that.equals("Error en la petición de registro")
+            expect(res.body).to.have.property('message').that.includes("Error en la petición de registro")
         })
 
 

@@ -241,14 +241,14 @@ function updateUser(req, res) {
                     userUpdated => {
                         if (!userUpdated) {
                             return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
-                        }       
-                        
+                        }                               
 
                         // Si tenía ya una imagen, la borramos
-                        if (old_path.length > 0) {
+                        if (old_path && old_path.length > 0) {
 
                             const filePath = file_path + "\\" + old_path;
                             
+                            console.log("filpath: " + filePath)
                             // Verificamos si el archivo existe
                             fs.access(filePath, fs.constants.F_OK, (err) => {
                                 if (!err) {
@@ -268,7 +268,7 @@ function updateUser(req, res) {
                     }
                 ).catch(
                     err => {
-                        if (err) return res.status(500).send({ message: "Error en la petición1" });
+                        if (err) return res.status(500).send({ message: "Error en la petición" });
                     }
                 )
             }
@@ -279,7 +279,7 @@ function updateUser(req, res) {
 
         ).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error en la petición2" });
+                if (err) return res.status(500).send({ message: "Error en la petición" });
             }
         )
 
@@ -287,7 +287,7 @@ function updateUser(req, res) {
     }
     ).catch(
         err => {
-            if (err) return res.status(500).send({ message: "Error en la petición3" });
+            if (err) return res.status(500).send({ message: "Error en la petición" });
         }
     )
 

@@ -89,7 +89,6 @@ function createZone(req, res) {
                     new_zone.save().then(
                         zoneStored => {
                             if (zoneStored) {
-
                                 res.status(200).send({ zone: zoneStored });
                             } else {
                                 res.status(404).send({ message: "No se ha guardado la zona" });
@@ -203,7 +202,7 @@ function updateZone(req, res) {
             }
         }).catch(
             err => {
-                if (err) return res.status(500).send({ message: "Error al obtener las zonas." + err });
+                if (err) return res.status(500).send({ message: "Error en la petición." + err });
             }
         )
 

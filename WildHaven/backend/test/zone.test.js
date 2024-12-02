@@ -3,7 +3,8 @@ const chai = require('chai');
 const app = require('../app'); // Ruta a tu archivo de aplicación Express
 const chai_http = require('chai-http')
 chai.use(chai_http);
-
+const FormData = require('form-data');
+const fs = require('fs');
 //Incluimos modulo bcrypt para encriptar las contraseñas
 var bcrypt = require('bcrypt-nodejs');
 
@@ -11,6 +12,9 @@ var bcrypt = require('bcrypt-nodejs');
 const expect = chai.expect;
 describe("Zonas", function () {
     var token = "";
+    var imagenes = []; 
+
+
     before(async () => {
         // Conéctate a la base de datos de prueba
         await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
@@ -57,6 +61,11 @@ describe("Zonas", function () {
         await mongoose.model('User').deleteMany({});
         await mongoose.model('Zone').deleteMany({});
         await mongoose.model('Specie').deleteMany({});
+
+        for(var i = 0; i < imagenes.length; i++){
+            var imagePath = 'uploads/zones/' + imagenes[i]
+            fs.unlinkSync(imagePath)
+        }
         
         await mongoose.disconnect();
     });
@@ -167,6 +176,7 @@ describe("Zonas", function () {
 
         // Después de las pruebas, desconectarse de la base de datos
         after(async () => {
+            
             await mongoose.disconnect();
         });
 
@@ -182,16 +192,18 @@ describe("Zonas", function () {
             var body = {
                 name: "zonaPruebaModificada",
                 description: "descripcion modificada de la zona",
-                image: "otraImagen.png",
             }
-
-            const res = await chai.request(app).put('/api/zone/update/670f930a96f295c8503ade12').set('Authorization', token).send(body)
-
+            
+            const res = await chai.request(app).put('/api/zone/update/670f930a96f295c8503ade12').set('Authorization', token).field('description', body.description).field('name', body.name).attach('image', 
+                fs.readFileSync('test/test.png'), 'test.png');
+           
+            imagenes.push(res.body.zone.image)
+           
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('zone').that.is.an('object');
             expect(res.body.zone).to.have.property('name').that.equals('zonaPruebaModificada');
             expect(res.body.zone).to.have.property('description').that.equals('descripcion modificada de la zona');
-            expect(res.body.zone).to.have.property('image').that.equals('otraImagen.png');
+            expect(res.body.zone).to.have.property('image').that.includes('image-').that.includes('.png').that.not.equals('imagenZona.png');
         })
 
 
@@ -237,17 +249,10 @@ describe("Zonas", function () {
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.includes("Error en la petición")
         })
-
-
-
-
-
-
     });
 
     describe('Crear zona', function () {
         var body = {}
-
         before(async () => {
             // Conéctate a la base de datos de prueba
             await mongoose.connect('mongodb://0.0.0.0:27017/wildhaven-test');
@@ -255,11 +260,12 @@ describe("Zonas", function () {
             console.log("Conexión a la base de datos de prueba establecida");
             await mongoose.model('Zone').deleteMany({});
 
+            // Agregar datos al formulario
             body = {
-                name: "Zona creada",
-                description: "Descripción de la zona creada",
-                image: 'zonaimage.png'
+                "name": "Zona creada",
+                "description": "Descripción de la zona creada"
             }
+
         });
 
         // Después de las pruebas, desconectarse de la base de datos
@@ -269,14 +275,17 @@ describe("Zonas", function () {
 
         it("Deberia devolver 200 si se ha creado la zona", async () => {
 
+            
+            const res = await chai.request(app).post('/api/zone/create').set('Authorization', token).field('description', body.description).field('name', body.name).attach('image', 
+                fs.readFileSync('test/test.png'), 'test.png');
 
-            const res = await chai.request(app).post('/api/zone/create').set('Authorization', token).send(body)
+            imagenes.push(res.body.zone.image)
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('zone').that.is.an('object');
             expect(res.body.zone).to.have.property('name').that.equals('Zona creada');
             expect(res.body.zone).to.have.property('description').that.equals('Descripción de la zona creada');
-            expect(res.body.zone).to.have.property('image').that.equals('zonaimage.png');
+            expect(res.body.zone).to.have.property('image').that.includes('image-').that.includes('.png');
 
         })
 
