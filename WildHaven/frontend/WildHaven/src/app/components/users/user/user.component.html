@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="container my-4">
+    <div class="row align-items-center">
+      <!-- Imagen del usuario -->
+      <div class="col-md-6 text-center">
+        <img 
+          [src]="'http://localhost:3000/uploads/users/' + user.image" 
+          alt="{{ user.name }}" 
+          class="img-fluid rounded" 
+          style="max-width: 100%; height: auto; box-shadow: 0px 4px 8px rgba(0,0,0,0.2);" />
+      </div>
+  
+      <!-- Encabezado y detalles -->
+      <div class="col-md-6">
+        <div class="p-4 bg-light rounded">
+          <h1 class="display-4">{{ user.name }}</h1>
+          <h1 class="display-5">{{ user.surname }}</h1>
+          <p class="lead">{{ user.email }}</p>
+          <p class="lead">{{ user.role }}</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  

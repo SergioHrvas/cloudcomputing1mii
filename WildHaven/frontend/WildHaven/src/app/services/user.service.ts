@@ -158,5 +158,13 @@ export class UserService{
 
         return this._http.delete(this.url+"user/delete/" + id, {headers: headers})   
     }
+
+    getUser(id: String | null): Observable<any>{
+        this.token = this.getToken();
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+
+        return this._http.get(this.url+"user/user/" + id, {headers: headers})   
+    }
     
 }
