@@ -54,7 +54,9 @@ export class LoginComponent implements OnInit{
     onSubmit(form: any){
         this._userService.loginUser(this.user).subscribe(
             response => {
+                console.log(response)
                 this.identity = response.user;
+                this.token = response.token;
                 if(!this.identity || !this.identity._id){
                     this.status = "error";
                 }else{
@@ -68,29 +70,6 @@ export class LoginComponent implements OnInit{
                         console.log('Web Storage is not supported in this environment.');
                       }
                     
-                    //Conseguir token
-                    this.getToken()
-
-                    this._router.navigate(['/']);  // Cambia '/home' a la ruta de tu página de inicio
-                }
-
-            },
-            error => {
-                console.log(<any>error);
-                if(<any>error != null){
-                    this.status = 'error';
-                }
-            }
-        );
-    }
-    
-    getToken(){
-        this._userService.loginUser(this.user, <any>'true').subscribe(
-            response => {
-                this.token = response.token;
-                if(this.token.length <= 0){
-                    this.status = "error";
-                }else{
                     //PERSISTIR TOKEN DE USUARIO
                     if (typeof localStorage !== 'undefined') {
                         localStorage.setItem('Token', JSON.stringify(this.token))
@@ -100,6 +79,9 @@ export class LoginComponent implements OnInit{
                         // If neither localStorage nor sessionStorage is supported
                         console.log('Web Storage is not supported in this environment.');
                       }
+                    console.log(this.token)
+
+                    this._router.navigate(['/users']); 
                 }
 
             },

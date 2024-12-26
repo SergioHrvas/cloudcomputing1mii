@@ -99,7 +99,8 @@ function loginUser(req, res) {
                         if (params.gettoken) {
                             //devolver token
                             return res.status(200).send({
-                                token: jwt.createToken(user)
+                                token: jwt.createToken(user),
+                                user
                             })
                         } else {
                             user.password = undefined;

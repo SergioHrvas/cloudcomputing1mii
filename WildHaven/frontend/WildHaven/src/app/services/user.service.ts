@@ -22,10 +22,12 @@ export class UserService{
         
     }
 
-    loginUser(user: any, gettoken = null): Observable<any>{
-        if(user != null){
-            user.gettoken = gettoken;
-        }
+    loginUser(user: any): Observable<any>{
+        
+        user.gettoken = true
+
+        console.log(user)
+        console.log("2a")
         //Convertimos el objeto usuario en JSON
         let params = JSON.stringify(user);
 
@@ -139,5 +141,31 @@ export class UserService{
           }
     }
 
+
+    getUsers(): Observable<any>{
+        this.token = this.getToken();
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+
+        return this._http.get(this.url+"user/list", {headers: headers})   
+    }
+
+
+    createUser(formData: FormData): Observable<any>{
+        this.token = this.getToken();
+
+
+        let headers = new HttpHeaders().set("Authorization", this.token)
+
+        return this._http.post(this.url+"zone/create/",formData, {headers: headers})   
+    }
+
+    removeUser(id: String | null): Observable<any>{
+        this.token = this.getToken();
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+
+        return this._http.delete(this.url+"zone/delete/" + id, {headers: headers})   
+    }
     
 }

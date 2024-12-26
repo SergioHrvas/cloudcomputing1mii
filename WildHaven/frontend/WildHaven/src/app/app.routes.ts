@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/users/login/login.component';
-import { HomeComponent } from './components/users/home/home.component';
+import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/users/register/register.component';
 import { UserEditComponent } from './components/users/edit-profile/user-edit.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -19,12 +19,14 @@ import { InhabitantsComponent } from './components/inhabitants/list/inhabitant-l
 import { InhabitantComponent } from './components/inhabitants/inhabitant/inhabitant.component';
 import { NewInhabitantComponent } from './components/inhabitants/new-inhabitant/new-inhabitant.component';
 import { EditInhabitantComponent } from './components/inhabitants/edit-inhabitant/edit-inhabitant.component';
+import { UsersComponent } from './components/users/list/user-list.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent, },
     { path: 'edit-profile', component: UserEditComponent, canActivate: [AuthGuard]},
+    { path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
 
     { path: 'zones', component: ZonesComponent, canActivate: [AuthGuard]},
     { path: 'zone/:id', component: ZoneComponent, canActivate: [AuthGuard]},
