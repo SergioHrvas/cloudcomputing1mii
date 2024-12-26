@@ -3,7 +3,8 @@ const chai = require('chai');
 const app = require('../app'); // Ruta a tu archivo de aplicación Express
 const chai_http = require('chai-http')
 chai.use(chai_http);
-
+const FormData = require('form-data');
+const fs = require('fs');
 //Incluimos modulo bcrypt para encriptar las contraseñas
 var bcrypt = require('bcrypt-nodejs');
 
@@ -356,13 +357,14 @@ describe("Habitantes", function () {
         it("Deberia devolver 200 si se ha creado el habitante", async () => {
 
 
-            const res = await chai.request(app).post('/api/inhabitant/create').set('Authorization', token).send(body)
+            const res = await chai.request(app).post('/api/inhabitant/create').set('Authorization', token).field('description', body.description).field('name', body.name)
+                        .field('specie', body.specie).field('zone', body.zone).attach('image', fs.readFileSync('test/test.png'), 'test.png')
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('inhabitant').that.is.an('object');
             expect(res.body.inhabitant).to.have.property('name').that.equals('Nuevo habitante');
             expect(res.body.inhabitant).to.have.property('description').that.equals('Descripcion del nuevo habitante');
-            expect(res.body.inhabitant).to.have.property('image').that.equals('imagenhabitante.png');
+            expect(res.body.inhabitant).to.have.property('image').that.includes('image-').that.includes('.png');
 
         })
 

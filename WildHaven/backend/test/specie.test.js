@@ -3,7 +3,7 @@ const chai = require('chai');
 const app = require('../app'); // Ruta a tu archivo de aplicación Express
 const chai_http = require('chai-http')
 chai.use(chai_http);
-
+const fs = require('fs');
 //Incluimos modulo bcrypt para encriptar las contraseñas
 var bcrypt = require('bcrypt-nodejs');
 
@@ -264,9 +264,9 @@ describe("Especies", function () {
         });
 
         it("Deberia devolver 200 si se ha creado la especie", async () => {
+            const res = await chai.request(app).post('/api/specie/create').set('Authorization', token).field('description', body.description).field('name', body.name)
+            .field('diet', body.diet).field('technical_name', body.technical_name).attach('image', fs.readFileSync('test/test.png'), 'test.png')
 
-
-            const res = await chai.request(app).post('/api/specie/create').set('Authorization', token).send(body)
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('specie').that.is.an('object');
@@ -274,7 +274,7 @@ describe("Especies", function () {
             expect(res.body.specie).to.have.property('technical_name').that.equals('Nombre técnico');
             expect(res.body.specie).to.have.property('description').that.equals('Descripcion de la nueva especie');
             expect(res.body.specie).to.have.property('diet').that.equals('Semillas');
-            expect(res.body.specie).to.have.property('image').that.equals('imagenespecie.png');
+            expect(res.body.specie).to.have.property('image').that.includes('image-').that.includes('.png');
 
         })
 
