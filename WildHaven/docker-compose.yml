@@ -12,11 +12,6 @@ services:
       - app-network
     volumes:
       - mongodb_data:/data/db
-    logging:
-      driver: loki
-      options:
-        loki-url: http://loki:3100/loki/api/v1/push
-
 
   node-app:
     build:
@@ -31,11 +26,6 @@ services:
       - mongodb
     networks:
       - app-network
-    logging:
-      driver: loki
-      options:
-        loki-url: http://loki:3100/loki/api/v1/push
-
 
   angular-app:
     build:
@@ -46,47 +36,6 @@ services:
       - "4200:4200"  # Exponer el puerto 80 (donde Nginx sirve la app de Angular) al puerto 420
     networks:
       - app-network
-    logging:
-      driver: loki
-      options:
-        loki-url: http://loki:3100/loki/api/v1/push
-
-
-  loki:
-    image: grafana/loki:latest
-    container_name: loki
-    ports:
-      - "3100:3100"
-    volumes:
-      - ./loki:/etc/loki
-      - loki-data:/loki
-    command: -config.file=/etc/loki/local-config.yaml
-
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3001:3000"
-    depends_on:
-      - loki
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - grafana-data:/var/lib/grafana
-
-
-  promtail:
-    image: grafana/promtail:latest
-    container_name: promtail
-    volumes:
-      - /var/log:/var/log
-      - ./promtail:/etc/promtail
-    command: -config.file=/etc/promtail/promtail-config.yaml
-    depends_on:
-      - loki
-      
       
 networks:
   app-network:
@@ -94,8 +43,4 @@ networks:
 
 volumes:
   mongodb_data:
-    driver: local
-  grafana-data:
-    driver: local
-  loki-data:
     driver: local
