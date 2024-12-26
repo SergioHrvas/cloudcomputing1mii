@@ -9,7 +9,6 @@ var Task = Schema({
     name: String,
     description: String,
     assignedTo: { type: Schema.Types.ObjectId, ref: 'User'},
-    description: String,
     status: { type: String, enum: ['Pendiente', 'En progreso', 'Completada'], default: 'Pendiente' },
     inhabitant: {type: Schema.Types.ObjectId, ref: 'Inhabitant', required: false},
     zone: {type: Schema.Types.ObjectId, ref: 'Zone', required: false},

@@ -19,6 +19,8 @@ export class TasksComponent implements OnInit{
 
     public url: String;
     public tasks: Task[];
+    public myTasks: Task[];
+    public myOwnTasks: Task[]
     private status: String;
     public title: String;
 
@@ -28,15 +30,18 @@ export class TasksComponent implements OnInit{
         private _taskService: TaskService
     ){
         this.tasks = [];
+        this.myOwnTasks = [];
+        this.myTasks = [];
         this.status = ""
         this.title = "Lista de tareas"
         this.url = GLOBAL.url;
     }
 
     ngOnInit() {
-        this._taskService.getTasks().subscribe(
+        this._taskService.getMyTasks().subscribe(
             response => {
-                this.tasks = response.tasks;
+                this.myTasks = response.tasks;
+                this.tasks = this.myTasks;
             },
             error => {
                 console.log(<any>error);
@@ -45,6 +50,25 @@ export class TasksComponent implements OnInit{
                 }
             }
         );
+        this._taskService.getMyOwnedTasks().subscribe(
+            response => {
+                this.myOwnTasks = response.tasks;
+            },
+            error => {
+                console.log(<any>error);
+                if(<any>error != null){
+                    this.status = 'error';
+                }
+            }
+        );
+    }
+
+    charge(tipo: String){
+        if(tipo == "assignedToMe"){
+            this.tasks = this.myTasks
+        }else{
+            this.tasks = this.myOwnTasks
+        }
     }
 
     removeTask(id: String) {

@@ -38,6 +38,18 @@ export class TaskService{
         return this._http.get(this.url+"task/tasksToUser/" + identity._id, {headers: headers})   
     }
 
+        
+    getMyOwnedTasks(): Observable<any>{
+        this.token = this.userService.getToken();
+        var identity = this.userService.getIdentity();
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+
+        console.log(identity)
+        return this._http.get(this.url+"task/tasksByUser/" + identity._id, {headers: headers})   
+    }
+
+
     getTask(id: String | null): Observable<any>{
         this.token = this.userService.getToken();
 
@@ -46,13 +58,12 @@ export class TaskService{
         return this._http.get(this.url+"task/task/" + id, {headers: headers})   
     }
 
-    createTask(formData: FormData): Observable<any>{
+    createTask(task: Task): Observable<any>{
         this.token = this.userService.getToken();
-
 
         let headers = new HttpHeaders().set("Authorization", this.token)
 
-        return this._http.post(this.url+"task/create/",formData, {headers: headers})   
+        return this._http.post(this.url+"task/create/", task, {headers: headers})   
     }
 
     removeTask(id: String | null): Observable<any>{
@@ -70,5 +81,4 @@ export class TaskService{
 
         return this._http.put(this.url+"task/update/" + id, params, {headers: headers})   
     }
-
 }

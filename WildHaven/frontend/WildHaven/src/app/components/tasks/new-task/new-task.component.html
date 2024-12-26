@@ -1,0 +1,61 @@
+<div class="col-lg-6 mx-auto mt-4">
+    <div class="jumbotron text-center p-4 bg-light rounded">
+        <h1 class="display-4">Crear Tarea</h1>
+    </div>
+    <form #createTaskForm="ngForm" (submit)="onSubmit(createTaskForm)">
+        <div class="form-group">
+            <label for="taskName">Nombre</label>
+            <input type="text" id="taskName" class="form-control" [(ngModel)]="task.name" name="name"
+                placeholder="Introduce el nombre de la tarea" required />
+        </div>
+
+
+        <div class="form-group mt-3">
+            <label for="taskDescription">Descripción</label>
+            <textarea id="taskDescription" class="form-control" [(ngModel)]="task.description"
+                name="description" placeholder="Introduce una descripción" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="status">Estado</label>
+            <select id="status" [(ngModel)]="task.status" name="status" class="form-control" required>
+                <option *ngFor="let status of statuss" [value]="status">
+                    {{ status }}
+                </option>
+            </select>
+        </div>
+
+
+        <div class="form-group mt-3">
+            <label for="user">Asignado a</label>
+            <select id="user" [(ngModel)]="task.assignedTo" name="user" class="form-control" required>
+                <option *ngFor="let user of users" [value]="user._id">
+                    {{ user.name }}
+                </option>
+            </select>
+        </div>
+
+
+        <div class="form-group mt-3">
+            <label for="zone">Seleccione una zona:</label>
+            <select id="zone" [(ngModel)]="task.zone" name="zone" class="form-control" required>
+                <option *ngFor="let zone of zones" [value]="zone._id">
+                    {{ zone.name }}
+                </option>
+            </select>
+        </div>
+
+        
+        <div class="form-group mt-3">
+            <label for="inhabitant">Seleccione un habitante:</label>
+            <select id="inhabitant" [(ngModel)]="task.inhabitant" name="inhabitant" class="form-control" required>
+                <option *ngFor="let inhabitant of inhabitants" [value]="inhabitant._id">
+                    {{ inhabitant.name }}
+                </option>
+            </select>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary mt-4">Crear Tarea</button>
+    </form>
+</div>

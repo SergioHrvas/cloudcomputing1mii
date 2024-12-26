@@ -9,9 +9,6 @@ require('dotenv').config();
 
 var port = process.env.PORT || 3800;
 
-console.log(port)
-
-
 //Hacemos la conexión con la base de datos mediante un metodo de promesas
 mongoose.Promise = global.Promise;
 

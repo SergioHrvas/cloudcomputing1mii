@@ -61,18 +61,22 @@ function createTask(req, res){
     var body = req.body;
     var createdBy = req.user.sub;
 
-    body.createdBy = createdBy;
-    var task = new Task(body);
+        const { _id, ...taskData } = req.body;
+        taskData.createdBy = createdBy;
+
+        var task = new Task(taskData);
+    
 
     task.save().then(taskSaved => {
         if(!taskSaved){
+            console.log("zs")
             res.status(400).send({message: "No se ha podido guardar la tarea"})
         }
 
         res.status(200).send({task: taskSaved})
     }
     ).catch(err => {
-        res.status(500).send({message:"Error en la petición"})
+        res.status(500).send({message:"Error en la petición: " + err})
     })
 
 };
