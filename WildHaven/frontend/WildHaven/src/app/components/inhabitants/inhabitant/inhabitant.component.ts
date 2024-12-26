@@ -22,7 +22,6 @@ export class InhabitantComponent implements OnInit{
 
     public url: String;
     public inhabitant: Inhabitant;
-    public inhabitants: Inhabitant[]
     private status: String;
     public title: String;
 
@@ -39,7 +38,6 @@ export class InhabitantComponent implements OnInit{
                 vetName: "",
             }], true,new Specie("", "", "", "", "", ""), new Zone("", "", "", "")
         );
-        this.inhabitants = [];
         this.status = ""
         this.title = "Zona"
         this.url = GLOBAL.url;
@@ -50,7 +48,6 @@ export class InhabitantComponent implements OnInit{
         this._inhabitantService.getInhabitant(id).subscribe(
             response => {
                 this.inhabitant = response.inhabitant;
-                this.inhabitants = response.inhabitants;
             },
             error => {
                 console.log(<any>error);

@@ -19,12 +19,12 @@
             <i *ngIf="inhabitant.alive" class="bi bi-emoji-smile-fill text-success"></i>
             <i *ngIf="!inhabitant.alive" class="bi bi-emoji-dizzy text-danger"></i>
           </div>
-          <p class="lead"><strong>Especie:</strong> {{ inhabitant.specie.name }}</p>
+          <p class="lead"><strong>Especie:</strong> {{ inhabitant.specie?.name }}</p>
           <p class="lead"><strong>Descripción:</strong> {{ inhabitant.description }}</p>
           <p class="lead"><strong>Personalidad:</strong> {{ inhabitant.personality }}</p>
           <p class="lead"><strong>Estado de salud:</strong> {{ inhabitant.healthStatus }}</p>
           <p class="lead"><strong>Nacimiento:</strong> {{ inhabitant.birth }}</p>
-          <p class="lead"><strong>Zona:</strong> {{ inhabitant.zone.name }}</p>
+          <p class="lead"><strong>Zona:</strong> {{ inhabitant.zone?.name }}</p>
         </div>
       </div>
     </div>

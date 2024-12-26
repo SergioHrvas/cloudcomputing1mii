@@ -26,8 +26,6 @@ export class UserService{
         
         user.gettoken = true
 
-        console.log(user)
-        console.log("2a")
         //Convertimos el objeto usuario en JSON
         let params = JSON.stringify(user);
 

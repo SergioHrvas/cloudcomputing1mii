@@ -22,6 +22,7 @@ import { EditInhabitantComponent } from './components/inhabitants/edit-inhabitan
 import { UsersComponent } from './components/users/list/user-list.component';
 import { NewUserComponent } from './components/users/new-user/new-user.component';
 import { UserComponent } from './components/users/user/user.component';
+import { TasksComponent } from './components/tasks/list/task-list.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -44,5 +45,7 @@ export const routes: Routes = [
     { path: 'inhabitants', component: InhabitantsComponent, canActivate: [AuthGuard]},
     { path: 'inhabitant/:id', component: InhabitantComponent, canActivate: [AuthGuard]},
     { path: 'create-inhabitant', component: NewInhabitantComponent, canActivate: [AuthGuard]},
-    { path: 'edit-inhabitant/:id', component: EditInhabitantComponent, canActivate: [AuthGuard]}
+    { path: 'edit-inhabitant/:id', component: EditInhabitantComponent, canActivate: [AuthGuard]},
+
+    { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard]}
 ];
