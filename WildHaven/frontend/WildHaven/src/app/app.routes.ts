@@ -20,6 +20,7 @@ import { InhabitantComponent } from './components/inhabitants/inhabitant/inhabit
 import { NewInhabitantComponent } from './components/inhabitants/new-inhabitant/new-inhabitant.component';
 import { EditInhabitantComponent } from './components/inhabitants/edit-inhabitant/edit-inhabitant.component';
 import { UsersComponent } from './components/users/list/user-list.component';
+import { NewUserComponent } from './components/users/new-user/new-user.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -27,6 +28,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent, },
     { path: 'edit-profile', component: UserEditComponent, canActivate: [AuthGuard]},
     { path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
+    { path: 'create-user', component: NewUserComponent, canActivate: [AuthGuard]},
 
     { path: 'zones', component: ZonesComponent, canActivate: [AuthGuard]},
     { path: 'zone/:id', component: ZoneComponent, canActivate: [AuthGuard]},

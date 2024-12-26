@@ -151,21 +151,12 @@ export class UserService{
     }
 
 
-    createUser(formData: FormData): Observable<any>{
-        this.token = this.getToken();
-
-
-        let headers = new HttpHeaders().set("Authorization", this.token)
-
-        return this._http.post(this.url+"zone/create/",formData, {headers: headers})   
-    }
-
     removeUser(id: String | null): Observable<any>{
         this.token = this.getToken();
 
         let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
 
-        return this._http.delete(this.url+"zone/delete/" + id, {headers: headers})   
+        return this._http.delete(this.url+"user/delete/" + id, {headers: headers})   
     }
     
 }

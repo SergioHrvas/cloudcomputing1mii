@@ -36,6 +36,7 @@ function saveUser(req, res) {
     //Creamos una instancia/objeto de usuario (de su modelo)
     var user = new User();
 
+    console.log
     if (params.name && params.surname && params.password && params.email) {
         user.name = params.name;
         user.surname = params.surname;
@@ -156,7 +157,7 @@ function getUsers(req, res) {
         page = req.params.page;
     }
 
-    var itemsPerPage = 5;
+    var itemsPerPage = 100;
     if (req.params.itemsPerPage) {
         itemsPerPage = req.params.itemsPerPage
     }
@@ -296,6 +297,9 @@ function updateUser(req, res) {
 
 function deleteUser(req, res) {
     var id = req.params.id;
+
+    
+    console.log(req.user.role)
     //Comprobamos si el id del usuario coincide con el que me llega en la request
     if ((id != req.user.sub) && (req.user.role != "ROLE_ADMIN")) {
         return res.status(500).send({ message: "No tienes permisos para actualizar los datos del usuario." })

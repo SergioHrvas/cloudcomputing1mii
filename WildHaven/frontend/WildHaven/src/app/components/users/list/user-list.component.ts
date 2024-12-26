@@ -37,6 +37,7 @@ export class UsersComponent implements OnInit{
         this._userService.getUsers().subscribe(
             response => {
                 this.users = response.users;
+                console.log(this.users)
             },
             error => {
                 console.log(<any>error);

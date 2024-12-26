@@ -1,0 +1,46 @@
+<div class="col-lg-6 mx-auto mt-4">
+    <div class="jumbotron text-center p-4 bg-light rounded">
+        <h1 class="display-4">Crear Usuario</h1>
+    </div>
+    <form #createUserForm="ngForm" (submit)="onSubmit(createUserForm)">
+        <div class="form-group">
+            <label for="userName">Nombre</label>
+            <input type="text" id="userName" class="form-control" [(ngModel)]="user.name" name="name"
+                placeholder="Introduce el nombre del usuario" required />
+        </div>
+
+        <div class="form-group">
+            <label for="userSurname">Apellidos</label>
+            <input type="text" id="userSurname" class="form-control" [(ngModel)]="user.surname" name="surname"
+                placeholder="Introduce los apellidos del usuario" required />
+        </div>
+
+        <div class="form-group">
+            <label for="userEmail">Correo</label>
+            <input type="text" id="userEmail" class="form-control" [(ngModel)]="user.email" name="email"
+                placeholder="Introduce el email del usuario" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="role">Rol</label>
+            <select id="role" [(ngModel)]="user.role" name="role" class="form-control" required>
+                <option *ngFor="let role of roles" [value]="role">
+                    {{ role }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="password">Contraseña</label>
+            <input type="password" id="userPassword" class="form-control" [(ngModel)]="user.password" name="password"
+                placeholder="Introduce la contraseña" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="userImage">Imagen</label>
+            <input type="file" id="userImage" class="form-control" (change)="onImageSelected($event)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Crear Usuario</button>
+    </form>
+</div>
