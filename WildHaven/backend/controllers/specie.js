@@ -78,12 +78,17 @@ function getSpecies(req, res) {
 function createSpecie(req, res) {
     var body = req.body;
 
+    if (req.file) {
+        var file_path = req.file.destination;
+        var file_name = req.file.filename;
+    }
+
     var new_specie = new Specie();
     new_specie.name = body.name;
     new_specie.description = body.description;
     new_specie.diet = body.diet;
     new_specie.technical_name = body.technical_name;
-    new_specie.image = body.image;
+    new_specie.image = file_name;
 
     Specie.find({ name: body.name }).exec()
         .then(

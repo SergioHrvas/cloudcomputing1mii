@@ -106,17 +106,22 @@ function getInhabitantsByZone(req, res) {
 function createInhabitant(req, res) {
     var body = req.body;
 
+    if (req.file) {
+        var file_path = req.file.destination;
+        var file_name = req.file.filename;
+    }
+
     var new_inhabitant = new Inhabitant();
     new_inhabitant.name = body.name;
     new_inhabitant.description = body.description;
     new_inhabitant.personality = body.personality;
     new_inhabitant.healthStatus = body.healthStatus;
     new_inhabitant.alive = body.alive;
-    new_inhabitant.image = body.image;
+    new_inhabitant.image = file_name;
     new_inhabitant.birth = body.birth;
     new_inhabitant.specie = body.specie
     new_inhabitant.zone = body.zone
-
+    
 
     Inhabitant.find({ name: body.name, specie: body.specie }).exec()
         .then(
@@ -159,7 +164,6 @@ function updateInhabitant(req, res) {
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
         return res.status(500).send({ message: "El id es incorrecto" })     
     }
-
     Inhabitant.findById(id).exec()
         .then(
             inhabitant => {
@@ -187,8 +191,9 @@ function updateInhabitant(req, res) {
                                     inhabitant.personality = body.personality;
                                 if(body.healthStatus)
                                     inhabitant.healthStatus = body.healthStatus;
-                                if(body.alive)
+                                if (body.alive !== undefined){
                                     inhabitant.alive = body.alive;
+                                }
                                 if(body.image)
                                     inhabitant.image = body.image;
                                 if(body.birth)
@@ -197,7 +202,6 @@ function updateInhabitant(req, res) {
                                     inhabitant.specie = body.specie
                                 if(body.zone)
                                     inhabitant.zone = body.zone
-
 
                                 inhabitant.save().then(
                                     inhabitantStored => {
@@ -241,14 +245,13 @@ function deleteInhabitant(req, res) {
                 if(inhabitant == null){
                     return res.status(404).send({ message: "No se ha podido encontrar el habitante" });
                 }
-
+                
                 Inhabitant.deleteOne({_id: id}).exec().then(
                     data => {
                         if (data.deletedCount == 0) {
                             return res.status(404).send({ message: "No se ha podido eliminar el habitante" });
                         }
             
-                        
                         return res.status(200).send({ data });
                     }
                 ).catch(

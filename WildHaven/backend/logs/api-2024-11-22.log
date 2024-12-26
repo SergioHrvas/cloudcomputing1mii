@@ -1,5 +1,0 @@
-2024-11-22 18:06:41 [info]: POST /api/user/login 200 - 281ms (::1)
-2024-11-22 18:06:47 [info]: GET /api/user/list 200 - 11ms (::1)
-2024-11-22 18:06:55 [info]: DELETE /api/user/delete/6712d87716aa91e326866344 200 - 7ms (::1)
-2024-11-22 18:07:19 [info]: POST /api/task/create 200 - 17ms (::1)
-2024-11-22 19:28:08 [info]: POST /api/user/login 200 - 316ms (::1)

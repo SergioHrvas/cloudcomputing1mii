@@ -9,15 +9,15 @@ export class Inhabitant{
         public image: String,
         public personality: String,
         public healthStatus: String,
-        public birth: Date,
+        public birth: Date | undefined,
         public vetVisits: [{
-            date: Date,
+            date: Date | undefined,
             reason: String,
             treatments: String,
             vetName: String
         }],
         public alive: boolean,
-        public specie: Specie,
-        public zone: Zone
+        public specie: Specie | undefined,
+        public zone: Zone | undefined
     ){}
 }

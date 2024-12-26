@@ -17,8 +17,8 @@ import { EditSpecieComponent } from './components/species/edit-specie/edit-speci
 
 import { InhabitantsComponent } from './components/inhabitants/list/inhabitant-list.component';
 import { InhabitantComponent } from './components/inhabitants/inhabitant/inhabitant.component';
-// import { NewSpecieComponent } from './components/species/new-specie/new-specie.component';
-// import { EditSpecieComponent } from './components/species/edit-specie/edit-specie.component';
+import { NewInhabitantComponent } from './components/inhabitants/new-inhabitant/new-inhabitant.component';
+import { EditInhabitantComponent } from './components/inhabitants/edit-inhabitant/edit-inhabitant.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -38,6 +38,6 @@ export const routes: Routes = [
     
     { path: 'inhabitants', component: InhabitantsComponent, canActivate: [AuthGuard]},
     { path: 'inhabitant/:id', component: InhabitantComponent, canActivate: [AuthGuard]},
-    // { path: 'create-specie', component: NewSpecieComponent, canActivate: [AuthGuard]},
-    // { path: 'edit-specie/:id', component: EditSpecieComponent, canActivate: [AuthGuard]}
+    { path: 'create-inhabitant', component: NewInhabitantComponent, canActivate: [AuthGuard]},
+    { path: 'edit-inhabitant/:id', component: EditInhabitantComponent, canActivate: [AuthGuard]}
 ];

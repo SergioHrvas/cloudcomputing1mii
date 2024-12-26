@@ -19,8 +19,8 @@ var Inhabitant = Schema({
         vetName: { type: String }  // Nombre del veterinario
       }],
     alive: Boolean,
-    specie: {type: Schema.Types.ObjectId, ref: 'Specie', required: true},
-    zone: {type: Schema.Types.ObjectId, ref: 'Zone', required: true},
+    specie: {type: Schema.Types.ObjectId, ref: 'Specie'},
+    zone: {type: Schema.Types.ObjectId, ref: 'Zone'},
 });
 
 //exportamos el esquema

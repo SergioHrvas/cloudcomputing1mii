@@ -1,6 +1,0 @@
-2024-11-28 23:46:38 [info]: GET /api/inhabitant/list 200 - 112ms (::ffff:127.0.0.1)
-2024-11-28 23:46:49 [info]: DELETE /api/inhabitant/delete/674209aa83a9c38101a58d22 200 - 78ms (::ffff:127.0.0.1)
-2024-11-28 23:46:50 [info]: GET /api/inhabitant/list 200 - 4ms (::ffff:127.0.0.1)
-2024-11-28 23:46:52 [info]: DELETE /api/inhabitant/delete/6719682c3f2b0f0fcbd394ce 200 - 5ms (::ffff:127.0.0.1)
-2024-11-28 23:46:52 [info]: GET /api/inhabitant/list 200 - 4ms (::ffff:127.0.0.1)
-2024-11-28 23:55:49 [info]: GET /api/specie/list 200 - 23ms (::ffff:127.0.0.1)

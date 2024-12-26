@@ -1,6 +1,6 @@
 {
     "/api/*": {
-        "target": "http://node-app:3000",
+        "target": "http://node-app:3800",
         "secure": false,
         "logLevel": "debug"
     }

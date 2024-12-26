@@ -21,7 +21,7 @@ services:
     environment:
       MONGO_URL: mongodb://admin:secret@mongodb:27017/wildhaven-db?authSource=admin
     ports:
-      - "3000:3000"
+      - "3000:3800"
     depends_on:
       - mongodb
     networks:

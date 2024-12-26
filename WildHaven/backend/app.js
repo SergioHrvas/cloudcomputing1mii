@@ -13,14 +13,7 @@ var app = express();
 const cors = require('cors');
 // Configurar CORS para aceptar solicitudes desde tu frontend Angular
 app.use(cors()); 
-app.options('*', (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.sendStatus(200);  // Responde con un 200 OK para las solicitudes OPTIONS
-  });
-app.use(express.json());  // Para analizar el cuerpo de la solicitud en formato JSON
-app.use(express.urlencoded({ extended: true }));  // Para formularios codificados en URL
+
 
 //Cargamos las rutas
 var user_routes = require('./routes/user');

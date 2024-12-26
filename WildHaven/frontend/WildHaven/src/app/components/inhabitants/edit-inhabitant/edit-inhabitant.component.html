@@ -1,0 +1,100 @@
+<div class="col-lg-6 mx-auto mt-4">
+    <div class="jumbotron text-center p-4 bg-light rounded">
+        <h1 class="display-4">Modificar Habitante</h1>
+    </div>
+    <form #createInhabitantForm="ngForm" (submit)="onSubmit(createInhabitantForm)">
+        <div class="form-group">
+            <label for="inhabitantName">Nombre de la habitante:</label>
+            <input
+                type="text"
+                id="inhabitantName"
+                class="form-control"
+                [(ngModel)]="inhabitant.name"
+                name="name"
+                placeholder="Introduce el nombre de la habitante"
+                required
+            />
+        </div>
+        
+
+        <div class="form-group mt-3">
+            <label for="inhabitantDescription">Descripción:</label>
+            <textarea
+                id="inhabitantDescription"
+                class="form-control"
+                [(ngModel)]="inhabitant.description"
+                name="description"
+                placeholder="Introduce una descripción"
+                rows="3"
+                required
+            ></textarea>
+        </div>
+        
+        
+
+        <div class="form-group mt-3">
+            <label for="inhabitantPersonality">Personalidad</label>
+            <textarea id="inhabitantPersonality" class="form-control" [(ngModel)]="inhabitant.personality"
+                name="personality" placeholder="Introduce la personalidad" rows="1" required></textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="inhabitantHealthStatus">Estado de salud</label>
+            <textarea id="inhabitantHealthStatus" class="form-control" [(ngModel)]="inhabitant.healthStatus"
+                name="healthStatus" placeholder="Introduce el estado de salud" rows="1" required></textarea>
+        </div>
+
+
+        <div class="form-group mt-3">
+            <div class="form-check">
+              <input
+                type="checkbox"
+                id="inhabitantAlive"
+                class="form-check-input"
+                [(ngModel)]="inhabitant.alive"
+                name="alive"
+              />
+              <label class="form-check-label" for="inhabitantAlive">Vivo</label>
+            </div>
+          </div>
+
+          
+        <div class="form-group mt-3">
+            <label for="zone">Seleccione una zona:</label>
+            <select id="zone" [(ngModel)]="inhabitant.zone" name="zone" class="form-control" required>
+                <option *ngFor="let zone of zones" [value]="zone._id">
+                    {{ zone.name }}
+                </option>
+            </select>
+        </div>
+
+        
+        <div class="form-group mt-3">
+            <label for="specie">Seleccione una especie:</label>
+            <select id="specie" [(ngModel)]="inhabitant.specie" name="specie" class="form-control" required>
+                <option *ngFor="let specie of species" [value]="specie._id">
+                    {{ specie.name }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="inhabitantBirthDate">Fecha de nacimiento</label>
+            <input type="date" id="inhabitantBirthDate" class="form-control" [(ngModel)]="inhabitant.birth" name="birth"
+                placeholder="Introduce la fecha de nacimiento" required />
+        </div>
+
+
+        <div class="form-group mt-3">
+            <label for="inhabitantImage">Imagen:</label>
+            <input
+                type="file"
+                id="inhabitantImage"
+                class="form-control"
+                (change)="onImageSelected($event)"
+            />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Modificar Habitante</button>
+    </form>
+</div>

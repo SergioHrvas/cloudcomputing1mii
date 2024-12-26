@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var app = require('./app');
 require('dotenv').config();
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3800;
 
 console.log(port)
 
