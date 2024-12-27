@@ -13,7 +13,7 @@ api.post('/create', [mdAuth.ensureAuth,requestLogger], TaskController.createTask
 api.get('/task/:id', [mdAuth.ensureAuth,requestLogger], TaskController.getTask);
 api.get('/list/:page?/:itemsPerPage?', [mdAuth.ensureAuth,requestLogger], TaskController.getTasks)
 api.delete('/delete/:id', [mdAuth.ensureAuth,requestLogger], TaskController.deleteTask);
-api.put('/task/:id', [mdAuth.ensureAuth,requestLogger], TaskController.updateTask);
+api.put('/update/:id', [mdAuth.ensureAuth,requestLogger], TaskController.updateTask);
 
 api.get('/tasksToUser/:id', [mdAuth.ensureAuth,requestLogger], TaskController.getUserTasks)
 api.get('/tasksByUser/:id', [mdAuth.ensureAuth,requestLogger], TaskController.getUserOwnedTasks)

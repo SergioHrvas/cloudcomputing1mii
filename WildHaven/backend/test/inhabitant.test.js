@@ -3,7 +3,6 @@ const chai = require('chai');
 const app = require('../app'); // Ruta a tu archivo de aplicación Express
 const chai_http = require('chai-http')
 chai.use(chai_http);
-const FormData = require('form-data');
 const fs = require('fs');
 //Incluimos modulo bcrypt para encriptar las contraseñas
 var bcrypt = require('bcrypt-nodejs');

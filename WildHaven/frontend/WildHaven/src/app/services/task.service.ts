@@ -74,11 +74,11 @@ export class TaskService{
         return this._http.delete(this.url+"task/delete/" + id, {headers: headers})   
     }
 
-    updateTask(id: String | null, params: FormData): Observable<any>{
+    updateTask(id: String | null, task: Task): Observable<any>{
         this.token = this.userService.getToken();
 
         let headers = new HttpHeaders().set("Authorization", this.token)
 
-        return this._http.put(this.url+"task/update/" + id, params, {headers: headers})   
+        return this._http.put(this.url+"task/update/" + id, task, {headers: headers})   
     }
 }

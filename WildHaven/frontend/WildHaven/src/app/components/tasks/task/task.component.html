@@ -1,0 +1,20 @@
+<div class="container mt-5">
+  <div class="container my-4">
+
+    <!-- Encabezado y detalles -->
+      <div class="p-4 bg-light rounded">
+        <h1 class="display-4">{{ task.name }}</h1>
+        <p class="lead">
+          <strong>Estado:</strong> {{ task.status }} 
+          <i class="bi bi-circle-fill" [ngClass]="{
+            'text-success': task.status === 'Completada',
+            'text-warning': task.status === 'En progreso',
+            'text-danger': task.status === 'Pendiente'
+         }"></i>
+      </p>
+              <p class="lead"><strong>Descripción:</strong> {{ task.description }}</p>
+        <p class="lead"><strong>Asignado a:</strong> {{ task.assignedTo?.name }}  {{ task.assignedTo?.surname }}</p>
+        <p class="lead"><strong>Creada por:</strong> {{ task.createdBy?.name }} {{ task.createdBy?.surname }}</p>
+      </div>
+  </div>
+</div>

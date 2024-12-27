@@ -2,6 +2,7 @@
 
 var Task = require('../models/task');
 
+var User = require('../models/user')
 //Importamos la libreria moment para generar fechas
 var moment = require("moment");
 
@@ -16,33 +17,47 @@ var fs = require('fs');
 var path = require('path');
 
 
-function pruebas(req, res){
+function pruebas(req, res) {
     res.status(200).send({
-        message:"Acción de tareas en el servidor de NodeJS"
+        message: "Acción de tareas en el servidor de NodeJS"
     })
 };
- 
-function getTask(req, res){
+
+function getTask(req, res) {
     var id = req.params.id;
 
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(500).send({ message: "El id es incorrecto" })     
+        return res.status(500).send({ message: "El id es incorrecto" })
     }
 
     Task.findById(id).then(task => {
-        if(!task){
-            return res.status(400).send({message: "No se ha podido encontrar la tarea"})
+        if (!task) {
+            return res.status(400).send({ message: "No se ha podido encontrar la tarea" })
         }
 
-        return res.status(200).send({task})
+        User.findById(task.assignedTo).then(user => {
+            task.assignedTo = user;
+
+            User.findById(task.createdBy).then(user2 => {
+                task.createdBy = user2;
+                return res.status(200).send({ task })
+            }).catch(err => {
+                return res.status(500).send({ message: "Error en la petición: " + err })
+            })
+        }).
+            catch(err => {
+                return res.status(500).send({ message: "Error en la petición: " + err })
+
+            })
+
     }
     ).catch(err => {
-        return res.status(500).send({message:"Error en la petición"})
+        return res.status(500).send({ message: "Error en la petición: " + err })
     })
 
 };
 
-function getTasks(req, res){
+function getTasks(req, res) {
     Task.find().sort('name').exec().then(
         tareas => {
             if (!tareas || tareas.length == 0) return res.status(404).send({ message: "No hay tareas disponibles" });
@@ -57,157 +72,157 @@ function getTasks(req, res){
 };
 
 
-function createTask(req, res){
+function createTask(req, res) {
     var body = req.body;
     var createdBy = req.user.sub;
 
-        const { _id, ...taskData } = req.body;
-        taskData.createdBy = createdBy;
+    const { _id, ...taskData } = req.body;
+    taskData.createdBy = createdBy;
 
-        var task = new Task(taskData);
-    
+    var task = new Task(taskData);
+
 
     task.save().then(taskSaved => {
-        if(!taskSaved){
+        if (!taskSaved) {
             console.log("zs")
-            res.status(400).send({message: "No se ha podido guardar la tarea"})
+            res.status(400).send({ message: "No se ha podido guardar la tarea" })
         }
 
-        res.status(200).send({task: taskSaved})
+        res.status(200).send({ task: taskSaved })
     }
     ).catch(err => {
-        res.status(500).send({message:"Error en la petición: " + err})
+        res.status(500).send({ message: "Error en la petición: " + err })
     })
 
 };
 
-function deleteTask(req, res){
+function deleteTask(req, res) {
     var id = req.params.id;
 
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(500).send({ message: "El id es incorrecto" })     
+        return res.status(500).send({ message: "El id es incorrecto" })
     }
 
     Task.findByIdAndDelete(id).then(data => {
-        if(data.deletedCount == 0){
-            res.status(400).send({message: "No se ha podido eliminar la tarea"})
+        if (data.deletedCount == 0) {
+            res.status(400).send({ message: "No se ha podido eliminar la tarea" })
         }
 
-        res.status(200).send({data})
+        res.status(200).send({ data })
     }
     ).catch(err => {
-        res.status(500).send({message:"Error en la petición"})
+        res.status(500).send({ message: "Error en la petición" })
     })
 
 };
 
-function updateTask(req, res){
+function updateTask(req, res) {
     var id = req.params.id;
-    
+
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(500).send({ message: "El id es incorrecto" })     
+        return res.status(500).send({ message: "El id es incorrecto" })
     }
 
     var body = req.body;
 
-    Task.findByIdAndUpdate(id, body, {new: true}).then(updatedTask => {
-        if(!updatedTask){
-            return res.status(400).send({message: "No se ha podido actualizar la tarea"})
+    Task.findByIdAndUpdate(id, body, { new: true }).then(updatedTask => {
+        if (!updatedTask) {
+            return res.status(400).send({ message: "No se ha podido actualizar la tarea" })
         }
 
-        return res.status(200).send({updatedTask})
+        return res.status(200).send({ updatedTask })
     }
     ).catch(err => {
-        return res.status(500).send({message:"Error en la petición"})
+        return res.status(500).send({ message: "Error en la petición" })
     })
 
 };
 
-function changeStatus(req, res){
+function changeStatus(req, res) {
     var id = req.params.id;
-    
+
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(500).send({ message: "El id es incorrecto" })     
+        return res.status(500).send({ message: "El id es incorrecto" })
     }
 
     var status = req.body.status;
 
-    Task.findByIdAndUpdate(id, {"status": status}, {new: true}).then(updatedTask => {
-        if(!updatedTask){
-            return res.status(400).send({message: "No se ha podido actualizar el estado de la tarea"})
+    Task.findByIdAndUpdate(id, { "status": status }, { new: true }).then(updatedTask => {
+        if (!updatedTask) {
+            return res.status(400).send({ message: "No se ha podido actualizar el estado de la tarea" })
         }
 
-        return res.status(200).send({updatedTask})
+        return res.status(200).send({ updatedTask })
     }
     ).catch(err => {
-        return res.status(500).send({message:"Error en la petición"})
+        return res.status(500).send({ message: "Error en la petición" })
     })
 
 };
 
-function assignTask(req, res){
+function assignTask(req, res) {
     var id = req.params.id;
-    
+
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(500).send({ message: "El id de la tarea es incorrecto" })     
+        return res.status(500).send({ message: "El id de la tarea es incorrecto" })
     }
 
     var idUser = req.body.user;
 
     if (!idUser.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(500).send({ message: "El id del usuario es incorrecto" })     
+        return res.status(500).send({ message: "El id del usuario es incorrecto" })
     }
 
-    Task.findByIdAndUpdate(id, {"assignedTo": idUser}, {new: true}).then(updatedTask => {
-        if(!updatedTask){
-            return res.status(400).send({message: "No se ha podido asignar la tarea"})
+    Task.findByIdAndUpdate(id, { "assignedTo": idUser }, { new: true }).then(updatedTask => {
+        if (!updatedTask) {
+            return res.status(400).send({ message: "No se ha podido asignar la tarea" })
         }
 
-        return res.status(200).send({updatedTask})
+        return res.status(200).send({ updatedTask })
     }
     ).catch(err => {
-        return res.status(500).send({message:"Error en la petición"})
+        return res.status(500).send({ message: "Error en la petición" })
     })
 
 }
 
-function getUserTasks(req, res){
+function getUserTasks(req, res) {
     var id = req.params.id;
 
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(500).send({ message: "El id es incorrecto" })     
+        return res.status(500).send({ message: "El id es incorrecto" })
     }
 
-    Task.find({"assignedTo": id}).then(
+    Task.find({ "assignedTo": id }).then(
         tasks => {
-            if(tasks.length == 0){
-                return res.status(400).send({message: "No se han encontrado tareas"})
+            if (tasks.length == 0) {
+                return res.status(200).send({ message: "No se han encontrado tareas" })
             }
-            
-            return res.status(200).send({tasks})
+
+            return res.status(200).send({ tasks })
         }
     ).catch(err => {
-        return res.status(500).send({message:"Error en la petición"})
+        return res.status(500).send({ message: "Error en la petición" })
     })
 }
 
-function getUserOwnedTasks(req, res){
+function getUserOwnedTasks(req, res) {
     var id = req.params.id;
 
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(500).send({ message: "El id es incorrecto" })     
+        return res.status(500).send({ message: "El id es incorrecto" })
     }
 
-    Task.find({"createdBy": id}).then(
+    Task.find({ "createdBy": id }).then(
         tasks => {
-            if(tasks.length == 0){
-                return res.status(400).send({message: "No se han encontrado tareas"})
+            if (tasks.length == 0) {
+                return res.status(200).send({ message: "No se han encontrado tareas" })
             }
-            
-            return res.status(200).send({tasks})
+
+            return res.status(200).send({ tasks })
         }
     ).catch(err => {
-        return res.status(500).send({message:"Error en la petición"})
+        return res.status(500).send({ message: "Error en la petición" })
     })
 }
 

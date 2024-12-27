@@ -24,6 +24,8 @@ import { NewUserComponent } from './components/users/new-user/new-user.component
 import { UserComponent } from './components/users/user/user.component';
 import { TasksComponent } from './components/tasks/list/task-list.component';
 import { NewTaskComponent } from './components/tasks/new-task/new-task.component';
+import { TaskComponent } from './components/tasks/task/task.component';
+import { EditTaskComponent } from './components/tasks/edit-task/edit-task.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -50,4 +52,7 @@ export const routes: Routes = [
 
     { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard]},
     { path: 'create-task', component: NewTaskComponent, canActivate: [AuthGuard]},
+    { path: 'task/:id', component: TaskComponent, canActivate: [AuthGuard]},
+    { path: 'edit-task/:id', component: EditTaskComponent, canActivate: [AuthGuard]},
+
 ];
