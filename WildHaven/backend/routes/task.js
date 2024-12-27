@@ -11,7 +11,7 @@ const requestLogger = require('../middlewares/logging');
 api.get('/pruebas', requestLogger, TaskController.pruebas);
 api.post('/create', [mdAuth.ensureAuth,requestLogger], TaskController.createTask);
 api.get('/task/:id', [mdAuth.ensureAuth,requestLogger], TaskController.getTask);
-api.get('/list/:page?/:itemsPerPage?', [mdAuth.ensureAuth,requestLogger], TaskController.getTasks)
+api.get('/list/:page?/:itemsPerPage?', [requestLogger], TaskController.getTasks)
 api.delete('/delete/:id', [mdAuth.ensureAuth,requestLogger], TaskController.deleteTask);
 api.put('/update/:id', [mdAuth.ensureAuth,requestLogger], TaskController.updateTask);
 

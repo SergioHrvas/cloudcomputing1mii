@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TaskService } from "../../../services/task.service";
 import { Task } from "../../../models/task";
 import { GLOBAL } from "../../../services/global";
+import { UserService } from "../../../services/user.service";
 
 @Component({
     selector: 'task',
@@ -25,9 +26,8 @@ export class TasksComponent implements OnInit{
     public title: String;
 
     constructor(        
-        private _route: ActivatedRoute,
-        private _router: Router,
-        private _taskService: TaskService
+        private _taskService: TaskService,
+        private _userService: UserService
     ){
         this.tasks = [];
         this.myOwnTasks = [];
@@ -36,6 +36,10 @@ export class TasksComponent implements OnInit{
         this.title = "Lista de tareas"
         this.url = GLOBAL.url;
     }
+
+    isAdmin(): boolean {
+        return this._userService.isAdmin();
+      }
 
     ngOnInit() {
         this._taskService.getMyTasks().subscribe(

@@ -22,9 +22,7 @@ export class InhabitantService{
     getInhabitants(): Observable<any>{
         this.token = this.userService.getToken();
 
-        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
-
-        return this._http.get(this.url+"inhabitant/list", {headers: headers})   
+        return this._http.get(this.url+"inhabitant/list")
     }
 
     getInhabitant(id: String | null): Observable<any>{

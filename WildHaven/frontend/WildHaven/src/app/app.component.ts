@@ -23,4 +23,9 @@ export class AppComponent {
   isAuthenticated(): boolean {
     return this._userService.isAuthenticated();
   }
+
+  isAdmin(): boolean {
+    //return this._userService.isAdmin();
+    return false;
+  }
 }

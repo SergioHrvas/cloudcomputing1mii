@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ZoneService } from "../../../services/zone.service";
 import { Zone } from "../../../models/zone";
 import { GLOBAL } from "../../../services/global";
+import { UserService } from "../../../services/user.service";
 
 @Component({
     selector: 'zone',
@@ -25,7 +26,8 @@ export class ZonesComponent implements OnInit{
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _zoneService: ZoneService
+        private _zoneService: ZoneService,
+        private _userService: UserService
     ){
         this.zones = [];
         this.status = ""
@@ -47,6 +49,11 @@ export class ZonesComponent implements OnInit{
         );
     }
 
+    isAdmin(): boolean {
+        return this._userService.isAdmin();
+    }
+    
+    
     removeZone(id: String) {
         this._zoneService.removeZone(id).subscribe(
             response => {

@@ -26,29 +26,34 @@ import { TasksComponent } from './components/tasks/list/task-list.component';
 import { NewTaskComponent } from './components/tasks/new-task/new-task.component';
 import { TaskComponent } from './components/tasks/task/task.component';
 import { EditTaskComponent } from './components/tasks/edit-task/edit-task.component';
+import { UnauthorizedComponent } from './components/misc/unauthorized.component';
+import { AuthAdminGuard } from './guards/authAdmin.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent, },
+    { path: 'login', component: LoginComponent},
+    { path: 'register', component: RegisterComponent},
+    { path: 'unauthorized', component: UnauthorizedComponent},
+
     { path: 'edit-profile', component: UserEditComponent, canActivate: [AuthGuard]},
-    { path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
-    { path: 'create-user', component: NewUserComponent, canActivate: [AuthGuard]},
-    { path: 'user/:id', component: UserComponent, canActivate: [AuthGuard]},
+    { path: 'users', component: UsersComponent, canActivate: [AuthAdminGuard]},
+    { path: 'create-user', component: NewUserComponent, canActivate: [AuthAdminGuard]},
+    { path: 'user/:id', component: UserComponent, canActivate: [AuthAdminGuard]},
+    
     { path: 'zones', component: ZonesComponent, canActivate: [AuthGuard]},
     { path: 'zone/:id', component: ZoneComponent, canActivate: [AuthGuard]},
-    { path: 'create-zone', component: NewZoneComponent, canActivate: [AuthGuard]},
-    { path: 'edit-zone/:id', component: EditZoneComponent, canActivate: [AuthGuard]},
+    { path: 'create-zone', component: NewZoneComponent, canActivate: [AuthAdminGuard]},
+    { path: 'edit-zone/:id', component: EditZoneComponent, canActivate: [AuthAdminGuard]},
 
-    { path: 'species', component: SpeciesComponent, canActivate: [AuthGuard]},
-    { path: 'specie/:id', component: SpecieComponent, canActivate: [AuthGuard]},
-    { path: 'create-specie', component: NewSpecieComponent, canActivate: [AuthGuard]},
-    { path: 'edit-specie/:id', component: EditSpecieComponent, canActivate: [AuthGuard]},
+    { path: 'species', component: SpeciesComponent, canActivate: [AuthAdminGuard]},
+    { path: 'specie/:id', component: SpecieComponent, canActivate: [AuthAdminGuard]},
+    { path: 'create-specie', component: NewSpecieComponent, canActivate: [AuthAdminGuard]},
+    { path: 'edit-specie/:id', component: EditSpecieComponent, canActivate: [AuthAdminGuard]},
     
     { path: 'inhabitants', component: InhabitantsComponent, canActivate: [AuthGuard]},
     { path: 'inhabitant/:id', component: InhabitantComponent, canActivate: [AuthGuard]},
-    { path: 'create-inhabitant', component: NewInhabitantComponent, canActivate: [AuthGuard]},
-    { path: 'edit-inhabitant/:id', component: EditInhabitantComponent, canActivate: [AuthGuard]},
+    { path: 'create-inhabitant', component: NewInhabitantComponent, canActivate: [AuthAdminGuard]},
+    { path: 'edit-inhabitant/:id', component: EditInhabitantComponent, canActivate: [AuthAdminGuard]},
 
     { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard]},
     { path: 'create-task', component: NewTaskComponent, canActivate: [AuthGuard]},

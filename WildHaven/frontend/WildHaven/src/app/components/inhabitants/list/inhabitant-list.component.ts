@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { InhabitantService } from "../../../services/inhabitant.service";
 import { Inhabitant } from "../../../models/inhabitant";
 import { GLOBAL } from "../../../services/global";
+import { UserService } from "../../../services/user.service";
 
 @Component({
     selector: 'inhabitant',
@@ -25,7 +26,8 @@ export class InhabitantsComponent implements OnInit{
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _inhabitantService: InhabitantService
+        private _inhabitantService: InhabitantService, 
+        private _userService: UserService
     ){
         this.inhabitants = [];
         this.status = ""
@@ -46,6 +48,10 @@ export class InhabitantsComponent implements OnInit{
             }
         );
     }
+
+    isAdmin(): boolean {
+        return this._userService.isAdmin();
+      }
 
     removeInhabitant(id: String) {
         this._inhabitantService.removeInhabitant(id).subscribe(

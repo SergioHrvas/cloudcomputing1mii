@@ -52,8 +52,8 @@
                          }"></i></a>
                      </td>
                     <td class="text-center align-middle"> <a href="/task/{{task._id}}" class="text-dark text-decoration-none">{{ task.name }}</a>
-                        <div><i class="bi bi-trash me-2 fs-4 text-danger" style="cursor: pointer;" (click)="removeTask(task._id)"></i>
-                        <a href="/edit-task/{{task._id}}"><i class="bi bi-pencil me-2 fs-4 text-danger" style="cursor: pointer;"></i></a></div>
+                        <div><i class="bi bi-trash me-2 fs-4 text-danger" *ngIf="isAdmin()" style="cursor: pointer;" (click)="removeTask(task._id)"></i>
+                        <a href="/edit-task/{{task._id}}"><i class="bi bi-pencil me-2 fs-4 text-danger" *ngIf="isAdmin()" style="cursor: pointer;"></i></a></div>
                     </td>
                     
                 </tr>

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { User } from '../models/user'
 import { GLOBAL } from './global'
+import { json } from 'stream/consumers'
 
 @Injectable({
     providedIn: 'root',  // Asegúrate de que el servicio sea un singleton
@@ -113,7 +114,6 @@ export class UserService{
 
     // Método para comprobar si el usuario está autenticado
     isAuthenticated(): boolean {
-        var item;
         if (typeof localStorage !== 'undefined') {
             return !!localStorage.getItem('Token');  
         } else if (typeof sessionStorage !== 'undefined') {
@@ -123,6 +123,17 @@ export class UserService{
             console.log('Web Storage is not supported in this environment.');
             return false;
           }
+    }
+
+    
+    // Método para comprobar si el usuario está autenticado
+    isAdmin(): boolean {
+        var identity = this.getIdentity()
+        
+        if(identity === null){
+            return false;
+        }
+        return (identity.role === "ROLE_ADMIN")
     }
 
     logout() {

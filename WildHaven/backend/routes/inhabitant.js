@@ -15,11 +15,11 @@ api.get('/pruebas', requestLogger, InhabitantController.pruebas);
 api.get('/listBySpecie/:idSpecie',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitantsBySpecie);
 api.get('/listByZone/:idZone',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitantsByZone);
 
-api.get('/list',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitants);
+api.get('/list',[requestLogger], InhabitantController.getInhabitants);
 api.get('/inhabitant/:id',[mdAuth.ensureAuth,requestLogger], InhabitantController.getInhabitant);
-api.post('/create', [mdAuth.ensureAuth,requestLogger, upload.single('image')],InhabitantController.createInhabitant);
-api.put('/update/:id', [mdAuth.ensureAuth,requestLogger, upload.single('image')],InhabitantController.updateInhabitant);
-api.delete('/delete/:id', [mdAuth.ensureAuth,requestLogger],InhabitantController.deleteInhabitant)
+api.post('/create', [mdAuth.ensureAdminAuth,requestLogger, upload.single('image')],InhabitantController.createInhabitant);
+api.put('/update/:id', [mdAuth.ensureAdminAuth,requestLogger, upload.single('image')],InhabitantController.updateInhabitant);
+api.delete('/delete/:id', [mdAuth.ensureAdminAuth,requestLogger],InhabitantController.deleteInhabitant)
 
 module.exports = api;
 
