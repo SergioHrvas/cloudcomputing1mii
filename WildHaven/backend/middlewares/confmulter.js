@@ -9,12 +9,16 @@ const storage = multer.diskStorage({
         // Determinar la carpeta de destino según la URL de la ruta
         let uploadDir = '';
 
+        console.log(req.baseUrl)
+
         if (req.baseUrl.includes('/user')) {
             uploadDir = path.join('./uploads', 'users');  // Para imágenes de usuario
-        } else if (req.baseUrl.includes('/species')) {
+        } else if (req.baseUrl.includes('/specie')) {
             uploadDir = path.join('./uploads', 'species');  // Para imágenes de especie
         } else if (req.baseUrl.includes('/zone')) {
-            uploadDir = path.join('./uploads', 'zones');  // Para imágenes de especie
+            uploadDir = path.join('./uploads', 'zones');  // Para imágenes de zonas
+        } else if (req.baseUrl.includes('/inhabitant')) {
+            uploadDir = path.join('./uploads', 'inhabitants');  // Para imágenes de especie
         } else {
             uploadDir = path.join('./uploads', 'others');  // Carpeta por defecto
         }

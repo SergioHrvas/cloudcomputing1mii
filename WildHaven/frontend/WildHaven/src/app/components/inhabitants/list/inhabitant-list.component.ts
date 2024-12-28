@@ -18,7 +18,7 @@ import { UserService } from "../../../services/user.service";
 
 export class InhabitantsComponent implements OnInit{
 
-    public url: String;
+    public url: string;
     public inhabitants: Inhabitant[];
     private status: String;
     public title: String;
@@ -32,7 +32,7 @@ export class InhabitantsComponent implements OnInit{
         this.inhabitants = [];
         this.status = ""
         this.title = "Lista de habitantes"
-        this.url = GLOBAL.url;
+        this.url = GLOBAL.urlUploads + 'inhabitants/';
     }
 
     ngOnInit() {

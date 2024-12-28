@@ -8,7 +8,7 @@ var api = express.Router();
 
 const upload = require('../middlewares/confmulter');  // Importar el middleware
 
-var api = express.Router(); const requestLogger = require('../middlewares/logging');
+const requestLogger = require('../middlewares/logging');
 
 api.get('/pruebas', [requestLogger], ZoneController.pruebas);
 api.get('/list', [requestLogger, mdAuth.ensureAuth], ZoneController.getZones);

@@ -19,7 +19,7 @@ import { GLOBAL } from "../../../services/global";
 
 export class SpecieComponent implements OnInit{
 
-    public url: String;
+    public url: string;
     public specie: Specie;
     public inhabitants: Inhabitant[]
     private status: String;
@@ -36,7 +36,7 @@ export class SpecieComponent implements OnInit{
         this.inhabitants = [];
         this.status = ""
         this.title = "Zona"
-        this.url = GLOBAL.url;
+        this.url = GLOBAL.urlUploads + 'species/';
     }
 
     ngOnInit() {

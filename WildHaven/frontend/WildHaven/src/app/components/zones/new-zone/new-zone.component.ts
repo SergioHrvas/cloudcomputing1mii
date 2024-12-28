@@ -6,6 +6,7 @@ import { ZoneService } from "../../../services/zone.service";
 import { Zone } from "../../../models/zone";
 import { GLOBAL } from "../../../services/global";
 import { routes } from "../../../app.routes";
+import { Console } from "node:console";
 
 @Component({
     selector: 'zone',
@@ -57,6 +58,7 @@ export class NewZoneComponent implements OnInit{
             formData.append('image', this.imageZone, this.imageZone.name);
         }
 
+        console.log(formData)
         this._zoneService.createZone(formData).subscribe(
             response => {
                 if(!response.zone){

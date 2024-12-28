@@ -180,13 +180,14 @@ describe("Especies", function () {
                 image: "otraImagen.png",
             }
 
-            const res = await chai.request(app).put('/api/specie/update/670f930a96f295c8503ade12').set('Authorization', token).send(body)
+            const res = await chai.request(app).put('/api/specie/update/670f930a96f295c8503ade12').set('Authorization', token)
+            .field('name', body.name).field('description', body.description).attach('image', fs.readFileSync('test/test.png'), 'test.png');
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('specie').that.is.an('object');
             expect(res.body.specie).to.have.property('name').that.equals('especiePruebaModificada');
             expect(res.body.specie).to.have.property('description').that.equals('descripcion modificada de la especie');
-            expect(res.body.specie).to.have.property('image').that.equals('otraImagen.png');
+            expect(res.body.specie).to.have.property('image').that.include('image-');
         })
 
 

@@ -264,13 +264,14 @@ describe("Habitantes", function () {
                 image: "otraImagen.png",
             }
 
-            const res = await chai.request(app).put('/api/inhabitant/update/670f930a96f295c8503ade12').set('Authorization', token).send(body)
+            const res = await chai.request(app).put('/api/inhabitant/update/670f930a96f295c8503ade12').set('Authorization', token)
+            .field('name', body.name).field('description', body.description).attach('image', fs.readFileSync('test/test.png'), 'test.png');
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('inhabitant').that.is.an('object');
             expect(res.body.inhabitant).to.have.property('name').that.equals('habitantePruebaModificada');
             expect(res.body.inhabitant).to.have.property('description').that.equals('descripcion modificada de el habitante');
-            expect(res.body.inhabitant).to.have.property('image').that.equals('otraImagen.png');
+            expect(res.body.inhabitant).to.have.property('image').that.include('image-');
         })
 
 

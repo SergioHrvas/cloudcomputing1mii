@@ -36,6 +36,7 @@ export class ZoneService{
     }
 
     createZone(formData: FormData): Observable<any>{
+        console.log(formData)
         this.token = this.userService.getToken();
 
 

@@ -163,7 +163,7 @@ function updateZone(req, res) {
                                 zoneStored => {
 
                                     // Si tenía ya una imagen, la borramos
-                                    if (old_path.length > 0) {
+                                    if (old_path && old_path.length > 0) {
 
                                         const filePath = file_path + "\\" + old_path;
                                         

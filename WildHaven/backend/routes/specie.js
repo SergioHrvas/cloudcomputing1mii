@@ -4,11 +4,11 @@ var express = require('express');
 var SpecieController = require('../controllers/specie');
 var mdAuth = require('../middlewares/authenticated');
 
-const requestLogger = require('../middlewares/logging');
-
 var api = express.Router();
 
 const upload = require('../middlewares/confmulter');  // Importar el middleware
+
+const requestLogger = require('../middlewares/logging');
 
 api.get('/pruebas', requestLogger, SpecieController.pruebas);
 api.get('/list', [mdAuth.ensureAdminAuth,requestLogger], SpecieController.getSpecies);

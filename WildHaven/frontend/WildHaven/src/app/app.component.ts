@@ -25,7 +25,7 @@ export class AppComponent {
   }
 
   isAdmin(): boolean {
-    //return this._userService.isAdmin();
+    return this._userService.isAdmin();
     return false;
   }
 }

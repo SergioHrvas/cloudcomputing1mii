@@ -18,7 +18,7 @@ import { UserService } from "../../../services/user.service";
 
 export class ZonesComponent implements OnInit{
 
-    public url: String;
+    public url: string;
     public zones: Zone[];
     private status: String;
     public title: String;
@@ -32,7 +32,7 @@ export class ZonesComponent implements OnInit{
         this.zones = [];
         this.status = ""
         this.title = "Lista de zonas"
-        this.url = GLOBAL.url;
+        this.url = GLOBAL.urlUploads + '/zones/';
     }
 
     ngOnInit() {

@@ -33,13 +33,12 @@ export class InhabitantService{
         return this._http.get(this.url+"inhabitant/inhabitant/" + id, {headers: headers})   
     }
 
-    createInhabitant(inhabitant: Inhabitant): Observable<any>{
+    createInhabitant(formData : FormData): Observable<any>{
         this.token = this.userService.getToken();
-        let params = JSON.stringify(inhabitant);
 
-        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+        let headers = new HttpHeaders().set("Authorization", this.token)
 
-        return this._http.post(this.url+"inhabitant/create/",params, {headers: headers})   
+        return this._http.post(this.url+"inhabitant/create/",formData, {headers: headers})   
     }
 
     removeInhabitant(id: String | null): Observable<any>{
@@ -50,13 +49,12 @@ export class InhabitantService{
         return this._http.delete(this.url+"inhabitant/delete/" + id, {headers: headers})   
     }
 
-    updateInhabitant(id: String | null, inhabitant: Inhabitant): Observable<any>{
+    updateInhabitant(id: String | null, formData: FormData): Observable<any>{
         this.token = this.userService.getToken();
-        let params = JSON.stringify(inhabitant);
 
-        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.token)
+        let headers = new HttpHeaders().set("Authorization", this.token)
 
-        return this._http.put(this.url+"inhabitant/update/" + id, params, {headers: headers})   
+        return this._http.put(this.url+"inhabitant/update/" + id, formData, {headers: headers})   
     }
 
 }

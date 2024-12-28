@@ -30,6 +30,8 @@ export class EditInhabitantComponent implements OnInit{
     public zones: Zone[];
     public species: Specie[]
 
+    imageInhabitant: File | null = null;
+
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
@@ -96,15 +98,29 @@ export class EditInhabitantComponent implements OnInit{
     }
 
     onImageSelected(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            this.inhabitant.image = event.target.files[0];
+        const file = event.target.files[0];
+        if (file) {
+          this.imageInhabitant = file;
         }
     }
 
     onSubmit(form: any){
         const id = this._route.snapshot.paramMap.get('id');
 
-        this._inhabitantService.updateInhabitant(id, this.inhabitant).subscribe(
+        const formData = new FormData();
+        
+        Object.entries(this.inhabitant).forEach(([key, value]) => {
+            if(value){
+                formData.append(key, value?.toString() || '');
+            }
+        });
+
+        // Solo añadir la imagen si está seleccionada
+        if (this.imageInhabitant) {
+            formData.append('image', this.imageInhabitant, this.imageInhabitant.name);
+        }
+
+        this._inhabitantService.updateInhabitant(id, formData).subscribe(
             response => {
                 if(!response.inhabitant){
                     this.status = "error"

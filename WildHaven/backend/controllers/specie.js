@@ -131,6 +131,12 @@ function updateSpecie(req, res) {
     }
 
 
+    if (req.file) {
+        var file_path = req.file.destination;
+        var file_name = req.file.filename;
+    }
+
+
     Specie.findById(id).exec()
         .then(
             specie => {
@@ -162,8 +168,8 @@ function updateSpecie(req, res) {
                             if (body.technical_name) {
                                 specie.technical_name = body.technical_name;
                             }
-                            if (body.image){
-                                specie.image = body.image;
+                            if (file_name){
+                                specie.image = file_name;
 
                             }
                             specie.save().then(

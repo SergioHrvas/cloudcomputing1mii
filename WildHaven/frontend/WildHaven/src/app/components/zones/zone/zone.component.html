@@ -8,7 +8,7 @@
     <!-- Imagen de la zona -->
     <div class="text-center my-4">
       <img 
-        [src]="'http://localhost:3000/uploads/zones/' + zone.image" 
+        [src]="url + zone.image" 
         alt="{{ zone.name }}" 
         class="img-fluid rounded" 
         style="max-width: 100%; height: auto; box-shadow: 0px 4px 8px rgba(0,0,0,0.2);" />
@@ -24,7 +24,7 @@
           *ngFor="let inhabitant of inhabitants">
           <!-- Imagen del habitante -->
           <img 
-          [src]="inhabitant.image ? inhabitant.image : '/default-avatar.png'" 
+          [src]="inhabitant.image ? url + inhabitant.image : '/default-avatar.png'" 
           alt="{{ inhabitant.name }}" 
           class="rounded-circle me-3" 
           width="100" 

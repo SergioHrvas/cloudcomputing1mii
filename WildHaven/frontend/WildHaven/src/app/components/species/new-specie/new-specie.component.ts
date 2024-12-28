@@ -23,6 +23,8 @@ export class NewSpecieComponent implements OnInit{
     private status: String;
     public title: String;
 
+    imageSpecie: File | null = null;
+
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
@@ -40,13 +42,27 @@ export class NewSpecieComponent implements OnInit{
     }
 
     onImageSelected(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            this.specie.image = event.target.files[0];
+        const file = event.target.files[0];
+        if (file) {
+          this.imageSpecie = file;
         }
     }
 
     onSubmit(form: any){
-        this._specieService.createSpecie(this.specie).subscribe(
+        const formData = new FormData();
+        
+        Object.entries(this.specie).forEach(([key, value]) => {
+            if(value){
+                formData.append(key, value?.toString() || '');
+            }
+        });
+
+        // Solo añadir la imagen si está seleccionada
+        if (this.imageSpecie) {
+            formData.append('image', this.imageSpecie, this.imageSpecie.name);
+        }
+
+        this._specieService.createSpecie(formData).subscribe(
             response => {
                 if(!response.specie){
                     this.status = "error"

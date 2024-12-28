@@ -14,6 +14,9 @@ const cors = require('cors');
 // Configurar CORS para aceptar solicitudes desde tu frontend Angular
 app.use(cors()); 
 
+// Aumentar el límite del cuerpo de la solicitud
+app.use(express.json({ limit: '50mb' })); // Para JSON
+app.use(express.urlencoded({ limit: '50mb', extended: true })); // Para datos de formularios
 
 //Cargamos las rutas
 var user_routes = require('./routes/user');

@@ -161,6 +161,11 @@ function updateInhabitant(req, res) {
     var id = req.params.id;
     var body = req.body;
 
+    if (req.file) {
+        var file_path = req.file.destination;
+        var file_name = req.file.filename;
+    }
+
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
         return res.status(500).send({ message: "El id es incorrecto" })     
     }
@@ -194,8 +199,8 @@ function updateInhabitant(req, res) {
                                 if (body.alive !== undefined){
                                     inhabitant.alive = body.alive;
                                 }
-                                if(body.image)
-                                    inhabitant.image = body.image;
+                                if(file_name)
+                                    inhabitant.image = file_name;
                                 if(body.birth)
                                     inhabitant.birth = body.birth;
                                 if(body.specie)
