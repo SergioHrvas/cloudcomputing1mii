@@ -84,7 +84,6 @@ function createTask(req, res) {
 
     task.save().then(taskSaved => {
         if (!taskSaved) {
-            console.log("zs")
             res.status(400).send({ message: "No se ha podido guardar la tarea" })
         }
 
