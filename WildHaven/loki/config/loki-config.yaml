@@ -1,0 +1,47 @@
+auth_enabled: false  # Deshabilitar autenticación (puedes habilitarla en producción)
+
+server:
+  http_listen_port: 3100  # Puerto donde Loki escuchará
+  log_level: info         # Nivel de logs (debug, info, warn, error)
+
+ingester:
+  wal:
+    enabled: true           # Habilita Write-Ahead Log para evitar pérdida de datos
+    dir: /tmp/wal           # Directorio para almacenar temporalmente los logs
+  chunk_idle_period: 5m     # Tiempo antes de cerrar un chunk inactivo
+  chunk_retain_period: 30s  # Tiempo para retener chunks cerrados en memoria
+  max_chunk_age: 1h         # Edad máxima de un chunk antes de ser cerrado
+  lifecycler:
+    ring:
+      kvstore:
+        store: inmemory     # Almacena en memoria (usa Consul o etcd en producción)
+      replication_factor: 1 # Número de réplicas (aumentar en producción)
+
+schema_config:
+  configs:
+    - from: 2020-10-24       # Fecha de inicio para esta configuración
+      store: boltdb-shipper  # Tipo de almacenamiento
+      object_store: filesystem  # Almacenamiento para chunks (puede ser S3, GCS, etc.)
+      schema: v11            # Versión del esquema
+      index:
+        prefix: index_       # Prefijo para índices
+        period: 24h          # Período de rotación de índices
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /tmp/loki/index  # Directorio de índices activos
+    cache_location: /tmp/loki/cache         # Cache para índices antiguos
+    shared_store: filesystem                # Almacenamiento compartido
+  filesystem:
+    directory: /tmp/loki/chunks  # Directorio para almacenar chunks
+
+limits_config:
+  max_streams_per_user: 1000  # Número máximo de streams por usuario
+  max_entries_per_query: 5000 # Número máximo de entradas por consulta
+
+chunk_store_config:
+  max_look_back_period: 0  # Permitir consultas sin límite de tiempo
+
+table_manager:
+  retention_deletes_enabled: false  # Eliminar logs antiguos automáticamente
+  retention_period: 0               # Período de retención de logs (0 = sin eliminación)

@@ -1,3 +1,5 @@
+version: '3.7'
+
 services:
   mongodb:
     image: mongo:latest
@@ -26,7 +28,8 @@ services:
     networks:
       - app-network
     volumes:
-      - ./backend/:/usr/src/app # Sincroniza tu código del backend con la carpeta /app del contenedor
+      - ./backend/:/usr/src/app
+      - uploaded_images:/usr/src/app/uploads  # Montar el volumen para las imágenes
 
   angular-app:
     build:
@@ -38,12 +41,53 @@ services:
     networks:
       - app-network
     volumes:
-      - ./frontend/WildHaven/:/usr/src/frontend 
-      - /usr/src/frontend/node_modules  # Evita que el mapeo local sobrescriba node_modules
+      - ./frontend/WildHaven/:/usr/src/frontend
+      - /usr/src/frontend/node_modules
+
+  loki:
+    image: grafana/loki:2.8.2
+    container_name: loki
+    ports:
+      - "3100:3100"  # Puerto donde Loki escuchará
+    networks:
+      - app-network
+    volumes:
+      - ./loki/config/loki-config.yaml:/etc/loki/config.yaml
+
+  promtail:
+    image: grafana/promtail:2.8.2
+    container_name: promtail
+    networks:
+      - app-network
+    volumes:
+      - ./promtail/config/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - /var/log:/var/log  # Para recolectar logs de los contenedores
+      - /var/lib/docker/containers:/var/lib/docker/containers  # Para logs de contenedores
+    command: -config.file=/etc/promtail/promtail-config.yaml
+
+
+  grafana:
+    image: grafana/grafana:10.1.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin  # Usuario por defecto
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Contraseña por defecto
+    networks:
+      - app-network
+    depends_on:
+      - loki
+      
 networks:
   app-network:
     driver: bridge
 
 volumes:
   mongodb_data:
+    driver: local
+  grafana_data:
+  uploaded_images:  # Volumen para las imágenes subidas
     driver: local

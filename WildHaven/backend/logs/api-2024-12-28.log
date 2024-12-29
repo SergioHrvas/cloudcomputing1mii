@@ -609,3 +609,7 @@
 2024-12-28 19:50:57 [info]: POST /api/task/create/ 200 - 16ms (::ffff:172.18.0.1)
 2024-12-28 19:50:57 [info]: GET /api/task/tasksToUser/67705292e31437501749461e 200 - 5ms (::ffff:172.18.0.1)
 2024-12-28 19:50:57 [info]: GET /api/task/tasksByUser/67705292e31437501749461e 200 - 11ms (::ffff:172.18.0.1)
+2024-12-28 20:10:25 [info]: GET /api/specie/list 200 - 86ms (::ffff:172.18.0.1)
+2024-12-28 20:10:28 [info]: GET /api/inhabitant/list 200 - 62ms (::ffff:172.18.0.1)
+2024-12-28 20:10:30 [info]: GET /api/zone/list 200 - 7ms (::ffff:172.18.0.1)
+2024-12-28 20:27:11 [info]: POST /api/user/login 200 - 549ms (::ffff:172.18.0.1)
