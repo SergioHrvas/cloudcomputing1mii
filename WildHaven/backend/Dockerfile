@@ -9,15 +9,15 @@ RUN apt-get update
 # Copia el archivo package.json y package-lock.json
 COPY package*.json ./
 
-
-RUN npm install -g nodemon
-
-
 # Instala todas las dependencias, incluidas las de desarrollo
-RUN npm install --production=false && npm list --depth=0 && echo $PATH
+RUN npm install --production=false && npm list --depth=0
 
 # Copia el código fuente de la aplicación al contenedor
 COPY . .
+
+
+RUN npm install --save-dev nodemon
+RUN npm install --save-dev mongoose
 
 # Expone el puerto en el que la aplicación se ejecutará
 EXPOSE 3800
