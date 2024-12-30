@@ -28,7 +28,6 @@ services:
     networks:
       - app-network
     volumes:
-      - ./backend/:/usr/src/app
       - uploaded_images:/usr/src/app/uploads  # Montar el volumen para las imágenes
   
   angular-app:
