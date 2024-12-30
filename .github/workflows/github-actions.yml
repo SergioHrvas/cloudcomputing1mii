@@ -65,14 +65,15 @@ jobs:
 
           sudo apt-get install docker-compose -y
 
+      - name: Build Docker images
+        run: |
+          docker-compose build
 
-
-      # Iniciar los contenedores con Docker Compose
       - name: Start containers using Docker Compose
         run: |
-          docker-compose up # Inicia los contenedores en segundo plano
-        working-directory: './WildHaven'
+          docker-compose up -d
 
+          
       - name: Check containers after Docker Compose up
         run: |
           docker-compose ps
