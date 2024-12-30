@@ -62,7 +62,7 @@ jobs:
       # Configurar Docker y Docker Compose
       - name: Set up Docker Compose
         run: |
-          sudo apt-get update
+
           sudo apt-get install docker-compose -y
 
 
@@ -70,7 +70,7 @@ jobs:
       # Iniciar los contenedores con Docker Compose
       - name: Start containers using Docker Compose
         run: |
-          docker-compose up -d # Inicia los contenedores en segundo plano
+          docker-compose up # Inicia los contenedores en segundo plano
         working-directory: './WildHaven'
 
       - name: Check containers after Docker Compose up
