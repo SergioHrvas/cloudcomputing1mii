@@ -34,7 +34,7 @@ jobs:
       # 4. Iniciar los contenedores usando Docker Compose
       - name: Start containers using Docker Compose
         run: |
-          docker-compose up
+          docker-compose up -d
         working-directory: './WildHaven'
 
       - name: Check containers after Docker Compose up
