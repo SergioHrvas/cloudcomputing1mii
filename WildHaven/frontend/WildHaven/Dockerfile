@@ -4,6 +4,8 @@ FROM node:20
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/frontend
 
+RUN npm install -g npm@latest
+
 # Copiar el package.json y el package-lock.json para instalar dependencias primero
 COPY package*.json ./
 
