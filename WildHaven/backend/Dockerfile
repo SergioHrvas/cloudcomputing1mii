@@ -6,7 +6,6 @@ WORKDIR /usr/src/app
 
 # Copia el archivo package.json y package-lock.json
 COPY package*.json ./
-RUN npm install -g nodemon
 
 # Instala todas las dependencias, incluidas las de desarrollo
 RUN npm install --production=false && npm list --depth=0 && echo $PATH
