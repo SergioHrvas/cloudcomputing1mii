@@ -68,7 +68,8 @@ jobs:
       # Iniciar los contenedores con Docker Compose
       - name: Start containers using Docker Compose
         run: |
-          docker-compose -f ./WildHaven/docker-compose.yml up -d  # Inicia los contenedores en segundo plano
+          docker-compose -f ./docker-compose.yml up -d  # Inicia los contenedores en segundo plano
+        working-directory: './WildHaven/backend'
 
       - name: Check Angular app container status
         run: |
