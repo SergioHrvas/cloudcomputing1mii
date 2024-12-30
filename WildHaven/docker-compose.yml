@@ -28,7 +28,6 @@ services:
     volumes:
       - ./backend/:/usr/src/app
       - uploaded_images:/usr/src/app/uploads  # Montar el volumen para las imágenes
-    image: ghcr.io/sergiohrvas/cloudcomputing1mii:node-app    
   
   angular-app:
     build:
