@@ -65,10 +65,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install docker-compose -y
 
+      # Instalar nodemon globalmente
+      - name: Install nodemon globally
+        run: |
+          docker exec node-app npm install -g nodemon
+
+
       # Iniciar los contenedores con Docker Compose
       - name: Start containers using Docker Compose
         run: |
-          docker-compose up  # Inicia los contenedores en segundo plano
+          docker-compose up -d # Inicia los contenedores en segundo plano
         working-directory: './WildHaven'
 
       - name: Check containers after Docker Compose up
@@ -88,7 +94,6 @@ jobs:
             echo "node-app container is not running"
           fi
 
-          
       # Hacer peticiones HTTP para verificar que los contenedores respondan correctamente
       - name: Make HTTP requests to check container response
         run: |
