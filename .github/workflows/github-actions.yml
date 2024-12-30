@@ -68,7 +68,7 @@ jobs:
       # Iniciar los contenedores con Docker Compose
       - name: Start containers using Docker Compose
         run: |
-          docker-compose -f ./docker-compose.yml up -d  # Inicia los contenedores en segundo plano
+          docker-compose -f ./WildHaven/docker-compose.yml up -d  # Inicia los contenedores en segundo plano
 
       # Verificar que los contenedores estén en ejecución
       - name: Check if containers are running
