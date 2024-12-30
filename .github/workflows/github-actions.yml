@@ -76,6 +76,7 @@ jobs:
       - name: Check containers after Docker Compose up
         run: |
           docker-compose ps
+        working-directory: './WildHaven'
 
       - name: Check container status
         run: |
