@@ -73,6 +73,9 @@ jobs:
       - name: Check Angular app container status
         run: |
           docker ps -a
+        
+      - name: LOG ANGULAR APP
+        run: |
           docker logs $(docker ps -qf "name=angular-app")
 
       - name: Wait for Angular app to be ready
@@ -88,7 +91,8 @@ jobs:
           curl --fail --verbose http://localhost:4200
           curl --fail --verbose http://localhost:3800
 
-      # Detener los contenedores después de las pruebas
+      # Detener lo
+      s contenedores después de las pruebas
       - name: Stop Docker containers
         run: |
           docker-compose down

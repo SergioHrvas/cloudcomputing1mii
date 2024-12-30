@@ -1,5 +1,5 @@
 # Etapa única para desarrollo
-FROM node:20
+FROM node:18
 
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/frontend
