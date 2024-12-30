@@ -72,7 +72,7 @@ jobs:
 
       - name: Start containers using Docker Compose
         run: |
-          docker-compose up -d
+          docker-compose up
         working-directory: './WildHaven'
 
 
