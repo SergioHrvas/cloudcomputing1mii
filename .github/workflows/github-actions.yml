@@ -68,12 +68,14 @@ jobs:
       - name: Build Docker images
         run: |
           docker-compose build
+        working-directory: './WildHaven'
 
       - name: Start containers using Docker Compose
         run: |
           docker-compose up -d
+        working-directory: './WildHaven'
 
-          
+
       - name: Check containers after Docker Compose up
         run: |
           docker-compose ps
