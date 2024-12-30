@@ -35,13 +35,14 @@ jobs:
         run: npm install
         working-directory: './WildHaven/backend'
 
+      # Esperar a que MongoDB esté listo
       - name: Wait for MongoDB to be ready
         run: |
           until nc -z localhost 27017; do
             echo "Waiting for MongoDB...";
             sleep 1;
           done
-          
+
       # Ejecutar pruebas
       - name: Run tests
         run: npm test
@@ -49,17 +50,24 @@ jobs:
         env:
           MONGODB_URI: mongodb://localhost:27017/wildhaven-test  # URI para MongoDB local
 
+  build_and_push:
+    runs-on: ubuntu-latest
+    needs: test  # Dependencia en el trabajo 'test', para asegurar que solo se ejecute si los tests pasan
+
+    steps:
+      # Clonar el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Iniciar sesión en GitHub Container Registry (GHCR)
+      - name: Log in to GitHub Container Registry (GHCR)
+        run: |
+          echo ${{ secrets.TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       # Paso para construir la imagen Docker
       - name: Build Docker image
         run: |
           docker build -t ghcr.io/sergiohrvas/wildhaven:app-node ./WildHaven/backend
-
-      # Paso para autenticarte en GitHub Container Registry (ghcr.io)
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.TOKEN }}
 
       # Paso para subir la imagen Docker al GitHub Container Registry
       - name: Push Docker image to GitHub Container Registry
@@ -71,4 +79,5 @@ jobs:
         run: |
           ls ${{ github.workspace }}
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Print job status
+        run: echo "🍏 This job's status is ${{ job.status }}."
