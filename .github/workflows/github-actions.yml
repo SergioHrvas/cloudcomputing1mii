@@ -70,21 +70,7 @@ jobs:
         run: |
           docker-compose -f ./WildHaven/docker-compose.yml up -d  # Inicia los contenedores en segundo plano
 
-      # Hacer peticiones HTTP para verificar que los contenedores respondan correctamente
-      - name: Wait for the frontend container to be ready
-        run: |
-          until curl --fail http://localhost:4200; do
-            echo "Waiting for frontend...";
-            sleep 5;
-          done
 
-      - name: Wait for the backend container to be ready
-        run: |
-          until curl --fail http://localhost:3800; do
-            echo "Waiting for backend...";
-            sleep 5;
-          done
-          
       # Verificar que los contenedores estén en ejecución
       - name: Check if containers are running
         run: |
