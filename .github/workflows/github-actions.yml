@@ -70,17 +70,23 @@ jobs:
         run: |
           docker-compose -f ./WildHaven/docker-compose.yml up -d  # Inicia los contenedores en segundo plano
 
-
-      # Verificar que los contenedores estén en ejecución
-      - name: Check if containers are running
+      - name: Check Angular app container status
         run: |
-          docker ps  # Muestra los contenedores activos
+          docker ps -a
+          docker logs $(docker ps -qf "name=angular-app")
+
+      - name: Wait for Angular app to be ready
+        run: |
+          until curl --fail --verbose http://localhost:4200; do
+            echo "Waiting for Angular app...";
+            sleep 5;
+          done
 
       # Hacer peticiones HTTP para verificar que los contenedores respondan correctamente
       - name: Make HTTP requests to check container response
         run: |
-          curl --fail http://localhost:4200
-          curl --fail http://localhost:3800
+          curl --fail --verbose http://localhost:4200
+          curl --fail --verbose http://localhost:3800
 
       # Detener los contenedores después de las pruebas
       - name: Stop Docker containers
