@@ -1,5 +1,5 @@
 # Usa una imagen base de Node.js
-FROM node:latest
+FROM node:20
 
 LABEL org.opencontainers.image.source=https://github.com/sergiohrvas/cloudcomputing1mii
 
