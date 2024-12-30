@@ -52,7 +52,7 @@ jobs:
       # Paso para construir la imagen Docker
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/wildhaven:app-node .
+          docker build -t ghcr.io/sergiohrvas/wildhaven:app-node ./WildHaven/backend
 
       # Paso para autenticarte en GitHub Container Registry (ghcr.io)
       - name: Log in to GitHub Container Registry
@@ -64,7 +64,7 @@ jobs:
       # Paso para subir la imagen Docker al GitHub Container Registry
       - name: Push Docker image to GitHub Container Registry
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/wildhaven:app-node
+          docker push ghcr.io/sergiohrvas/wildhaven:app-node
 
       # Listar archivos en el repositorio
       - name: List files in the repository
