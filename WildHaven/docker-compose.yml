@@ -30,7 +30,8 @@ services:
     volumes:
       - ./backend/:/usr/src/app
       - uploaded_images:/usr/src/app/uploads  # Montar el volumen para las imágenes
-
+    image: ghcr.io/sergiohrvas/cloudcomputing1mii:node-app    
+  
   angular-app:
     build:
       context: ./frontend/WildHaven/
@@ -53,7 +54,7 @@ services:
       - app-network
     volumes:
       - ./loki/config/loki-config.yaml:/etc/loki/config.yaml
-
+      # - loki_data:/loki
   promtail:
     image: grafana/promtail:2.8.2
     container_name: promtail
@@ -84,10 +85,12 @@ services:
 networks:
   app-network:
     driver: bridge
+    
 
 volumes:
   mongodb_data:
     driver: local
   grafana_data:
+  loki_data:
   uploaded_images:  # Volumen para las imágenes subidas
     driver: local

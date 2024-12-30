@@ -19,7 +19,6 @@ jobs:
         ports:
           - 27017:27017
 
-
     steps:
       # Clonar el repositorio
       - name: Checkout repository
@@ -50,7 +49,24 @@ jobs:
         env:
           MONGODB_URI: mongodb://localhost:27017/wildhaven-test  # URI para MongoDB local
 
+      # Paso para construir la imagen Docker
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/wildhaven:app-node .
 
+      # Paso para autenticarte en GitHub Container Registry (ghcr.io)
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Paso para subir la imagen Docker al GitHub Container Registry
+      - name: Push Docker image to GitHub Container Registry
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/wildhaven:app-node
+
+      # Listar archivos en el repositorio
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
