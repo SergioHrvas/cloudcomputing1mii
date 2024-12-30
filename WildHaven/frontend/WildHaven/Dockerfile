@@ -10,8 +10,8 @@ RUN npm install -g npm@latest
 COPY package*.json ./
 
 # Instalar las dependencias sin dependencias opcionales
-RUN npm install --no-optional -g @angular/cli
-RUN npm install --no-optional
+RUN npm install -g @angular/cli
+RUN npm install
 
 # Copiar el resto del código de la aplicación
 COPY . .
