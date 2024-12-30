@@ -4,10 +4,14 @@ FROM node:20
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/app
 
+RUN apt-get update && apt-get install -y build-essential python
+
 # Copia el archivo package.json y package-lock.json
 COPY package*.json ./
+
+
 RUN npm install -g nodemon
-RUN npm install -g mongoose
+
 
 # Instala todas las dependencias, incluidas las de desarrollo
 RUN npm install --production=false && npm list --depth=0 && echo $PATH
