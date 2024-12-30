@@ -4,7 +4,7 @@ FROM node:20
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get install -y build-essential python
+RUN apt-get update
 
 # Copia el archivo package.json y package-lock.json
 COPY package*.json ./
