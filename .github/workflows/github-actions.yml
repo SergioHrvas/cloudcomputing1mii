@@ -71,9 +71,17 @@ jobs:
           docker-compose up -d  # Inicia los contenedores en segundo plano
         working-directory: './WildHaven'
 
-      - name: Check Angular app container status
+      - name: Install dependencies
+        run: npm install
+        working-directory: './WildHaven/backend'
+
+      - name: Check container status
         run: |
           docker ps -a
+          
+      - name: LOG NODE APP
+        run: |
+          docker logs $(docker ps -qf "name=node-app")
         
       - name: LOG ANGULAR APP
         run: |
