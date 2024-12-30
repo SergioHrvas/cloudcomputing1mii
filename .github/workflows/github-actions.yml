@@ -65,10 +65,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install docker-compose -y
 
-      # Instalar nodemon globalmente
-      - name: Install nodemon globally
-        run: |
-          docker exec node-app npm install -g nodemon
 
 
       # Iniciar los contenedores con Docker Compose
