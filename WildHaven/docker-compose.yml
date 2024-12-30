@@ -41,7 +41,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./frontend/WildHaven/:/usr/src/frontend
+      - ./frontend/WildHaven/src:/usr/src/frontend/src
       - /usr/src/frontend/node_modules
 
   loki:
