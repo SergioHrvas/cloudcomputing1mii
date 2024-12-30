@@ -16,8 +16,8 @@ RUN npm install --production=false && npm list --depth=0
 COPY . .
 
 
-RUN npm install --save-dev nodemon
-RUN npm install --save-dev mongoose
+RUN npm install -g --save-dev nodemon
+RUN npm install -g --save-dev mongoose
 
 # Expone el puerto en el que la aplicación se ejecutará
 EXPOSE 3800
