@@ -1,8 +1,6 @@
 # Usa una imagen base de Node.js
 FROM node:20
 
-LABEL org.opencontainers.image.source=https://github.com/sergiohrvas/cloudcomputing1mii
-
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/app
 
