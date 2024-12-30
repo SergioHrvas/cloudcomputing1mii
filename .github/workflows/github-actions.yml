@@ -55,11 +55,20 @@ jobs:
             echo "node-app container is not running"
           fi
 
+      - name: LOG ANGULAR APP
+        run: |
+          CONTAINER_ID=$(docker ps -qf "name=angular-app")
+          if [ -n "$CONTAINER_ID" ]; then
+            docker logs $CONTAINER_ID
+          else
+            echo "angular-app container is not running"
+          fi
+
       # Hacer peticiones HTTP para verificar que los contenedores respondan correctamente
       - name: Make HTTP requests to check container response
         run: |
-          curl --fail --verbose http://localhost:4200
           curl --fail --verbose http://localhost:3800
+          curl --fail --verbose http://localhost:4200
 
       # Detener los contenedores después de las pruebas
       - name: Stop Docker containers
