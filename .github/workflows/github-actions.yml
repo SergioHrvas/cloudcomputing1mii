@@ -15,36 +15,42 @@ jobs:
     needs: test  # Dependencia en el trabajo 'test', para asegurar que solo se ejecute si los tests pasan
 
     steps:
-      # Clonar el repositorio
+      # 1. Clonar el repositorio
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Configurar Docker y Docker Compose
-      - name: Set up Docker Compose
+      # 2. Configurar Docker y Docker Compose
+      - name: Set up Docker and Docker Compose
         run: |
+          sudo apt-get update -y
+          sudo apt-get install docker docker-compose -y
+          sudo usermod -aG docker $USER
+          newgrp docker
 
-          sudo apt-get install docker-compose -y
-
+      # 3. Construir las imágenes de Docker con 'docker-compose'
       - name: Build Docker images
         run: |
-          docker-compose build
+          docker-compose build --no-cache
         working-directory: './WildHaven'
 
+      # 4. Iniciar los contenedores usando Docker Compose
       - name: Start containers using Docker Compose
         run: |
-          docker-compose up
+          docker-compose up -d
         working-directory: './WildHaven'
 
-
+      # 5. Comprobar el estado de los contenedores después de Docker Compose
       - name: Check containers after Docker Compose up
         run: |
           docker-compose ps
         working-directory: './WildHaven'
 
+      # 6. Verificar el estado de los contenedores
       - name: Check container status
         run: |
           docker ps -a
 
+      # 7. Obtener los logs de la aplicación Node.js para depuración
       - name: LOG NODE APP
         run: |
           CONTAINER_ID=$(docker ps -qf "name=node-app")
@@ -54,16 +60,17 @@ jobs:
             echo "node-app container is not running"
           fi
 
-      # Hacer peticiones HTTP para verificar que los contenedores respondan correctamente
+      # 8. Realizar peticiones HTTP para verificar la respuesta de los contenedores
       - name: Make HTTP requests to check container response
         run: |
           curl --fail --verbose http://localhost:4200
           curl --fail --verbose http://localhost:3800
 
-      # Detener los contenedores después de las pruebas
+      # 9. Detener los contenedores después de las pruebas
       - name: Stop Docker containers
         run: |
           docker-compose down
+        working-directory: './WildHaven'
   test:
     runs-on: ubuntu-latest
 
