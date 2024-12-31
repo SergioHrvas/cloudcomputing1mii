@@ -64,7 +64,7 @@ jobs:
       - name: Make HTTP requests to check container response
         run: |
           curl --fail --verbose http://localhost:3800/api/user/pruebas
-          curl --fail --verbose http://172.18.0.7:4200/
+          curl --fail --verbose http://localhost:4200/
 
       # Detener los contenedores después de las pruebas
       - name: Stop Docker containers
