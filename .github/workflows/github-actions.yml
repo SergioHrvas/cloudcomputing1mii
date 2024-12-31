@@ -1,4 +1,4 @@
-name: Node.js CI
+name: CI para Node.js
 
 # Ejecutar el flujo de trabajo en eventos push o pull request
 on:
@@ -10,87 +10,89 @@ on:
       - main
 
 jobs:
-  test_cluster:
+  pruebas_cluster:
     runs-on: ubuntu-latest
-    needs: test  # Dependencia en el trabajo 'test', para asegurar que solo se ejecute si los tests pasan
+    needs: pruebas  # Dependencia en el trabajo 'pruebas', para asegurar que solo se ejecute si los tests pasan
 
     steps:
       # Clonar el repositorio
-      - name: Checkout repository
+      - name: Clonar el repositorio
         uses: actions/checkout@v4
 
       # Configurar Docker y Docker Compose
-      - name: Set up Docker Compose
+      - name: Configurar Docker Compose
         run: |
-
           sudo apt-get install docker-compose -y
 
-      # 3. Construir las imágenes de Docker con 'docker-compose'
-      - name: Build Docker images
+      # Construir las imágenes de Docker con 'docker-compose'
+      - name: Construir imágenes de Docker
         run: |
           docker-compose build --no-cache
         working-directory: './WildHaven'
 
-      # 4. Iniciar los contenedores usando Docker Compose
-      - name: Start containers using Docker Compose
+      # Iniciar los contenedores usando Docker Compose
+      - name: Iniciar contenedores con Docker Compose
         run: |
           docker-compose up -d
         working-directory: './WildHaven'
 
-      - name: Check containers after Docker Compose up
+      - name: Verificar contenedores después de iniciar con Docker Compose
         run: |
           docker-compose ps
         working-directory: './WildHaven'
 
-      - name: Check container status
+      - name: Verificar estado de los contenedores
         run: |
           docker ps -a
 
-      - name: LOG NODE APP
+      - name: Consultar logs de la aplicación Node.js
         run: |
           CONTAINER_ID=$(docker ps -qf "name=node-app")
           if [ -n "$CONTAINER_ID" ]; then
             docker logs $CONTAINER_ID
           else
-            echo "node-app container is not running"
+            echo "El contenedor node-app no está en ejecución"
           fi
 
-      - name: Check container status
+      # Esperar a que las aplicaciones estén disponibles (máximo 1 minuto)
+      - name: Esperar disponibilidad de la app Angular
         run: |
-          docker ps -a
-
-      # Wait for containers to be fully initialized (use curl to check status)
-      - name: Wait for Angular app to be available
-        run: |
-          # Wait for the app to be up and running
-          until curl --fail --silent --output /dev/null http://localhost:4200; do
-            echo "Waiting for Angular app to be available..."
+          SECONDS=0
+          while ! curl --fail --silent --output /dev/null http://localhost:4200; do
+            echo "Esperando a que la app Angular esté disponible..."
             sleep 5
+            if [ $SECONDS -ge 60 ]; then
+              echo "Tiempo de espera agotado para la app Angular" && exit 1
+            fi
           done
-          echo "Angular app is up and running!"
+          echo "La app Angular está disponible!"
 
-      # Wait for containers to be fully initialized (use curl to check status)
-      - name: Wait for Loki app to be available
+      - name: Esperar disponibilidad de la app Loki
         run: |
-          # Wait for the app to be up and running
-          until curl --fail --silent --output /dev/null http://localhost:3100/ready; do
-            echo "Waiting for Loki app to be available..."
+          SECONDS=0
+          while ! curl --fail --silent --output /dev/null http://localhost:3100/ready; do
+            echo "Esperando a que la app Loki esté disponible..."
             sleep 5
+            if [ $SECONDS -ge 60 ]; then
+              echo "Tiempo de espera agotado para la app Loki" && exit 1
+            fi
           done
-          echo "Loki app is up and running!"
+          echo "La app Loki está disponible!"
 
-      # Wait for containers to be fully initialized (use curl to check status)
-      - name: Wait for Grafana app to be available
+      - name: Esperar disponibilidad de la app Grafana
         run: |
-          # Wait for the app to be up and running
-          until curl --fail --silent --output /dev/null http://localhost:3000; do
-            echo "Waiting for Grafana app to be available..."
+          SECONDS=0
+          while ! curl --fail --silent --output /dev/null http://localhost:3000; do
+            echo "Esperando a que la app Grafana esté disponible..."
             sleep 5
+            if [ $SECONDS -ge 60 ]; then
+              echo "Tiempo de espera agotado para la app Grafana" && exit 1
+            fi
           done
-          echo "Grafana app is up and running!"
+          echo "La app Grafana está disponible!"
 
       # Hacer peticiones HTTP para verificar que los contenedores respondan correctamente
-      - name: Make HTTP requests to check container response
+      - name: Realizar peticiones HTTP para verificar respuesta
         run: |
           curl --fail --verbose http://localhost:3800/api/user/pruebas
           curl --fail --verbose http://localhost:4200/
@@ -98,12 +100,12 @@ jobs:
           curl --fail --verbose http://localhost:3000
 
       # Detener los contenedores después de las pruebas
-      - name: Stop Docker containers
+      - name: Detener contenedores de Docker
         run: |
           docker-compose down
         working-directory: './WildHaven'
 
-  test:
+  pruebas:
     runs-on: ubuntu-latest
 
     services:
@@ -114,63 +116,67 @@ jobs:
 
     steps:
       # Clonar el repositorio
-      - name: Checkout repository
+      - name: Clonar el repositorio
         uses: actions/checkout@v4
 
       # Configurar la versión de Node.js
-      - name: Set up Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20' # Puedes ajustar la versión de Node.js según lo que uses
 
       # Instalar dependencias
-      - name: Install dependencies
+      - name: Instalar dependencias
         run: npm install
         working-directory: './WildHaven/backend'
 
       # Esperar a que MongoDB esté listo
-      - name: Wait for MongoDB to be ready
+      - name: Esperar a que MongoDB esté listo
         run: |
+          SECONDS=0
           until nc -z localhost 27017; do
-            echo "Waiting for MongoDB...";
+            echo "Esperando a que MongoDB esté disponible...";
             sleep 1;
+            if [ $SECONDS -ge 60 ]; then
+              echo "Tiempo de espera agotado para MongoDB" && exit 1
+            fi
           done
 
       # Ejecutar pruebas
-      - name: Run tests
+      - name: Ejecutar pruebas
         run: npm test
         working-directory: './WildHaven/backend'
         env:
           MONGODB_URI: mongodb://localhost:27017/wildhaven-test  # URI para MongoDB local
 
-  build_and_push:
+  construir_y_subir:
     runs-on: ubuntu-latest
-    needs: test_cluster  # Dependencia en el trabajo 'test_cluster', para asegurar que solo se ejecute si las pruebas del clúster pasan
+    needs: pruebas_cluster  # Dependencia en el trabajo 'pruebas_cluster', para asegurar que solo se ejecute si las pruebas del clúster pasan
 
     steps:
       # Clonar el repositorio
-      - name: Checkout repository
+      - name: Clonar el repositorio
         uses: actions/checkout@v4
 
       # Iniciar sesión en GitHub Container Registry (GHCR)
-      - name: Log in to GitHub Container Registry (GHCR)
+      - name: Iniciar sesión en el GHCR
         run: |
           echo ${{ secrets.TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       # Paso para construir la imagen Docker
-      - name: Build Docker image
+      - name: Construir imagen Docker
         run: |
           docker build -t ghcr.io/sergiohrvas/wildhaven:app-node ./WildHaven/backend
 
       # Paso para subir la imagen Docker al GitHub Container Registry
-      - name: Push Docker image to GitHub Container Registry
+      - name: Subir imagen Docker al GHCR
         run: |
           docker push ghcr.io/sergiohrvas/wildhaven:app-node
 
       # Listar archivos en el repositorio
-      - name: List files in the repository
+      - name: Listar archivos en el repositorio
         run: |
           ls ${{ github.workspace }}
 
-      - name: Print job status
-        run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Imprimir estado del trabajo
+        run: echo "🍏 El estado de este trabajo es ${{ job.status }}."
