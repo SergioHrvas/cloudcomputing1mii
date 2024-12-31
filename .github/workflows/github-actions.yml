@@ -173,10 +173,5 @@ jobs:
         run: |
           docker push ghcr.io/sergiohrvas/wildhaven:app-node
 
-      # Listar archivos en el repositorio
-      - name: Listar archivos en el repositorio
-        run: |
-          ls ${{ github.workspace }}
-
       - name: Imprimir estado del trabajo
         run: echo "🍏 El estado de este trabajo es ${{ job.status }}."
