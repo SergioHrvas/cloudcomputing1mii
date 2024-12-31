@@ -74,11 +74,15 @@ jobs:
         run: |
           curl --fail --verbose http://localhost:3800/api/user/pruebas
           curl --fail --verbose http://localhost:4200/
+          curl --fail --verbose http://localhost:3100/ready
+          curl --fail --verbose http://localhost:3000
 
       # Detener los contenedores después de las pruebas
       - name: Stop Docker containers
         run: |
           docker-compose down
+        working-directory: './WildHaven'
+
   test:
     runs-on: ubuntu-latest
 
