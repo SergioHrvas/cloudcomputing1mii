@@ -91,6 +91,17 @@ jobs:
           done
           echo "La app Grafana está disponible!"
 
+      - name: Verificar estado de los contenedores
+        run: |
+          NOT_UP=$(docker ps -a --filter "status=exited" --filter "status=created" --quiet)
+          if [ -n "$NOT_UP" ]; then
+            echo "Algunos contenedores no están en estado 'Up':"
+            docker ps -a --filter "status=exited" --filter "status=created"
+            exit 1
+          else
+            echo "Todos los contenedores están en estado 'Up'."
+          fi
+
       # Hacer peticiones HTTP para verificar que los contenedores respondan correctamente
       - name: Realizar peticiones HTTP para verificar respuesta
         run: |
