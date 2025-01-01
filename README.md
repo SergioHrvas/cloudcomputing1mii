@@ -16,3 +16,6 @@ WildHaven es una aplicación que simplifica la gestión integral de protectoras 
 
 ### Diseño de microservicios
 [El hito 3](https://github.com/SergioHrvas/CloudComputing1MII/blob/main/hitos/h3.md) se centra en el desarrollo de un microservicio, donde se implementa una API diseñada con un enfoque por capas que separa la lógica de negocio. Incluye la elección y justificación del framework utilizado, la integración de un sistema de logs para registrar la actividad de la API, y la creación de pruebas automatizadas para asegurar su correcto funcionamiento. Además, se busca una documentación adecuada que respalde el diseño y las decisiones tomadas a lo largo del proceso, garantizando un sistema escalable, mantenible y bien gestionado.
+
+### Composición de contenedores
+En el [cuarto hito](https://github.com/SergioHrvas/CloudComputing1MII/blob/main/hitos/h4.md), se compondrán contenedores con el objetivo de garantizar un entorno de ejecución uniforme y eficiente para las aplicaciones involucradas. El uso de contenedores facilita el despliegue, la escalabilidad y la consistencia entre entornos de desarrollo, prueba y producción.
