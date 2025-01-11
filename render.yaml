@@ -2,17 +2,18 @@ services:
   - type: web
     name: mongodb
     env: docker
-    image: "mongo"
+    image: "mongo:latest"  # Asegúrate de incluir la etiqueta correcta para la última versión
+    container_name: mongodb  # Nombre del contenedor (opcional)
     envVars:
       - key: MONGO_INITDB_ROOT_USERNAME
         value: admin
       - key: MONGO_INITDB_ROOT_PASSWORD
         value: secret
     ports:
-      - port: 27017
+      - port: 27017  # Puerto expuesto en el host
     mount:
       - source: ./mongodb_data
-        target: /data/db
+        target: /data/db  # Ruta donde se almacenan los datos de MongoDB en el contenedor
 
   - type: web
     name: node-app
