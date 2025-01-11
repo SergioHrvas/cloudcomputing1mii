@@ -10,7 +10,7 @@ RUN apt-get update
 COPY package*.json ./
 
 # Instala todas las dependencias, incluidas las de desarrollo
-RUN npm install -y --production=false
+RUN npm install
 
 # Copia el código fuente de la aplicación al contenedor
 COPY . .
