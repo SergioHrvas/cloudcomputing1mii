@@ -1,9 +1,8 @@
 services:
   mongodb:
-    type: docker
     image: mongo:latest
-    name: mongodb
-    env:
+    container_name: mongodb
+    environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: secret
     ports:
@@ -14,12 +13,11 @@ services:
       - mongodb_data:/data/db
 
   node-app:
-    type: docker
     build:
       context: ./backend/
       dockerfile: Dockerfile
-    name: node-app
-    env:
+    container_name: node-app
+    environment:
       MONGO_URL: mongodb://admin:secret@mongodb:27017/wildhaven-db?authSource=admin
     ports:
       - "3800:3800"
@@ -28,15 +26,14 @@ services:
     networks:
       - app-network
     volumes:
-      - ./backend/src:/usr/src/app/src
-      - uploaded_images:/usr/src/app/uploads
-
+        - ./backend/src:/usr/src/app/src
+        - uploaded_images:/usr/src/app/uploads  # Montar el volumen para las imágenes
+  
   angular-app:
-    type: docker
     build:
       context: ./frontend/WildHaven/
       dockerfile: Dockerfile
-    name: angular-app
+    container_name: angular-app
     ports:
       - "4200:4200"
     networks:
@@ -46,52 +43,51 @@ services:
       - /usr/src/frontend/node_modules
 
   loki:
-    type: docker
     image: grafana/loki:2.8.2
-    name: loki
+    container_name: loki
     ports:
-      - "3100:3100"
+      - "3100:3100"  # Puerto donde Loki escuchará
     networks:
       - app-network
     volumes:
       - ./loki/config/loki-config.yaml:/etc/loki/config.yaml
-
+      # - loki_data:/loki
   promtail:
-    type: docker
     image: grafana/promtail:2.8.2
-    name: promtail
+    container_name: promtail
     networks:
       - app-network
     volumes:
       - ./promtail/config/promtail-config.yaml:/etc/promtail/promtail-config.yaml
-      - /var/log:/var/log
-      - /var/lib/docker/containers:/var/lib/docker/containers
+      - /var/log:/var/log  # Para recolectar logs de los contenedores
+      - /var/lib/docker/containers:/var/lib/docker/containers  # Para logs de contenedores
     command: -config.file=/etc/promtail/promtail-config.yaml
 
+
   grafana:
-    type: docker
     image: grafana/grafana:10.1.0
-    name: grafana
+    container_name: grafana
     ports:
       - "3000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
-    env:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin  # Usuario por defecto
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Contraseña por defecto
     networks:
       - app-network
     depends_on:
       - loki
-
+      
 networks:
   app-network:
     driver: bridge
+    
 
 volumes:
   mongodb_data:
     driver: local
   grafana_data:
   loki_data:
-  uploaded_images:
+  uploaded_images:  # Volumen para las imágenes subidas
     driver: local
