@@ -2,8 +2,7 @@ services:
   - type: web
     name: mongodb
     env: docker
-    image: mongo:latest
-    container_name: mongodb
+    image: "mongo"
     envVars:
       - key: MONGO_INITDB_ROOT_USERNAME
         value: admin
