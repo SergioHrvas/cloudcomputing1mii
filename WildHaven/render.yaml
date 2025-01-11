@@ -1,0 +1,97 @@
+services:
+  mongodb:
+    type: docker
+    image: mongo:latest
+    name: mongodb
+    env:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    volumes:
+      - mongodb_data:/data/db
+
+  node-app:
+    type: docker
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    name: node-app
+    env:
+      MONGO_URL: mongodb://admin:secret@mongodb:27017/wildhaven-db?authSource=admin
+    ports:
+      - "3800:3800"
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    volumes:
+      - ./backend/src:/usr/src/app/src
+      - uploaded_images:/usr/src/app/uploads
+
+  angular-app:
+    type: docker
+    build:
+      context: ./frontend/WildHaven/
+      dockerfile: Dockerfile
+    name: angular-app
+    ports:
+      - "4200:4200"
+    networks:
+      - app-network
+    volumes:
+      - ./frontend/WildHaven/src:/usr/src/frontend/src
+      - /usr/src/frontend/node_modules
+
+  loki:
+    type: docker
+    image: grafana/loki:2.8.2
+    name: loki
+    ports:
+      - "3100:3100"
+    networks:
+      - app-network
+    volumes:
+      - ./loki/config/loki-config.yaml:/etc/loki/config.yaml
+
+  promtail:
+    type: docker
+    image: grafana/promtail:2.8.2
+    name: promtail
+    networks:
+      - app-network
+    volumes:
+      - ./promtail/config/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers
+    command: -config.file=/etc/promtail/promtail-config.yaml
+
+  grafana:
+    type: docker
+    image: grafana/grafana:10.1.0
+    name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    env:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - app-network
+    depends_on:
+      - loki
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local
+  grafana_data:
+  loki_data:
+  uploaded_images:
+    driver: local
