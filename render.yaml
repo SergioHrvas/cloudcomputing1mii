@@ -1,93 +1,94 @@
 services:
-  mongodb:
+  - type: web
+    name: mongodb
+    env: docker
     image: mongo:latest
     container_name: mongodb
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secret
+    envVars:
+      - key: MONGO_INITDB_ROOT_USERNAME
+        value: admin
+      - key: MONGO_INITDB_ROOT_PASSWORD
+        value: secret
     ports:
-      - "27017:27017"
-    networks:
-      - app-network
-    volumes:
-      - mongodb_data:/data/db
+      - port: 27017
+    mount:
+      - source: ./mongodb_data
+        target: /data/db
 
-  node-app:
+  - type: web
+    name: node-app
+    env: docker
     build:
       context: ./backend/
-      dockerfile: Dockerfile
+      dockerfilePath: Dockerfile
     container_name: node-app
-    environment:
-      MONGO_URL: mongodb://admin:secret@mongodb:27017/wildhaven-db?authSource=admin
+    envVars:
+      - key: MONGO_URL
+        value: mongodb://admin:secret@mongodb:27017/wildhaven-db?authSource=admin
     ports:
-      - "3800:3800"
-    depends_on:
+      - port: 3800
+    dependsOn:
       - mongodb
-    networks:
-      - app-network
-    volumes:
-        - ./backend/src:/usr/src/app/src
-        - uploaded_images:/usr/src/app/uploads  # Montar el volumen para las imágenes
-  
-  angular-app:
+    mount:
+      - source: ./backend/src
+        target: /usr/src/app/src
+      - source: ./uploaded_images
+        target: /usr/src/app/uploads
+
+  - type: web
+    name: angular-app
+    env: docker
     build:
       context: ./frontend/WildHaven/
-      dockerfile: Dockerfile
+      dockerfilePath: Dockerfile
     container_name: angular-app
     ports:
-      - "4200:4200"
-    networks:
-      - app-network
-    volumes:
-      - ./frontend/WildHaven/src:/usr/src/frontend/src
-      - /usr/src/frontend/node_modules
+      - port: 4200
+    mount:
+      - source: ./frontend/WildHaven/src
+        target: /usr/src/frontend/src
+      - source: ./frontend/WildHaven/node_modules
+        target: /usr/src/frontend/node_modules
 
-  loki:
+  - type: web
+    name: loki
+    env: docker
     image: grafana/loki:2.8.2
     container_name: loki
     ports:
-      - "3100:3100"  # Puerto donde Loki escuchará
-    networks:
-      - app-network
-    volumes:
-      - ./loki/config/loki-config.yaml:/etc/loki/config.yaml
-      # - loki_data:/loki
-  promtail:
+      - port: 3100
+    mount:
+      - source: ./loki/config/loki-config.yaml
+        target: /etc/loki/config.yaml
+
+  - type: web
+    name: promtail
+    env: docker
     image: grafana/promtail:2.8.2
     container_name: promtail
-    networks:
-      - app-network
-    volumes:
-      - ./promtail/config/promtail-config.yaml:/etc/promtail/promtail-config.yaml
-      - /var/log:/var/log  # Para recolectar logs de los contenedores
-      - /var/lib/docker/containers:/var/lib/docker/containers  # Para logs de contenedores
     command: -config.file=/etc/promtail/promtail-config.yaml
+    mount:
+      - source: ./promtail/config/promtail-config.yaml
+        target: /etc/promtail/promtail-config.yaml
+      - source: /var/log
+        target: /var/log
+      - source: /var/lib/docker/containers
+        target: /var/lib/docker/containers
 
-
-  grafana:
+  - type: web
+    name: grafana
+    env: docker
     image: grafana/grafana:10.1.0
     container_name: grafana
     ports:
-      - "3000:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin  # Usuario por defecto
-      - GF_SECURITY_ADMIN_PASSWORD=admin  # Contraseña por defecto
-    networks:
-      - app-network
-    depends_on:
+      - port: 3000
+    envVars:
+      - key: GF_SECURITY_ADMIN_USER
+        value: admin
+      - key: GF_SECURITY_ADMIN_PASSWORD
+        value: admin
+    mount:
+      - source: ./grafana_data
+        target: /var/lib/grafana
+    dependsOn:
       - loki
-      
-networks:
-  app-network:
-    driver: bridge
-    
-
-volumes:
-  mongodb_data:
-    driver: local
-  grafana_data:
-  loki_data:
-  uploaded_images:  # Volumen para las imágenes subidas
-    driver: local
