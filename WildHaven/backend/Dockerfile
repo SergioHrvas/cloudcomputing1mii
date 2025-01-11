@@ -6,11 +6,8 @@ WORKDIR /usr/src/app
 
 RUN apt-get update
 
-
-# Copiar los archivos necesarios para la aplicación
-COPY package*.json ./  # Copia package.json y package-lock.json
-COPY src ./src         # Copia el código fuente (asegúrate de que el directorio `src` existe)
-
+# Copia el archivo package.json y package-lock.json
+COPY package*.json ./
 
 # Instala todas las dependencias, incluidas las de desarrollo
 RUN npm install
