@@ -1,6 +1,4 @@
-import { environment } from '../../environments/environment';
-
 export var GLOBAL = {
-  url: environment.apiUrl,
-  urlUploads: environment.uploadsUrl
+  url: process.env['API_URL'] || 'http://localhost:3800',
+  urlUploads: process.env['API_URL'] + "/uploads" || 'http://localhost:3800/uploads'
 };

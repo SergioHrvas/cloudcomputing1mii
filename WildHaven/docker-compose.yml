@@ -34,6 +34,8 @@ services:
       context: ./frontend/WildHaven/
       dockerfile: Dockerfile
     container_name: angular-app
+    environment:
+      API_URL: ${API_URL}
     ports:
       - "4200:4200"
     networks:
