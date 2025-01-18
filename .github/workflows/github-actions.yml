@@ -47,6 +47,10 @@ jobs:
       - name: Clonar el repositorio
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: |
+          echo "NODE_ENV=development" >> .env
+          
       # Configurar Docker y Docker Compose
       - name: Configurar Docker Compose
         run: |
