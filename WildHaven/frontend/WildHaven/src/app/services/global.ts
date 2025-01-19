@@ -1,4 +1,8 @@
+//Importar environment
+import { environment } from '../../environments/environment';
+
 export const GLOBAL = {
-    url: "http://localhost:3800/api/",
-    urlUploads: "http://localhost:3800/uploads/"
+    url: environment.apiUrl,
+    urlUploads: environment.uploadsUrl
 };
+

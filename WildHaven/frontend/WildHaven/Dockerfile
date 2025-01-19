@@ -52,6 +52,5 @@ FROM base AS production
 # Exponer el puerto 4200 donde estará corriendo la app Angular
 EXPOSE 4200
 
-
 # Comando para iniciar la aplicación, controlado por la variable de entorno NODE_ENV
 CMD if [ "$NODE_ENV" = "production" ]; then ng serve --host 0.0.0.0 --prod; else ng serve --host 0.0.0.0; fi
