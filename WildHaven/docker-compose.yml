@@ -33,7 +33,6 @@ services:
     build:
       context: ./frontend/WildHaven/
       dockerfile: Dockerfile
-      target: ${NODE_ENV}
     container_name: angular-app
     environment:
       NODE_ENV: ${NODE_ENV}
