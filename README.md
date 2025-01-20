@@ -1,6 +1,7 @@
 # CloudComputing1MII
 Prácticas de Cloud Computing I del Master en Ingeniería Informática en la UGR
-
+<center><img src="/img/WildHaven300x300.png" width="450"></center>
+<img src="/img/WildHaven300x300.png" width="450">
 ![Logo WildHaven](/img/WildHaven300x300.png)
 ## Proyecto WildHaven
 WildHaven es una aplicación que simplifica la gestión integral de protectoras y santuarios de animales. Desde el seguimiento del bienestar animal hasta la coordinación de voluntarios, adopciones responsables y recaudación de fondos, ofrece una plataforma eficiente y todo-en-uno. Con herramientas intuitivas y automatizadas, WildHaven permite a estas organizaciones enfocarse en su misión principal: proteger y cuidar a los animales.
@@ -19,3 +20,6 @@ WildHaven es una aplicación que simplifica la gestión integral de protectoras 
 
 ### Composición de contenedores
 En el [cuarto hito](https://github.com/SergioHrvas/CloudComputing1MII/blob/main/hitos/h4.md), se compondrán contenedores con el objetivo de garantizar un entorno de ejecución uniforme y eficiente para las aplicaciones involucradas. El uso de contenedores facilita el despliegue, la escalabilidad y la consistencia entre entornos de desarrollo, prueba y producción.
+
+### Despliegue de la aplicación en un IaaS
+En el [quinto hito](https://github.com/SergioHrvas/CloudComputing1MII/blob/main/hitos/h5.md), se llevará a cabo el despliegue de la aplicación desarrollada en un proveedor de **Infraestructura como Servicio (IaaS)**. Este proceso tiene como objetivo alojar los contenedores previamente configurados en un entorno de nube para garantizar la accesibilidad, escalabilidad y disponibilidad de la aplicación en un entorno de producción.
