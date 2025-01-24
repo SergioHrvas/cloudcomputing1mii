@@ -1,8 +1,8 @@
 # CloudComputing1MII
 Prácticas de Cloud Computing I del Master en Ingeniería Informática en la UGR
-<center><img src="/img/WildHaven300x300.png" width="450"></center>
-<img src="/img/WildHaven300x300.png" width="450">
-![Logo WildHaven](/img/WildHaven300x300.png)
+
+<center><img src="./img/WildHaven300x300.png" width="250"></center>
+
 ## Proyecto WildHaven
 WildHaven es una aplicación que simplifica la gestión integral de protectoras y santuarios de animales. Desde el seguimiento del bienestar animal hasta la coordinación de voluntarios, adopciones responsables y recaudación de fondos, ofrece una plataforma eficiente y todo-en-uno. Con herramientas intuitivas y automatizadas, WildHaven permite a estas organizaciones enfocarse en su misión principal: proteger y cuidar a los animales.
 
