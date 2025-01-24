@@ -15,7 +15,6 @@ RUN npm install
 # Copia el código fuente de la aplicación al contenedor
 COPY . .
 
-
 RUN npm install -g --save-dev nodemon
 RUN npm install -g --save-dev mongoose
 

@@ -78,9 +78,6 @@ export class EditSpecieComponent implements OnInit {
             formData.append('image', this.imageSpecie, this.imageSpecie.name);
         }
 
-        console.log(formData)
-
-
         this._specieService.updateSpecie(id, formData).subscribe(
             response => {
                 if (!response.specie) {

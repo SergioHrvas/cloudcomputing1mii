@@ -36,7 +36,7 @@ constructor(
     this.inhabitants = [];
     this.status = ""
     this.title = "Zona"
-    this.url = GLOBAL.url;
+    this.url = GLOBAL.urlUploads + 'users/';
 }
 
 ngOnInit() {

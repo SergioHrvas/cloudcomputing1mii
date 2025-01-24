@@ -46,7 +46,8 @@ export class UserEditComponent implements OnInit{
      this.status=""
     }
 
-    public serverUrl: string = GLOBAL.url;  // URL base para la carpeta donde se almacenan las imágenes
+    public serverUrl: string = GLOBAL.urlUploads + 'users/';
+  // URL base para la carpeta donde se almacenan las imágenes
 
     ngOnInit(): void {
         this.user = this._userService.getIdentity();
@@ -61,8 +62,24 @@ export class UserEditComponent implements OnInit{
     
 
     onSubmit(form: any){
+        const id = this.user._id
 
-        this._userService.updateUser(this.user, this.profileImage).subscribe(
+        const formData = new FormData();
+
+        Object.entries(this.user).forEach(([key, value]) => {
+            if (value && key != "_id") {
+                formData.append(key, value?.toString() || '');
+            }
+        });
+
+
+        // Solo añadir la imagen si está seleccionada
+        if (this.profileImage) {
+            formData.append('image', this.profileImage, this.profileImage.name);
+        }
+
+
+        this._userService.updateUser(id, formData).subscribe(
             response => {
                 if(!response.user){
                     this.status = "error"

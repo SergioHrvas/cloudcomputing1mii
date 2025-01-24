@@ -17,7 +17,7 @@ import { GLOBAL } from "../../../services/global";
 
 export class UsersComponent implements OnInit{
 
-    public url: String;
+    public url: string;
     public users: User[];
     private status: String;
     public title: String;
@@ -30,14 +30,13 @@ export class UsersComponent implements OnInit{
         this.users = [];
         this.status = ""
         this.title = "Lista de usuarios"
-        this.url = GLOBAL.url;
+        this.url = GLOBAL.urlUploads + 'users/';
     }
 
     ngOnInit() {
         this._userService.getUsers().subscribe(
             response => {
                 this.users = response.users;
-                console.log(this.users)
             },
             error => {
                 console.log(<any>error);
@@ -47,6 +46,10 @@ export class UsersComponent implements OnInit{
             }
         );
     }
+    
+    getUserImage(user: { image: string }): string {
+        return `${this.url}${user.image}`;
+      }
 
     removeUser(id: String) {
         this._userService.removeUser(id).subscribe(

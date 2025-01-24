@@ -198,6 +198,9 @@ function updateUser(req, res) {
         var file_name = req.file.filename;
     }
 
+    console.log("aaawW" + file_path)
+    
+    console.log("aaawsW" + file_name)
     update.image = file_name
 
     //Eliminamos la propiedad contraseña por seguridad (se modificará en un método por separado)
@@ -250,7 +253,7 @@ function updateUser(req, res) {
 
                             const filePath = file_path + "\\" + old_path;
                             
-                            console.log("filpath: " + filePath)
+                            console.log("filepatsh: " + filePath)
                             // Verificamos si el archivo existe
                             fs.access(filePath, fs.constants.F_OK, (err) => {
                                 if (!err) {
