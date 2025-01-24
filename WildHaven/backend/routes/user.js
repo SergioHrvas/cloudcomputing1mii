@@ -13,7 +13,8 @@ api.post('/register', requestLogger, UserController.saveUser);
 api.post('/login',requestLogger, UserController.loginUser);
 api.get('/user/:id', [mdAuth.ensureAdminAuth,requestLogger], UserController.getUser)
 api.get('/list/:page?/:itemsPerPage?', [mdAuth.ensureAdminAuth,requestLogger], UserController.getUsers)
-api.put('/update/:id',[mdAuth.ensureAuth,requestLogger, upload.single('image')], UserController.updateUser)
+api.put('/updateProfile/:id',[mdAuth.ensureAuth,requestLogger, upload.single('image')], UserController.updateProfile)
+api.put('/update/:id',[mdAuth.ensureAdminAuth,requestLogger, upload.single('image')], UserController.updateUser)
 api.delete('/delete/:id',[mdAuth.ensureAdminAuth,requestLogger], UserController.deleteUser)
 
 module.exports = api;

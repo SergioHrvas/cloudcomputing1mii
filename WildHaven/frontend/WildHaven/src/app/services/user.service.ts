@@ -47,6 +47,14 @@ export class UserService{
 
 
 
+    updateProfile(id: String | null, formData: FormData): Observable<any>{
+        this.token = this.getToken();
+
+        let headers = new HttpHeaders().set("Authorization", this.token)
+
+        return this._http.put(this.url+"user/updateProfile/" + id, formData, {headers: headers})   
+    }
+
     updateUser(id: String | null, formData: FormData): Observable<any>{
         this.token = this.getToken();
 
@@ -54,7 +62,6 @@ export class UserService{
 
         return this._http.put(this.url+"user/update/" + id, formData, {headers: headers})   
     }
-
 
     getIdentity(){
         var item = null;

@@ -188,8 +188,8 @@ function removeFilesOfUploads(res, file_path, message){
    });
 }
 
-//Editar datos de usuarios
-function updateUser(req, res) {
+//Editar datos de usuario
+function updateProfile(req, res) {
     var id = req.params.id;
     var update = req.body;
 
@@ -197,10 +197,7 @@ function updateUser(req, res) {
         var file_path = req.file.destination;
         var file_name = req.file.filename;
     }
-
-    console.log("aaawW" + file_path)
     
-    console.log("aaawsW" + file_name)
     update.image = file_name
 
     //Eliminamos la propiedad contraseña por seguridad (se modificará en un método por separado)
@@ -298,6 +295,111 @@ function updateUser(req, res) {
 
 }
 
+
+//Editar datos de usuario
+function updateUser(req, res) {
+    var id = req.params.id;
+    var update = req.body;
+
+    if(req.file){
+        var file_path = req.file.destination;
+        var file_name = req.file.filename;
+    }
+    
+    update.image = file_name
+
+    //Eliminamos la propiedad contraseña por seguridad (se modificará en un método por separado)
+    delete update.password;
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(500).send({ message: "El id es incorrecto" })     
+    }
+
+
+    if(!update.email){
+        update.email = ""
+    }
+
+    User.find({ email: update.email.toLowerCase() }).exec().then(users => {
+        if(update.email == ""){
+            update.email = undefined;
+        }
+        
+        if(users.length > 0)
+        {
+            var user_isset = false;
+            users.forEach(user => {
+                if (user && (user._id != id)) {
+                    user_isset = true;
+                }
+            });
+
+            if (user_isset) {
+                return res.status(500).send({ message: "Los datos ya están en uso" })
+            }
+        }
+
+        User.findById(id).exec().then(
+            old_user => {
+            
+                var old_path = old_user.image;
+
+                User.findByIdAndUpdate(id, update, { new: true }).exec().then(
+                    userUpdated => {
+                        if (!userUpdated) {
+                            return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
+                        }                               
+
+                        // Si tenía ya una imagen, la borramos
+                        if (old_path && old_path.length > 0) {
+
+                            const filePath = file_path + "\\" + old_path;
+                            
+                            console.log("filepatsh: " + filePath)
+                            // Verificamos si el archivo existe
+                            fs.access(filePath, fs.constants.F_OK, (err) => {
+                                if (!err) {
+                                    // Si el archivo existe, lo eliminamos
+                                    fs.unlink(filePath, (err) => {
+                                        if (err) {
+                                            console.error("Error al eliminar el archivo:", err);
+                                        } else {
+                                            console.log("Archivo eliminado con éxito.");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+        
+                        return res.status(200).send({ user: userUpdated });
+                    }
+                ).catch(
+                    err => {
+                        if (err) return res.status(500).send({ message: "Error en la petición" });
+                    }
+                )
+            }
+
+
+
+
+
+        ).catch(
+            err => {
+                if (err) return res.status(500).send({ message: "Error en la petición" });
+            }
+        )
+
+ 
+    }
+    ).catch(
+        err => {
+            if (err) return res.status(500).send({ message: "Error en la petición" });
+        }
+    )
+
+}
+
+
 function deleteUser(req, res) {
     var id = req.params.id;
 
@@ -348,5 +450,6 @@ module.exports = {
     getUsers,
     getUser,
     updateUser,
+    updateProfile,
     deleteUser
 }

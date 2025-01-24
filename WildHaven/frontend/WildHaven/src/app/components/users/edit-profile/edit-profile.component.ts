@@ -7,14 +7,14 @@ import { CommonModule } from '@angular/common';
 import { GLOBAL } from "../../../services/global";
  
 @Component({
-    selector: "user-edit",
-    templateUrl: "./user-edit.component.html",
+    selector: "edit-profile",
+    templateUrl: "./edit-profile.component.html",
     providers: [UserService],
     imports: [FormsModule, CommonModule],
     standalone: true
 })
 
-export class UserEditComponent implements OnInit{
+export class EditProfileComponent implements OnInit{
     public title: string;
     public user: User;
     public identity: any;
@@ -79,7 +79,7 @@ export class UserEditComponent implements OnInit{
         }
 
 
-        this._userService.updateUser(id, formData).subscribe(
+        this._userService.updateProfile(id, formData).subscribe(
             response => {
                 if(!response.user){
                     this.status = "error"
@@ -89,15 +89,6 @@ export class UserEditComponent implements OnInit{
                     this.user.image = response.user.image
 
                     this.identity = this.user;
-                    //PERSISTIR DATOS DEL USUARIO
-                    if (typeof localStorage !== 'undefined') {
-                        localStorage.setItem('Identity', JSON.stringify(this.user))
-                    } else if (typeof sessionStorage !== 'undefined') {
-                        sessionStorage.setItem('Identity', JSON.stringify(this.user))
-                    } else {
-                        // If neither localStorage nor sessionStorage is supported
-                        console.log('Web Storage is not supported in this environment.');
-                    }
                 }
             },
             error => {
