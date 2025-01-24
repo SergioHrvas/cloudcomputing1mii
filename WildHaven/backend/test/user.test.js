@@ -220,7 +220,7 @@ describe("Usuarios", function () {
                 surname: "apellidocambiado"
             }
 
-            const res = await chai.request(app).put('/api/user/update/' + iduserupdated).set('Authorization', tokenupdate).field('email', body.email).field('surname', body.surname).field('name', body.name).attach('image', 
+            const res = await chai.request(app).put('/api/user/updateProfile/' + iduserupdated).set('Authorization', tokenupdate).field('email', body.email).field('surname', body.surname).field('name', body.name).attach('image', 
                 fs.readFileSync('test/test.png'), 'test.png');
             
             imagenes.push(res.body.user.image)
@@ -235,7 +235,7 @@ describe("Usuarios", function () {
 
         it("Deberia devolver 403 si no permite la edición del usuario", async () => {
 
-            const res = await chai.request(app).put('/api/user/update/' + iduserupdated).set('Authorization', token).send()
+            const res = await chai.request(app).put('/api/user/updateProfile/' + iduserupdated).set('Authorization', token).send()
 
             expect(res).to.have.status(403);
             expect(res.body).to.have.property('message').that.equals('No tienes permisos para actualizar los datos del usuario.');
@@ -255,7 +255,7 @@ describe("Usuarios", function () {
          })*/
 
         it('Debería devolver 500 si el id no es válido', async () => {
-            const res = await chai.request(app).put('/api/user/update/670f930a96f295c8503ade12d').set('Authorization', tokenupdate).send()
+            const res = await chai.request(app).put('/api/user/updateProfile/670f930a96f295c8503ade12d').set('Authorization', tokenupdate).send()
 
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.equals("El id es incorrecto")
@@ -265,7 +265,7 @@ describe("Usuarios", function () {
         it("Debería devolver 500 si hay un error con la base de datos", async () => {
             // Desconectamos la base de datos para simular un error de conexión
             await mongoose.disconnect();
-            const res = await chai.request(app).put('/api/user/update/' + iduserupdated).set('Authorization', tokenupdate).send()
+            const res = await chai.request(app).put('/api/user/updateProfile/' + iduserupdated).set('Authorization', tokenupdate).send()
 
             expect(res).to.have.status(500);
             expect(res.body).to.have.property('message').that.equals("Error en la petición")
