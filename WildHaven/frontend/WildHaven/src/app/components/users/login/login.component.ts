@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit{
                       }
                     console.log(this.token)
 
-                    this._router.navigate(['/users']); 
+                    this._router.navigate(['/']); 
                 }
 
             },
