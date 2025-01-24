@@ -9,7 +9,7 @@
     "test-zones": "mocha .\\test\\zone.test.js",
     "test-species": "mocha .\\test\\specie.test.js",
     "test-inhabitants": "mocha .\\test\\inhabitant.test.js",
-    "start": "nodemon index.js"
+    "start": "nodemon --legacy-watch index.js"
   },
   "keywords": [
     "wildhaven",
