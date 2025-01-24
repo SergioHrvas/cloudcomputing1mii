@@ -213,3 +213,4 @@
 2025-01-24 16:57:35 [info]: DELETE /api/zone/delete/672d3811d845bd7eb8414220 200 - 3ms (::ffff:127.0.0.1)
 2025-01-24 16:57:35 [info]: PUT /api/zone/update/670f930a96f295c8503ade12dss 200 - 1ms (::ffff:127.0.0.1)
 2025-01-24 16:57:35 [info]: DELETE /api/zone/delete/672d3811d845bd7eb8414220 200 - 2ms (::ffff:127.0.0.1)
+2025-01-24 16:03:41 [info]: GET /api/user/pruebas 200 - 7ms (::ffff:172.18.0.1)
