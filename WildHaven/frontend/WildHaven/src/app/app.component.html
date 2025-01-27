@@ -34,12 +34,17 @@
           </a>
         </li>
         <li class="nav-item mx-3">
-          <a href="#" *ngIf="isAuthenticated()" (click)="onLogout()" class="nav-link active">
+          <a href="/" *ngIf="isAuthenticated()" (click)="onLogout()" class="nav-link active">
             <i class="bi bi-box-arrow-left"></i> Cerrar sesión
           </a>
         </li>
       </ul>
     </div>
+
+    <!-- Foto de perfil -->
+     <div *ngIf="isAuthenticated()" class="align-right me-2">
+      <a href="/profile"><img [src]="url + user.image" alt="Foto de perfil" class="img-fluid rounded-circle" style="max-width: 60px; height: auto;" /></a>
+     </div>
   </nav>
 </div>
 

@@ -13,7 +13,7 @@ import { response } from "express";
 import { SpecieService } from "../../../services/specie.service";
 
 @Component({
-    selector: 'inhabitant',
+    selector: 'new-inhabitant',
     templateUrl: './new-inhabitant.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],

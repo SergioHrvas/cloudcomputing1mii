@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { User } from '../models/user'
 import { GLOBAL } from './global'
-import { json } from 'stream/consumers'
 
 @Injectable({
     providedIn: 'root',  // Asegúrate de que el servicio sea un singleton
@@ -67,11 +66,8 @@ export class UserService{
         var item = null;
         if (typeof localStorage !== 'undefined') {
             item = localStorage.getItem('Identity');
-        } else if (typeof sessionStorage !== 'undefined') {
-            item = sessionStorage.getItem('Identity');
           } else {
             // If neither localStorage nor sessionStorage is supported
-            console.log('Web Storage is not supported in this environment.');
           }
         
         var identity = item != null ? JSON.parse(item) : JSON.parse("null");
@@ -82,6 +78,7 @@ export class UserService{
         else{
             this.identity = null;
         }
+
         return this.identity;
     }
     
@@ -90,11 +87,8 @@ export class UserService{
         var item;
         if (typeof localStorage !== 'undefined') {
             item = localStorage.getItem('Token');
-        } else if (typeof sessionStorage !== 'undefined') {
-            item = sessionStorage.getItem('Token');
           } else {
             // If neither localStorage nor sessionStorage is supported
-            console.log('Web Storage is not supported in this environment.');
           }
         
         var token = item != null ? JSON.parse(item) : JSON.parse("null");
@@ -113,11 +107,8 @@ export class UserService{
     isAuthenticated(): boolean {
         if (typeof localStorage !== 'undefined') {
             return !!localStorage.getItem('Token');  
-        } else if (typeof sessionStorage !== 'undefined') {
-            return !!sessionStorage.getItem('Token');  
         } else {
             // If neither localStorage nor sessionStorage is supported
-            console.log('Web Storage is not supported in this environment.');
             return false;
           }
     }
@@ -137,13 +128,8 @@ export class UserService{
         if (typeof localStorage !== 'undefined') {
             localStorage.removeItem('Token');
             localStorage.removeItem('Identity')
-
-        } else if (typeof sessionStorage !== 'undefined') {
-            sessionStorage.removeItem('Token');
-            sessionStorage.removeItem('Identity')
         } else {
             // If neither localStorage nor sessionStorage is supported
-            console.log('Web Storage is not supported in this environment.');
           }
     }
 

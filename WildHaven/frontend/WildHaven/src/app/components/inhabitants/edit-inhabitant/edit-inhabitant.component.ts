@@ -12,7 +12,7 @@ import { ZoneService } from "../../../services/zone.service";
 import { SpecieService } from "../../../services/specie.service";
 
 @Component({
-    selector: 'inhabitant',
+    selector: 'edit-inhabitant',
     templateUrl: './edit-inhabitant.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],

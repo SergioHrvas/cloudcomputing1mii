@@ -9,7 +9,7 @@ import { routes } from "../../../app.routes";
 import { Console } from "node:console";
 
 @Component({
-    selector: 'zone',
+    selector: 'new-zone',
     templateUrl: './new-zone.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],

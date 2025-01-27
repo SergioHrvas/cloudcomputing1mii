@@ -8,7 +8,7 @@ import { GLOBAL } from "../../../services/global";
 import { routes } from "../../../app.routes";
 
 @Component({
-    selector: 'specie',
+    selector: 'edit-specie',
     templateUrl: './edit-specie.component.html',
     standalone: true,
     imports: [FormsModule, CommonModule],

@@ -5,12 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from "../../../services/user.service";
 import { get } from "http";
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
     standalone: true,
-    imports: [FormsModule, CommonModule],
+    imports: [FormsModule, CommonModule, RouterModule],
     providers: [UserService]
 
 })
@@ -54,7 +55,6 @@ export class LoginComponent implements OnInit{
     onSubmit(form: any){
         this._userService.loginUser(this.user).subscribe(
             response => {
-                console.log(response)
                 this.identity = response.user;
                 this.token = response.token;
                 if(!this.identity || !this.identity._id){
@@ -62,24 +62,19 @@ export class LoginComponent implements OnInit{
                 }else{
                     //PERSISTIR DATOS DEL USUARIO
                     if (typeof localStorage !== 'undefined') {
+                        var item = this.identity;
+                        item.password = null;
                         localStorage.setItem('Identity', JSON.stringify(this.identity))
-                    } else if (typeof sessionStorage !== 'undefined') {
-                        sessionStorage.setItem('Identity', JSON.stringify(this.identity))
                     } else {
                         // If neither localStorage nor sessionStorage is supported
-                        console.log('Web Storage is not supported in this environment.');
                       }
                     
                     //PERSISTIR TOKEN DE USUARIO
                     if (typeof localStorage !== 'undefined') {
                         localStorage.setItem('Token', JSON.stringify(this.token))
-                    } else if (typeof sessionStorage !== 'undefined') {
-                        sessionStorage.setItem('Token', JSON.stringify(this.token))
                     } else {
                         // If neither localStorage nor sessionStorage is supported
-                        console.log('Web Storage is not supported in this environment.');
                       }
-                    console.log(this.token)
 
                     this._router.navigate(['/']); 
                 }

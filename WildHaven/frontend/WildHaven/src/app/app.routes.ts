@@ -29,6 +29,7 @@ import { TaskComponent } from './components/tasks/task/task.component';
 import { EditTaskComponent } from './components/tasks/edit-task/edit-task.component';
 import { UnauthorizedComponent } from './components/misc/unauthorized.component';
 import { AuthAdminGuard } from './guards/authAdmin.guard';
+import { Profile } from './components/users/profile/profile.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -41,6 +42,7 @@ export const routes: Routes = [
     { path: 'create-user', component: NewUserComponent, canActivate: [AuthAdminGuard]},
     { path: 'user/:id', component: UserComponent, canActivate: [AuthAdminGuard]},
     { path: 'edit-user/:id', component: UserEditComponent, canActivate: [AuthGuard]},
+    { path: 'profile', component: Profile, canActivate: [AuthGuard]},
 
     { path: 'zones', component: ZonesComponent, canActivate: [AuthGuard]},
     { path: 'zone/:id', component: ZoneComponent, canActivate: [AuthGuard]},
