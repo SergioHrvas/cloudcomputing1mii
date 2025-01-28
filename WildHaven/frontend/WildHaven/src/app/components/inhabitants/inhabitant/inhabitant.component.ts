@@ -28,6 +28,10 @@ export class InhabitantComponent implements OnInit{
     public title: String;
 
     public sponsorships: sponsorship[];
+    public sponsored: boolean;
+
+
+    public fechaFormateada: String = "";
 
     constructor(        
         private _route: ActivatedRoute,
@@ -36,7 +40,7 @@ export class InhabitantComponent implements OnInit{
         private _userService: UserService
     ){
         this.inhabitant = new Inhabitant(
-            "", "", "", "", "", "", new Date(), [{
+            "", "", "", "", "", "", undefined, [{
                 date: new Date(),
                 reason: "",
                 treatments: "",
@@ -47,6 +51,7 @@ export class InhabitantComponent implements OnInit{
         this.title = "Zona"
         this.url = GLOBAL.urlUploads + 'inhabitants/';
         this.sponsorships = [];
+        this.sponsored = false;
     }
 
     ngOnInit() {
@@ -54,6 +59,30 @@ export class InhabitantComponent implements OnInit{
         this._inhabitantService.getInhabitant(id).subscribe(
             response => {
                 this.inhabitant = response.inhabitant;
+                
+                console.log(this.inhabitant.birth)
+
+                if (this.inhabitant.birth) {
+                    // Si es una cadena, conviértela a un objeto Date
+                    if (typeof this.inhabitant.birth === 'string') {
+                        this.inhabitant.birth = new Date(this.inhabitant.birth);
+                    }
+                
+                    // Verifica que ahora sea un objeto Date válido
+                    if (this.inhabitant.birth instanceof Date && !isNaN(this.inhabitant.birth.getTime())) {
+                        const dia = String(this.inhabitant.birth.getUTCDate()).padStart(2, '0'); // Día con 2 dígitos
+                        const mes = String(this.inhabitant.birth.getUTCMonth() + 1).padStart(2, '0'); // Mes con 2 dígitos
+                        const año = this.inhabitant.birth.getUTCFullYear(); // Año con 4 dígitos
+                
+                        // Formatear la fecha en DD-MM-YYYY
+                        this.fechaFormateada = `${dia}-${mes}-${año}`;
+                    } else {
+                        console.error("this.inhabitant.birth no es un objeto Date válido.");
+                    }
+                } else {
+                    console.error("this.inhabitant.birth no está definido.");
+                }
+                this.sponsored = response.sponsored;
             },
             error => {
                 console.log(<any>error);
@@ -76,6 +105,8 @@ export class InhabitantComponent implements OnInit{
         
         this._inhabitantService.sponsorInhabitant(data_string).subscribe(
             response => {
+                window.location.reload();
+
             },
             error => {
                 console.log(<any>error);
@@ -97,6 +128,7 @@ export class InhabitantComponent implements OnInit{
 
         this._inhabitantService.unsponsorInhabitant(data_string).subscribe(
             response => {
+                window.location.reload();
             },
             error => {
                 console.log(<any>error);

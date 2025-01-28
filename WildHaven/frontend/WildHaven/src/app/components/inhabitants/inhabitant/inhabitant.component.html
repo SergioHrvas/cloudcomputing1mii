@@ -5,7 +5,7 @@
       <!-- Imagen de la habitante -->
       <div class="col-md-6 text-center">
         <img [src]="url + inhabitant.image" alt="{{ inhabitant.name }}"
-          class="img-fluid rounded" style="max-width: 100%; height: auto; box-shadow: 0px 4px 8px rgba(0,0,0,0.2);" />
+          class="img-fluid rounded" style="width: 500px; height: auto; box-shadow: 0px 4px 8px rgba(0,0,0,0.2);" />
 
       </div>
 
@@ -23,34 +23,28 @@
           <p class="lead"><strong>Descripción:</strong> {{ inhabitant.description }}</p>
           <p class="lead"><strong>Personalidad:</strong> {{ inhabitant.personality }}</p>
           <p class="lead"><strong>Estado de salud:</strong> {{ inhabitant.healthStatus }}</p>
-          <p class="lead"><strong>Nacimiento:</strong> {{ inhabitant.birth }}</p>
+          <p class="lead"><strong>Nacimiento:</strong> {{ fechaFormateada }}</p>
           <p class="lead"><strong>Zona:</strong> {{ inhabitant.zone?.name }}</p>
         </div>
-      </div>
-      <div class="col-md-12 mt-4">
-        <div class="d-flex justify-content-between">
-           <!-- Apadrinar -->
-          <!-- <button *ngIf="!sponsorships.find(s => s.status === 'active')" class="btn btn-primary"
-            (click)="sponsorInhabitant(inhabitant._id)">
-            <i class="bi bi-heart"></i> Apadrinar
-          </button> -->
-          <button class="btn btn-primary"
-            (click)="sponsorInhabitant(inhabitant._id)">
-            <i class="bi bi-heart"></i> Apadrinar
-          </button>
 
-          <!-- Desapadrinar -->
-          <!-- <button *ngIf="sponsorships.find(s => s.status === 'active')" class="btn btn-danger"
-            (click)="unsponsorInhabitant(inhabitant._id)">
-            <i class="bi bi-heart"></i> Desapadrinar
-          </button> -->
-          <button class="btn btn-danger"
-            (click)="unsponsorInhabitant(inhabitant._id)">
-            <i class="bi bi-heart"></i> Desapadrinar
-          </button>
-        </div>
+        <div class="col-md-12 mt-4">
+          <div class="d-flex justify-content-center">
+             <!-- Apadrinar -->
+            <button *ngIf="!sponsored" class="btn btn-primary"
+              (click)="sponsorInhabitant(inhabitant._id)">
+              <i class="bi bi-heart"></i> Apadrinar
+            </button>
+  
+            <!-- Desapadrinar -->
+            <button *ngIf="sponsored" class="btn btn-danger"
+              (click)="unsponsorInhabitant(inhabitant._id)">
+              <i class="bi bi-heartbreak"></i> Desapadrinar
+            </button>
+          </div>
+      </div>
     </div>
-  </div>
+      </div>
+
 
   <!--Apadrinamientos-->
   <!--<div class="card mt-4 mb-4 shadow-sm">

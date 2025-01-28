@@ -29,7 +29,6 @@ function pruebas(req, res){
 function createSponsorship(req, res) {
     var sponsorship = new Sponsorship();
     var params = req.body;
-    console.log(req.user.sub)
 
     sponsorship.sponsor = req.user.sub;
     sponsorship.inhabitant = params.id;
@@ -37,7 +36,6 @@ function createSponsorship(req, res) {
     sponsorship.contributionAmount = 20;
     sponsorship.status = 'active';
 
-    console.log(sponsorship)
     sponsorship.save()
         .then(sponsorshipStored => {
             if (!sponsorshipStored) {

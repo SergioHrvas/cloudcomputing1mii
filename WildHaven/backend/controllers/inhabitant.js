@@ -4,20 +4,16 @@
 var bcrypt = require('bcrypt-nodejs');
 
 var Inhabitant = require('../models/inhabitant');
+var Sponsorship = require('../models/sponsorship');
 
 //Importamos la libreria moment para generar fechas
 var moment = require("moment");
-
-//Importamos el servicio de jwt token
-var jwt = require('../services/jwt');
-
-//Importamos mongoose paginate
-var mongoosePaginate = require('mongoose-pagination');
 
 //Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
 var fs = require('fs');
 var path = require('path');
 const { escape } = require('querystring');
+const sponsorship = require('../models/sponsorship');
 
 
 function pruebas(req, res){
@@ -34,11 +30,28 @@ function getInhabitant(req, res) {
     }
 
 
-    Inhabitant.findById(id).exec().then(
+    Inhabitant.findById(id).populate('specie', 'name').populate('zone', 'name').exec().then(
         inhabitant => {
             if (!inhabitant) return res.status(404).send({ message: "El habitante no existe" });
 
-            return res.status(200).send({ inhabitant });
+            // Obtener si este habitante lo tengo sponsorizado
+
+            Sponsorship.find({inhabitant: id, sponsor: req.user.sub, status: 'active'}).exec().then(
+                sponsorships => {
+
+                    var sponsored = true;
+
+                    if(sponsorships.length == 0){
+                        sponsored = false;
+                    }
+
+                    return res.status(200).send({ inhabitant, sponsored });
+                }
+            ).catch(
+                err => {
+                    if (err) return res.status(500).send({message: "Error al obtener el sponsorship del habitante"})
+                }
+            )
         }
     ).catch(
         err => {
