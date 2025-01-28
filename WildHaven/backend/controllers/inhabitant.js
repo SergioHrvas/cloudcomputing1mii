@@ -83,7 +83,7 @@ function getInhabitantsBySpecie(req, res) {
 
 function getInhabitants(req, res) {
 
-    Inhabitant.find().sort('name').exec().then(
+    Inhabitant.find().sort('name').populate('specie', 'name').populate('specie', '_id').populate('zone', 'name').populate('zone', 'id').exec().then(
         inhabitants => {
             if (!inhabitants || (inhabitants.length == 0 )) return res.status(404).send({ message: "No hay habitantes disponibles" });
 

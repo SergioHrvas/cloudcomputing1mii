@@ -58,21 +58,19 @@
             </div>
           </div>
 
-          
-        <div class="form-group mt-3">
+          <div class="form-group mt-3">
             <label for="zone">Seleccione una zona:</label>
             <select id="zone" [(ngModel)]="inhabitant.zone" name="zone" class="form-control" required>
-                <option *ngFor="let zone of zones" [value]="zone._id">
+                <option *ngFor="let zone of zones" [ngValue]="zone">
                     {{ zone.name }}
                 </option>
             </select>
         </div>
 
-        
         <div class="form-group mt-3">
             <label for="specie">Seleccione una especie:</label>
             <select id="specie" [(ngModel)]="inhabitant.specie" name="specie" class="form-control" required>
-                <option *ngFor="let specie of species" [value]="specie._id">
+                <option *ngFor="let specie of species" [ngValue]="specie">
                     {{ specie.name }}
                 </option>
             </select>

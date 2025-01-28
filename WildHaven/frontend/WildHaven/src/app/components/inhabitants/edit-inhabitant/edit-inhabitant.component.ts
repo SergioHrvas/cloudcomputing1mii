@@ -57,21 +57,6 @@ export class EditInhabitantComponent implements OnInit{
         console.log("Componente inhabitant-edit cargado")    
 
         const id = this._route.snapshot.paramMap.get('id');
-
-        this._inhabitantService.getInhabitant(id).subscribe(
-            response => {
-                this.inhabitant = response.inhabitant;
-                this.inhabitant.birth = response.inhabitant.birth.split("T")[0]; // Extrae solo la parte de la fecha
-            },
-            error => {
-                console.log(<any>error);
-                if(<any>error != null){
-                    this.status = 'error';
-                }
-            }
-        );
-
-        
         this._zoneService.getZones().subscribe(
             response => {
                 if(!response.zones){
@@ -95,6 +80,33 @@ export class EditInhabitantComponent implements OnInit{
                 }
             }
         )
+
+        this._inhabitantService.getInhabitant(id).subscribe(
+            response => {
+                this.inhabitant = response.inhabitant;
+
+                this.inhabitant.birth = response.inhabitant.birth.split("T")[0]; // Extrae solo la parte de la fecha
+    
+                // Verifica que la zona y especie están correctamente asignados
+                if (this.inhabitant.zone && this.zones.length) {
+                    this.inhabitant.zone = this.zones.find(zone => zone._id === this.inhabitant.zone?._id) || undefined;
+                }
+    
+                if (this.inhabitant.specie && this.species.length) {
+                    this.inhabitant.specie = this.species.find(specie => specie._id === this.inhabitant.specie?._id) || undefined;
+                }
+            },
+            error => {
+                console.log(<any>error);
+                this.status = 'error';
+            }
+        );
+    
+
+        
+
+
+            
     }
 
     onImageSelected(event: any) {
@@ -111,7 +123,12 @@ export class EditInhabitantComponent implements OnInit{
         
         Object.entries(this.inhabitant).forEach(([key, value]) => {
             if(value){
-                formData.append(key, value?.toString() || '');
+                if((key == "specie") || (key == "zone")){
+                    formData.append(key, value._id?.toString() || '');
+                }
+                else{
+                    formData.append(key, value?.toString() || '');
+                }
             }
         });
 
