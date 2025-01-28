@@ -11,7 +11,7 @@ export class Inhabitant{
         public healthStatus: String,
         public birth: Date | undefined,
         public vetVisits: [{
-            date: Date | undefined,
+            date: Date,
             reason: String,
             treatments: String,
             vetName: String

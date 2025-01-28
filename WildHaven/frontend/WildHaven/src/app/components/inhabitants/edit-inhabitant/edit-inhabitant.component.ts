@@ -40,7 +40,7 @@ export class EditInhabitantComponent implements OnInit{
         private _specieService: SpecieService
     ){
         this.inhabitant = new Inhabitant("","","","", "", "", undefined, [{
-            date: undefined,
+            date: new Date(),
             reason: "",
             treatments:"",
             vetName: ""
