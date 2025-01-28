@@ -39,6 +39,7 @@ var inhabitant_routes = require('./routes/inhabitant');
 var zone_routes = require('./routes/zone');
 var inventoryMovement_routes = require('./routes/inventoryMovement');
 var inventoryItem_routes = require('./routes/inventoryItem');
+var sponsorship_routes = require('./routes/sponsorship')
 
 //middlewares
 
@@ -59,6 +60,7 @@ app.use('/api/inhabitant', inhabitant_routes);
 app.use('/api/zone', zone_routes);
 app.use('/api/inventoryItem', inventoryItem_routes);
 app.use('/api/inventoryMovement', inventoryMovement_routes);
+app.use('/api/sponsorship', sponsorship_routes)
 
 //exportar
 module.exports = app;

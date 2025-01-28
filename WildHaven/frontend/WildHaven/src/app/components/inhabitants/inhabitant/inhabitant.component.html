@@ -27,11 +27,60 @@
           <p class="lead"><strong>Zona:</strong> {{ inhabitant.zone?.name }}</p>
         </div>
       </div>
+      <div class="col-md-12 mt-4">
+        <div class="d-flex justify-content-between">
+           <!-- Apadrinar -->
+          <!-- <button *ngIf="!sponsorships.find(s => s.status === 'active')" class="btn btn-primary"
+            (click)="sponsorInhabitant(inhabitant._id)">
+            <i class="bi bi-heart"></i> Apadrinar
+          </button> -->
+          <button class="btn btn-primary"
+            (click)="sponsorInhabitant(inhabitant._id)">
+            <i class="bi bi-heart"></i> Apadrinar
+          </button>
+
+          <!-- Desapadrinar -->
+          <!-- <button *ngIf="sponsorships.find(s => s.status === 'active')" class="btn btn-danger"
+            (click)="unsponsorInhabitant(inhabitant._id)">
+            <i class="bi bi-heart"></i> Desapadrinar
+          </button> -->
+          <button class="btn btn-danger"
+            (click)="unsponsorInhabitant(inhabitant._id)">
+            <i class="bi bi-heart"></i> Desapadrinar
+          </button>
+        </div>
     </div>
   </div>
 
+  <!--Apadrinamientos-->
+  <!--<div class="card mt-4 mb-4 shadow-sm">
+    <div class="card-body">
+      <div><h2 class="card-title
+        "><i class="bi bi-heart"></i> Apadrinamientos</h2></div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex align-items-center" *ngFor="let sponsorship of inhabitant.sponsorships">
+          <div class="row w-100">
+            <div class="col-3">
+              <strong>Fecha:</strong> {{ sponsorship.date }}
+            </div>
+            <div class="col-3">
+              <strong>Apadrinante:</strong> {{ sponsorship.sponsorName }}
+            </div>
+            <div class="col-3">
+              <strong>Apadrinamiento:</strong> {{ sponsorship.sponsorshipType }}
+            </div>
+            <div class="col-3">
+              <strong>Estado:</strong> {{ sponsorship.status }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>-->
+
+
   <!--Visitas médicas-->
-  <div class="card mt-4 shadow-sm">
+  <div class="card mt-4 mb-4 shadow-sm">
     <div class="card-body">
       <div><h2 class="card-title"><i class="bi bi-bandaid"></i> Visitas médicas</h2></div>
       <ul class="list-group list-group-flush">

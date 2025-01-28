@@ -6,13 +6,10 @@ var mdAuth = require('../middlewares/authenticated');
 
 const requestLogger = require('../middlewares/logging');
 
-const upload = require('../middlewares/confmulter');  // Importar el middleware
-
-
 var api = express.Router();
 
-api.get('/pruebas', requestLogger, InhabitantController.pruebas);
-api.post('/sponsorship', [mdAuth.ensureAuth], SponsorshipController.saveSponsorship);
+api.get('/pruebas', requestLogger, SponsorshipController.pruebas);
+api.post('/sponsorship', [mdAuth.ensureAuth], SponsorshipController.createSponsorship);
 api.get('/sponsorships', [mdAuth.ensureAuth], SponsorshipController.getSponsorships);
 api.get('/sponsorship/:id', SponsorshipController.getSponsorship);
 api.put('/sponsorship/:id', [mdAuth.ensureAuth], SponsorshipController.updateSponsorship);
@@ -20,7 +17,7 @@ api.delete('/sponsorship/:id', [mdAuth.ensureAuth], SponsorshipController.delete
 
 
 api.get('/mySponsorships', mdAuth.ensureAuth, SponsorshipController.getMySponsorships);
-api.put('/finishSponsorship/:id', mdAuth.ensureAuth, SponsorshipController.finishSponsorship);
+api.put('/finishSponsorship', mdAuth.ensureAuth, SponsorshipController.finishSponsorship);
 
 
 

@@ -5,6 +5,7 @@ import { Inhabitant } from '../models/inhabitant'
 import { GLOBAL } from './global'
 
 import { UserService } from './user.service'
+import { Form } from '@angular/forms'
 
 @Injectable({
     providedIn: 'root',  // Asegúrate de que el servicio sea un singleton
@@ -56,5 +57,23 @@ export class InhabitantService{
 
         return this._http.put(this.url+"inhabitant/update/" + id, formData, {headers: headers})   
     }
+
+    sponsorInhabitant(data: String): Observable<any>{
+        this.token = this.userService.getToken();
+
+        let headers = new HttpHeaders().set("Authorization", this.token).set("Content-Type", "application/json"); // Asegura que el contenido se envía como JSON
+
+        return this._http.post(this.url+"sponsorship/sponsorship", data, {headers: headers})   
+    }
+
+
+    unsponsorInhabitant(data: String): Observable<any>{
+        this.token = this.userService.getToken();
+
+        let headers = new HttpHeaders().set("Authorization", this.token).set("Content-Type", "application/json"); // Asegura que el contenido se envía como JSON
+
+        return this._http.put(this.url+"sponsorship/finishSponsorship", data, {headers: headers})   
+    }
+
 
 }

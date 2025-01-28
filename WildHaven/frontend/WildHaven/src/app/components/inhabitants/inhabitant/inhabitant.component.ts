@@ -8,6 +8,8 @@ import { Inhabitant } from "../../../models/inhabitant";
 import { GLOBAL } from "../../../services/global";
 import { Zone } from "../../../models/zone";
 import { Specie } from "../../../models/specie";
+import { sponsorship } from "../../../models/sponsorship";
+import { UserService } from "../../../services/user.service";
 
 @Component({
     selector: 'inhabitant',
@@ -25,10 +27,13 @@ export class InhabitantComponent implements OnInit{
     private status: String;
     public title: String;
 
+    public sponsorships: sponsorship[];
+
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _inhabitantService: InhabitantService
+        private _inhabitantService: InhabitantService,
+        private _userService: UserService
     ){
         this.inhabitant = new Inhabitant(
             "", "", "", "", "", "", new Date(), [{
@@ -41,6 +46,7 @@ export class InhabitantComponent implements OnInit{
         this.status = ""
         this.title = "Zona"
         this.url = GLOBAL.urlUploads + 'inhabitants/';
+        this.sponsorships = [];
     }
 
     ngOnInit() {
@@ -57,6 +63,51 @@ export class InhabitantComponent implements OnInit{
             }
         );
     }
+
+    sponsorInhabitant(id: string){
+        const user = this._userService.getIdentity();
+
+        const data = {
+            id: id.toString(),
+        };
+        
+        
+        var data_string = JSON.stringify(data)
+        
+        this._inhabitantService.sponsorInhabitant(data_string).subscribe(
+            response => {
+            },
+            error => {
+                console.log(<any>error);
+                if(<any>error != null){
+                    this.status = 'error';
+                }
+            }
+        );
+    }
+
+    unsponsorInhabitant(id: string){
+        const user = this._userService.getIdentity();
+
+        const data = {
+            id: id.toString(),
+        };
+        
+        var data_string = JSON.stringify(data)
+
+        this._inhabitantService.unsponsorInhabitant(data_string).subscribe(
+            response => {
+            },
+            error => {
+                console.log(<any>error);
+                if(<any>error != null){
+                    this.status = 'error';
+                }
+            }
+        );
+    }
+
+
 
 
 }

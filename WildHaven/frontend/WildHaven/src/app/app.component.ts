@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, PLATFORM_ID } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { LoginComponent } from './components/users/login/login.component';
 import { UserService } from './services/user.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { User } from './models/user';
 import { GLOBAL } from './services/global';
 
@@ -19,12 +19,19 @@ export class AppComponent {
   url = GLOBAL.urlUploads + 'users/';
   
   public user: User;
-
+  private readonly platformId = inject(PLATFORM_ID);
+  
   constructor(private _userService: UserService, private router: Router, private cdr: ChangeDetectorRef) {
     this.user = new User("", "", "", "", "", "", "default-user.png", "")
+    
   }
 
   ngOnInit() {
+    
+    
+    if(isPlatformBrowser(this.platformId)){ console.log('browser'); }
+    if(isPlatformServer(this.platformId)){ console.log('server'); }
+    
     const storedIdentity = localStorage.getItem('Identity');
     if (storedIdentity) {
       this.user = JSON.parse(storedIdentity) as User;

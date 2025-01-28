@@ -3,7 +3,7 @@ import { Zone } from "./zone"
 
 export class Inhabitant{
     constructor(
-        public _id: String,
+        public _id: string,
         public name: String,
         public description: String,
         public image: String,

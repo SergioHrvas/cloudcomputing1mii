@@ -113,7 +113,17 @@ export class UserService{
           }
     }
 
-    
+    // Método para comprobar si el usuario está autenticado (asíncrono)
+    isAuthenticatedAsync(): Promise<boolean> {
+        return new Promise((resolve) => {
+            if (typeof localStorage !== 'undefined') {
+                resolve(!!localStorage.getItem('Token'));
+            } else {
+                resolve(false); // Si no es compatible localStorage
+            }
+        });
+    }
+
     // Método para comprobar si el usuario está autenticado
     isAdmin(): boolean {
         var identity = this.getIdentity()

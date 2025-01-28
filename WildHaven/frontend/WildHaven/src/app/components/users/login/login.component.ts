@@ -56,6 +56,7 @@ export class LoginComponent implements OnInit{
         this._userService.loginUser(this.user).subscribe(
             response => {
                 this.identity = response.user;
+                
                 this.token = response.token;
                 if(!this.identity || !this.identity._id){
                     this.status = "error";

@@ -36,7 +36,7 @@ export class Profile implements OnInit{
         "",
         "",
         "ROLE_USER",
-        "default-user.png",
+        "",
         "",
     )
      this.user = this._userService.getIdentity();
@@ -51,7 +51,6 @@ export class Profile implements OnInit{
 
     ngOnInit(): void {
         this.user = this._userService.getIdentity();
-        console.log(this.user)
     }
 
 }

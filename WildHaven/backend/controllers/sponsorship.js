@@ -26,57 +26,59 @@ function pruebas(req, res){
     })
 };
  
-function createSponsorship(req, res){
+function createSponsorship(req, res) {
     var sponsorship = new Sponsorship();
     var params = req.body;
+    console.log(req.user.sub)
 
-    sponsorship.name = params.name;
-    sponsorship.description = params.description;
-    sponsorship.price = params.price;
-    sponsorship.duration = params.duration;
-    sponsorship.image = null;
+    sponsorship.sponsor = req.user.sub;
+    sponsorship.inhabitant = params.id;
+    sponsorship.startDate = moment().format('YYYY-MM-DD');
+    sponsorship.contributionAmount = 20;
+    sponsorship.status = 'active';
 
-    sponsorship.save((err, sponsorshipStored) => {
-        if(err){
-            res.status(500).send({message: 'Error en el servidor al guardar el patrocinio'});
-        }else{
-            if(!sponsorshipStored){
-                res.status(404).send({message: 'No se ha registrado el patrocinio'});
-            }else{
-                res.status(200).send({sponsorship: sponsorshipStored});
+    console.log(sponsorship)
+    sponsorship.save()
+        .then(sponsorshipStored => {
+            if (!sponsorshipStored) {
+                res.status(404).send({ message: 'No se ha registrado el patrocinio' });
+            } else {
+                res.status(200).send({ sponsorship: sponsorshipStored });
             }
-        }
-    });
+        })
+        .catch(err => {
+            res.status(500).send({ message: 'Error en el servidor al guardar el patrocinio' });
+        });
 }
 
 function getSponsorships(req, res){
-    Sponsorship.find((err, sponsorships) => {
-        if(err){
-            res.status(500).send({message: 'Error en el servidor al obtener los patrocinios'});
-        }else{
+    Sponsorship.find().exec()
+        .then(sponsorships => {
             if(!sponsorships){
                 res.status(404).send({message: 'No se han encontrado patrocinios'});
             }else{
                 res.status(200).send({sponsorships});
             }
-        }
-    });
+        })
+        .catch(err => {
+            res.status(500).send({message: 'Error en el servidor al obtener los patrocinios'});
+        });
 }
 
 function getSponsorship(req, res){
     var sponsorshipId = req.params.id;
 
-    Sponsorship.findById(sponsorshipId, (err, sponsorship) => {
-        if(err){
-            res.status(500).send({message: 'Error en el servidor al obtener el patrocinio'});
-        }else{
+    Sponsorship.findById(sponsorshipId).exec()
+        .then(sponsorship => {
             if(!sponsorship){
                 res.status(404).send({message: 'No se ha encontrado el patrocinio'});
             }else{
                 res.status(200).send({sponsorship});
             }
-        }
-    });
+        })
+        .catch(err => {
+            res.status(500).send({message: 'Error en el servidor al obtener el patrocinio'});
+        });
 }
 
 function updateSponsorship(req, res){
@@ -88,90 +90,90 @@ function updateSponsorship(req, res){
         return res.status(500).send({message: 'No tienes permiso para actualizar el patrocinio'});
     }
 
-    Sponsorship.findByIdAndUpdate
-    (sponsorshipId, update, (err, sponsorshipUpdated) => {
-        if(err){
-            res.status(500).send({message: 'Error en el servidor al actualizar el patrocinio'});
-        }else{
+    Sponsorship.findByIdAndUpdate(sponsorshipId, update, {new: true}).exec()
+        .then(sponsorshipUpdated => {
             if(!sponsorshipUpdated){
                 res.status(404).send({message: 'No se ha podido actualizar el patrocinio'});
             }else{
                 res.status(200).send({sponsorship: sponsorshipUpdated});
             }
-        }
-    });
+        })
+        .catch(err => {
+            res.status(500).send({message: 'Error en el servidor al actualizar el patrocinio'});
+        });
 }
 
 function deleteSponsorship(req, res){
     var sponsorshipId = req.params.id;
 
-    
     //Me aseguro de que soy el propietario del patrocinio o el administrador
-    if(update.user != req.user.sub && req.user.role != 'ROLE_ADMIN'){
-        return res.status(500).send({message: 'No tienes permiso para actualizar el patrocinio'});
+    if(req.body.user != req.user.sub && req.user.role != 'ROLE_ADMIN'){
+        return res.status(500).send({message: 'No tienes permiso para eliminar el patrocinio'});
     }
-    
-    
-    Sponsorship.findByIdAndRemove(sponsorshipId, (err, sponsorshipRemoved) => {
-        if(err){
-            res.status(500).send({message: 'Error en el servidor al eliminar el patrocinio'});
-        }else{
+
+    Sponsorship.findByIdAndRemove(sponsorshipId).exec()
+        .then(sponsorshipRemoved => {
             if(!sponsorshipRemoved){
                 res.status(404).send({message: 'No se ha podido eliminar el patrocinio'});
             }else{
                 res.status(200).send({sponsorship: sponsorshipRemoved});
             }
-        }
-    });
+        })
+        .catch(err => {
+            res.status(500).send({message: 'Error en el servidor al eliminar el patrocinio'});
+        });
 }
 
 function finishSponsorship(req, res){
-    var sponsorshipId = req.params.id;
-    var update = {active: false};
+    var user = req.user.sub;
+    var inhabitant = req.body.id;
 
-    Sponsor.findByIdAndUpdate(sponsorshipId, update, (err, sponsorshipFinished) => {
-        if(err){
-            res.status(500).send({message: 'Error en el servidor al finalizar el patrocinio'});
-        }else{
-            if(!sponsorshipFinished){
+    console.log(inhabitant)
+    console.log(user)
+
+    Sponsorship.findOneAndUpdate({sponsor: user, inhabitant: inhabitant, status: 'active'}, {status: 'inactive'}, {new: true}).exec()
+        .then(sponsorshipUpdated => {
+            if(!sponsorshipUpdated){
                 res.status(404).send({message: 'No se ha podido finalizar el patrocinio'});
             }else{
-                res.status(200).send({sponsorship: sponsorshipFinished});
+                res.status(200).send({sponsorship: sponsorshipUpdated});
             }
-        }
-    });
+        })
+        .catch(err => {
+            res.status(500).send({message: 'Error en el servidor al finalizar el patrocinio'});
+        });
 }
 
 function getMySponsorships(req, res){
     var userId = req.params.id;
 
-    Sponsorship.find({user: userId}, (err, sponsorships) => {
-        if(err){
-            res.status(500).send({message: 'Error en el servidor al obtener los patrocinios'});
-        }else{
+    Sponsorship.find({user: userId}).exec()
+        .then(sponsorships => {
             if(!sponsorships){
                 res.status(404).send({message: 'No se han encontrado patrocinios'});
             }else{
                 res.status(200).send({sponsorships});
             }
-        }
-    });
+        })
+        .catch(err => {
+            res.status(500).send({message: 'Error en el servidor al obtener los patrocinios'});
+        });
 }
 
 function getSponsorShipOfInhabitant(req, res){
     var inhabitantId = req.params.id;
 
-    Sponsorship.find({inhabitant: inhabitantId}, (err, sponsorships) => {
-        if(err){
-            res.status(500).send({message: 'Error en el servidor al obtener los patrocinios'});
-        }else{
+    Sponsorship.find({inhabitant: inhabitantId}).exec()
+        .then(sponsorships => {
             if(!sponsorships){
                 res.status(404).send({message: 'No se han encontrado patrocinios'});
             }else{
                 res.status(200).send({sponsorships});
             }
-        }
-    });
+        })
+        .catch(err => {
+            res.status(500).send({message: 'Error en el servidor al obtener los patrocinios'});
+        });
 }
 
 
