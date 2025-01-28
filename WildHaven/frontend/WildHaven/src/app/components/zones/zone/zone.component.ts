@@ -20,6 +20,8 @@ import { GLOBAL } from "../../../services/global";
 export class ZoneComponent implements OnInit{
 
     public url: string;
+    public url2: string;
+
     public zone: Zone;
     public inhabitants: Inhabitant[]
     private status: String;
@@ -37,6 +39,7 @@ export class ZoneComponent implements OnInit{
         this.status = ""
         this.title = "Zona"
         this.url = GLOBAL.urlUploads + 'zones/';
+        this.url2 = GLOBAL.urlUploads + 'inhabitants/';
     }
 
     ngOnInit() {

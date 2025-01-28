@@ -15,7 +15,7 @@
     </div>
   
     <!-- Lista de habitantes -->
-    <div class="card mt-4 shadow-sm">
+    <div class="card mt-4 mb-4 shadow-sm">
       <div class="card-body">
         <h2 class="card-title">Habitantes</h2>
         <ul class="list-group list-group-flush">
@@ -24,7 +24,7 @@
           *ngFor="let inhabitant of inhabitants">
           <!-- Imagen del habitante -->
           <img 
-          [src]="inhabitant.image ? url + inhabitant.image : '/default-avatar.png'" 
+          [src]="inhabitant.image ? url2 + inhabitant.image : '/default-avatar.png'" 
           alt="{{ inhabitant.name }}" 
           class="rounded-circle me-3" 
           width="100" 
