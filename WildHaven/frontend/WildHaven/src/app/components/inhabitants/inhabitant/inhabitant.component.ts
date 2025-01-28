@@ -137,6 +137,31 @@ export class InhabitantComponent implements OnInit{
         );
     }
 
+    formatDate(date: Date): string {
+        var fechaFormateada = ""   
+        var fecha = date;        
+        if (date) {
+            // Si es una cadena, conviértela a un objeto Date
+            if (typeof fecha === 'string') {
+                fecha = new Date(fecha);
+            }
+        
+            // Verifica que ahora sea un objeto Date válido
+            if (fecha instanceof Date && !isNaN(fecha.getTime())) {
+                const dia = String(fecha.getUTCDate()).padStart(2, '0'); // Día con 2 dígitos
+                const mes = String(fecha.getUTCMonth() + 1).padStart(2, '0'); // Mes con 2 dígitos
+                const año = fecha.getUTCFullYear(); // Año con 4 dígitos
+        
+                // Formatear la fecha en DD-MM-YYYY
+                var fechaFormateada = `${dia}-${mes}-${año}`;
+            } else {
+                console.error("this.inhabitant.birth no es un objeto Date válido.");
+            }
+        }
+
+        return fechaFormateada;
+    }
+
 
 
 

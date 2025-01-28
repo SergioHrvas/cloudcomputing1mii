@@ -81,7 +81,7 @@
         <li class="list-group-item d-flex align-items-center" *ngFor="let visit of inhabitant.vetVisits">
           <div class="row w-100">
             <div class="col-3">
-              <strong>Fecha:</strong> {{ visit.date }}
+              <strong>Fecha:</strong> {{ formatDate(visit.date) }}
             </div>
             <div class="col-3">
               <strong>Razón:</strong> {{ visit.reason }}
