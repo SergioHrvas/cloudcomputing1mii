@@ -32,6 +32,9 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_IP }} << 'EOF'
           cd /home/sergiohervas18/CloudComputing1MII/WildHaven/
+
+          docker system prune -af --volumes
+
           git pull
           docker-compose pull
           docker-compose down
