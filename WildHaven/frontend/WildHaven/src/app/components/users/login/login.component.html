@@ -1,4 +1,4 @@
-<div class="col-lg-5 mx-auto mt-4">
+<div *ngIf="!this.isUser() && !isServer" class="col-lg-5 mx-auto mt-4">
     <h1 class="h1-strong mb-4">{{ title }}</h1>
 
     <div *ngIf="status === 'success'" class="alert alert-success">

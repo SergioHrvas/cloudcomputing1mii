@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core"
+import { Component, Inject, OnInit, PLATFORM_ID, signal } from "@angular/core"
 import {Router, ActivatedRoute, Params } from '@angular/router'
 import { User } from "../../../models/user";
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformServer } from '@angular/common';
 import { UserService } from "../../../services/user.service";
 import { get } from "http";
 import { RouterModule } from '@angular/router';
@@ -22,11 +22,13 @@ export class LoginComponent implements OnInit{
     public user: User;
     public identity: any;
     public token: string;
-
+    public isUser = signal(false)
+    public isServer = false;
     constructor(        
         private _route: ActivatedRoute,
         private _router: Router,
-        private _userService: UserService
+        private _userService: UserService,
+        @Inject(PLATFORM_ID) platformId: Object
     ){
         this.title = "Identifícate";
         this.status = "";
@@ -42,12 +44,17 @@ export class LoginComponent implements OnInit{
         )
         this.identity = "";
         this.token = "";
-    }
+        
+        this.isServer = isPlatformServer(platformId);
+        }
     
     ngOnInit(){
-        if(this._userService.getIdentity != null){
-            this._userService.logout();
+        if(this._userService.getIdentity() != null){
+            //this._userService.logout();
+            this.isUser.set(true)
+
         }
+
         console.log("Componente de login cargado");
     }
     
