@@ -76,4 +76,13 @@ export class InhabitantService{
     }
 
 
+    getMySponsorships(): Observable<any>{
+        this.token = this.userService.getToken();
+
+        let headers = new HttpHeaders().set("Authorization", this.token).set("Content-Type", "application/json"); // Asegura que el contenido se envía como JSON
+
+        return this._http.get(this.url+"sponsorship/mySponsorships", {headers: headers})   
+    }
+
+
 }

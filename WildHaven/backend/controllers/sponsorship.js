@@ -143,10 +143,12 @@ function finishSponsorship(req, res){
 }
 
 function getMySponsorships(req, res){
-    var userId = req.params.id;
+    var userId = req.user.sub;
 
-    Sponsorship.find({user: userId}).exec()
+    Sponsorship.find({sponsor: userId}).populate('inhabitant', 'name').exec()
         .then(sponsorships => {
+            console.log(sponsorships)
+            console.log(userId)
             if(!sponsorships){
                 res.status(404).send({message: 'No se han encontrado patrocinios'});
             }else{

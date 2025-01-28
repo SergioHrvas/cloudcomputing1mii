@@ -8,7 +8,7 @@ import { Inhabitant } from "../../../models/inhabitant";
 import { GLOBAL } from "../../../services/global";
 import { Zone } from "../../../models/zone";
 import { Specie } from "../../../models/specie";
-import { sponsorship } from "../../../models/sponsorship";
+import { Sponsorship } from "../../../models/sponsorship";
 import { UserService } from "../../../services/user.service";
 
 @Component({
@@ -27,7 +27,7 @@ export class InhabitantComponent implements OnInit{
     private status: String;
     public title: String;
 
-    public sponsorships: sponsorship[];
+    public sponsorships: Sponsorship[];
     public sponsored: boolean;
 
 
@@ -60,8 +60,6 @@ export class InhabitantComponent implements OnInit{
             response => {
                 this.inhabitant = response.inhabitant;
                 
-                console.log(this.inhabitant.birth)
-
                 if (this.inhabitant.birth) {
                     // Si es una cadena, conviértela a un objeto Date
                     if (typeof this.inhabitant.birth === 'string') {

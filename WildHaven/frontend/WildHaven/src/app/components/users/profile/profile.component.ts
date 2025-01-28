@@ -14,7 +14,7 @@ import { GLOBAL } from "../../../services/global";
     standalone: true
 })
 
-export class Profile implements OnInit{
+export class ProfileComponent implements OnInit{
     public title: string;
     public user: User;
     public identity: any;
